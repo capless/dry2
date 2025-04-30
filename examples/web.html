@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components Examples</title>
+
+    <!-- Required Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Web Components -->
+    <script src="../src/dry2/dry2.js" defer></script>
+
+    <style>
+        body {
+            padding: 2rem;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .example-section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+        .example-code {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+        }
+        .component-demo {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            border: 1px dashed #e5e7eb;
+            border-radius: 0.375rem;
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">Web Components Examples</h1>
+
+    <div class="mb-8 p-4 bg-white rounded-lg shadow">
+        <p>This page demonstrates the usage of four web components:</p>
+        <ul class="list-disc ml-6 mt-2">
+            <li class="mb-1"><code>ajax-dialog</code> - A dialog component that loads content via AJAX</li>
+            <li class="mb-1"><code>date-picker</code> - A calendar-based date picker component</li>
+            <li class="mb-1"><code>toggle-switch</code> - A toggle switch for boolean inputs</li>
+            <li class="mb-1"><code>super-select</code> - An enhanced select dropdown with search functionality</li>
+        </ul>
+    </div>
+
+    <!-- AJAX Dialog Examples -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">AJAX Dialog</h2>
+        <p>The AJAX Dialog component creates a modal dialog that loads content dynamically via AJAX using HTMX.</p>
+
+        <div class="component-demo">
+            <ajax-dialog
+                    url="drawer-example-content.html"
+                    button-class="bg-blue-500 text-white px-4 py-2 rounded"
+                    dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md mx-auto"
+                    dialog-inner-id="dialog-one"
+            >
+                Test Dialog
+            </ajax-dialog>
+
+        </div>
+
+        <div class="example-code">
+            <code>&lt;ajax-dialog
+                url="dialog-content.html"
+                button-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                dialog-class="p-6 max-w-md rounded-lg"
+                dialog-inner-id="demo-dialog-content"&gt;
+                Open Dialog
+                &lt;/ajax-dialog&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>url</code></td>
+                <td class="border px-4 py-2">URL to fetch content from</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>button-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the trigger button</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>dialog-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the dialog element</td>
+                <td class="border px-4 py-2">"bg-white"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>dialog-inner-id</code></td>
+                <td class="border px-4 py-2">ID for the content container</td>
+                <td class="border px-4 py-2">"dialog-inner"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>trigger-id</code></td>
+                <td class="border px-4 py-2">ID for the trigger element</td>
+                <td class="border px-4 py-2">"trigger"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>trigger-type</code></td>
+                <td class="border px-4 py-2">HTMX trigger type</td>
+                <td class="border px-4 py-2">"click"</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Date Picker Examples -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Date Picker</h2>
+        <p>The Date Picker component provides a calendar-based interface for selecting dates.</p>
+
+        <div class="component-demo">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Basic Date Picker</h3>
+                    <date-picker
+                            placeholder="Select a date"
+                            input-id="basic-date"
+                            input-name="basic-date">
+                    </date-picker>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Date Picker with Initial Value</h3>
+                    <date-picker
+                            value="2025-03-30"
+                            input-id="preset-date"
+                            input-name="preset-date"
+                            input-class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-indigo-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </date-picker>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-code">
+            <code>&lt;!-- Basic Date Picker --&gt;
+                &lt;date-picker
+                placeholder="Select a date"
+                input-id="basic-date"
+                input-name="basic-date"&gt;
+                &lt;/date-picker&gt;
+
+                &lt;!-- Date Picker with Initial Value --&gt;
+                &lt;date-picker
+                value="2025-03-30"
+                input-id="preset-date"
+                input-name="preset-date"
+                input-class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-indigo-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"&gt;
+                &lt;/date-picker&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>placeholder</code></td>
+                <td class="border px-4 py-2">Placeholder text for the input</td>
+                <td class="border px-4 py-2">"YYYY-MM-DD"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>input-id</code></td>
+                <td class="border px-4 py-2">ID for the input element</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>input-name</code></td>
+                <td class="border px-4 py-2">Name attribute for the input</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>input-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the input</td>
+                <td class="border px-4 py-2">Default Tailwind classes</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>value</code></td>
+                <td class="border px-4 py-2">Initial date value (YYYY-MM-DD)</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>calendar-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the calendar popup</td>
+                <td class="border px-4 py-2">Default Tailwind classes</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Toggle Switch Examples -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Toggle Switch</h2>
+        <p>The Toggle Switch component provides a visual toggle for boolean inputs.</p>
+
+        <div class="component-demo">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Basic Toggle</h3>
+                    <div class="flex items-center">
+                        <toggle-switch id="basic-toggle" name="basic-toggle"></toggle-switch>
+                        <label for="basic-toggle" class="ml-2">Enable feature</label>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Pre-checked Toggle</h3>
+                    <div class="flex items-center">
+                        <toggle-switch id="checked-toggle" name="checked-toggle" checked></toggle-switch>
+                        <label for="checked-toggle" class="ml-2">Notifications enabled</label>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Custom Colors</h3>
+                    <div class="flex items-center">
+                        <toggle-switch
+                                id="custom-toggle"
+                                name="custom-toggle"
+                                active-color="bg-purple-500"
+                                inactive-color="bg-gray-400">
+                        </toggle-switch>
+                        <label for="custom-toggle" class="ml-2">Dark mode</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-code">
+            <code>&lt;!-- Basic Toggle --&gt;
+                &lt;toggle-switch id="basic-toggle" name="basic-toggle"&gt;&lt;/toggle-switch&gt;
+
+                &lt;!-- Pre-checked Toggle --&gt;
+                &lt;toggle-switch id="checked-toggle" name="checked-toggle" checked&gt;&lt;/toggle-switch&gt;
+
+                &lt;!-- Custom Colors --&gt;
+                &lt;toggle-switch
+                id="custom-toggle"
+                name="custom-toggle"
+                active-color="bg-purple-500"
+                inactive-color="bg-gray-400"&gt;
+                &lt;/toggle-switch&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>id</code></td>
+                <td class="border px-4 py-2">ID for the toggle element</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>name</code></td>
+                <td class="border px-4 py-2">Name attribute for the input</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>checked</code></td>
+                <td class="border px-4 py-2">Whether the toggle is checked initially</td>
+                <td class="border px-4 py-2">false</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>active-color</code></td>
+                <td class="border px-4 py-2">CSS class for the active state</td>
+                <td class="border px-4 py-2">"bg-green-500"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>inactive-color</code></td>
+                <td class="border px-4 py-2">CSS class for the inactive state</td>
+                <td class="border px-4 py-2">"bg-gray-300"</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Super Select Examples -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Super Select</h2>
+        <p>The Super Select component provides an enhanced select dropdown with search functionality.</p>
+
+        <div class="component-demo">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Basic Select</h3>
+                    <super-select name="basic-select" button-class="w-full flex items-center justify-between px-4 py-2 text-sm bg-white border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                    </super-select>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Multiple Select</h3>
+                    <super-select name="multiple-select" multiple>
+                        <option value="red">Red</option>
+                        <option value="green">Green</option>
+                        <option value="blue">Blue</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="purple">Purple</option>
+                    </super-select>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Pre-selected Option</h3>
+                    <super-select name="preselected-select">
+                        <option value="apple">Apple</option>
+                        <option value="banana" selected>Banana</option>
+                        <option value="cherry">Cherry</option>
+                        <option value="date">Date</option>
+                        <option value="elderberry">Elderberry</option>
+                    </super-select>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Custom Styled</h3>
+                    <super-select name="custom-select"
+                                  button-class="w-full flex items-center justify-between px-4 py-2 text-sm bg-indigo-50 border border-indigo-300 rounded-md cursor-pointer hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  dropdown-class="absolute w-full z-10 mt-1 bg-white border border-indigo-200 rounded-md shadow-lg">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                        <option value="x-large">Extra Large</option>
+                    </super-select>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-code">
+            <code>&lt;!-- Basic Select --&gt;
+                &lt;super-select name="basic-select"&gt;
+                &lt;option value="option1"&gt;Option 1&lt;/option&gt;
+                &lt;option value="option2"&gt;Option 2&lt;/option&gt;
+                &lt;option value="option3"&gt;Option 3&lt;/option&gt;
+                &lt;/super-select&gt;
+
+                &lt;!-- Multiple Select --&gt;
+                &lt;super-select name="multiple-select" multiple&gt;
+                &lt;option value="red"&gt;Red&lt;/option&gt;
+                &lt;option value="green"&gt;Green&lt;/option&gt;
+                &lt;option value="blue"&gt;Blue&lt;/option&gt;
+                &lt;option value="yellow"&gt;Yellow&lt;/option&gt;
+                &lt;option value="purple"&gt;Purple&lt;/option&gt;
+                &lt;/super-select&gt;
+
+                &lt;!-- Pre-selected Option --&gt;
+                &lt;super-select name="preselected-select"&gt;
+                &lt;option value="apple"&gt;Apple&lt;/option&gt;
+                &lt;option value="banana" selected&gt;Banana&lt;/option&gt;
+                &lt;option value="cherry"&gt;Cherry&lt;/option&gt;
+                &lt;/super-select&gt;
+
+                &lt;!-- Custom Styled --&gt;
+                &lt;super-select name="custom-select"
+                button-class="w-full flex items-center justify-between px-4 py-2 text-sm bg-indigo-50 border border-indigo-300 rounded-md cursor-pointer hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                dropdown-class="absolute w-full z-10 mt-1 bg-white border border-indigo-200 rounded-md shadow-lg"&gt;
+                &lt;option value="small"&gt;Small&lt;/option&gt;
+                &lt;option value="medium"&gt;Medium&lt;/option&gt;
+                &lt;option value="large"&gt;Large&lt;/option&gt;
+                &lt;/super-select&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>name</code></td>
+                <td class="border px-4 py-2">Name attribute for the select</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>multiple</code></td>
+                <td class="border px-4 py-2">Allow multiple selections</td>
+                <td class="border px-4 py-2">false</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>button-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the button</td>
+                <td class="border px-4 py-2">Default Tailwind classes</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>dropdown-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the dropdown</td>
+                <td class="border px-4 py-2">Default Tailwind classes</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Integration Example -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Form Integration Example</h2>
+        <div class="component-demo">
+            <form id="demo-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="event-date" class="block text-sm font-medium text-gray-700 mb-1">Event Date</label>
+                        <date-picker input-id="event-date" input-name="event-date" placeholder="Select a date"></date-picker>
+                    </div>
+
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <super-select name="category">
+                            <option value="meeting">Meeting</option>
+                            <option value="appointment">Appointment</option>
+                            <option value="reminder">Reminder</option>
+                            <option value="deadline">Deadline</option>
+                        </super-select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                    <super-select name="tags" multiple>
+                        <option value="important">Important</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="family">Family</option>
+                        <option value="health">Health</option>
+                        <option value="finance">Finance</option>
+                    </super-select>
+                </div>
+
+                <div>
+                    <div class="flex items-center">
+                        <toggle-switch id="all-day" name="all-day"></toggle-switch>
+                        <label for="all-day" class="ml-2 block text-sm font-medium text-gray-700">All day event</label>
+                    </div>
+                </div>
+
+                <div>
+                    <ajax-dialog
+                            url="dialog-content.html"
+                            button-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                            dialog-class="p-6 max-w-md rounded-lg"
+                            trigger-content="Add Additional Details">
+                    </ajax-dialog>
+                </div>
+
+                <div>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="example-code">
+            <code>&lt;form id="demo-form" class="space-y-6"&gt;
+                &lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;
+                &lt;div&gt;
+                &lt;label for="event-date" class="block text-sm font-medium text-gray-700 mb-1"&gt;Event Date&lt;/label&gt;
+                &lt;date-picker input-id="event-date" input-name="event-date" placeholder="Select a date"&gt;&lt;/date-picker&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;label for="category" class="block text-sm font-medium text-gray-700 mb-1"&gt;Category&lt;/label&gt;
+                &lt;super-select name="category"&gt;
+                &lt;option value="meeting"&gt;Meeting&lt;/option&gt;
+                &lt;option value="appointment"&gt;Appointment&lt;/option&gt;
+                &lt;option value="reminder"&gt;Reminder&lt;/option&gt;
+                &lt;option value="deadline"&gt;Deadline&lt;/option&gt;
+                &lt;/super-select&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;label for="tags" class="block text-sm font-medium text-gray-700 mb-1"&gt;Tags&lt;/label&gt;
+                &lt;super-select name="tags" multiple&gt;
+                &lt;option value="important"&gt;Important&lt;/option&gt;
+                &lt;option value="work"&gt;Work&lt;/option&gt;
+                &lt;option value="personal"&gt;Personal&lt;/option&gt;
+                &lt;option value="family"&gt;Family&lt;/option&gt;
+                &lt;option value="health"&gt;Health&lt;/option&gt;
+                &lt;option value="finance"&gt;Finance&lt;/option&gt;
+                &lt;/super-select&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;div class="flex items-center"&gt;
+                &lt;toggle-switch id="all-day" name="all-day"&gt;&lt;/toggle-switch&gt;
+                &lt;label for="all-day" class="ml-2 block text-sm font-medium text-gray-700"&gt;All day event&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;ajax-dialog
+                url="dialog-content.html"
+                button-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                dialog-class="p-6 max-w-md rounded-lg"
+                trigger-content="Add Additional Details"&gt;
+                &lt;/ajax-dialog&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded"&gt;
+                Submit
+                &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;/form&gt;</code>
+        </div>
+    </section>
+
+    <!-- Sample Dialog Content -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Sample Dialog Content</h2>
+        <p>The following HTML can be saved as "dialog-content.html" to be loaded by the AJAX dialog examples:</p>
+
+        <div class="example-code">
+            <code>&lt;div class="p-5"&gt;
+                &lt;h2 class="text-xl font-bold mb-4"&gt;AJAX Loaded Content&lt;/h2&gt;
+
+                &lt;div class="bg-blue-50 p-4 rounded mb-4"&gt;
+                &lt;p class="mb-2"&gt;This content was loaded via AJAX into the dialog.&lt;/p&gt;
+                &lt;p&gt;You can put any HTML content here that you want to display in the dialog.&lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;div class="mb-4"&gt;
+                &lt;h3 class="font-semibold text-lg mb-2"&gt;Sample Form&lt;/h3&gt;
+                &lt;form class="space-y-4"&gt;
+                &lt;div&gt;
+                &lt;label for="name" class="block text-sm font-medium text-gray-700"&gt;Name&lt;/label&gt;
+                &lt;input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;label for="email" class="block text-sm font-medium text-gray-700"&gt;Email&lt;/label&gt;
+                &lt;input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"&gt;
+                &lt;/div&gt;
+
+                &lt;div&gt;
+                &lt;button type="button" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"&gt;
+                Submit
+                &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;/form&gt;
+                &lt;/div&gt;
+
+                &lt;div class="mt-6 pt-4 border-t border-gray-200"&gt;
+                &lt;h3 class="font-semibold text-lg mb-2"&gt;Close Options&lt;/h3&gt;
+                &lt;div class="flex space-x-3"&gt;
+                &lt;button type="button" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"&gt;
+                Close Dialog
+                &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;</code>
+        </div>
+    </section>
+
+    <!-- JavaScript Usage -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">JavaScript Usage</h2>
+        <p>You can also interact with these components programmatically:</p>
+
+        <div class="example-code">
+            <code>// Get a reference to a date picker
+                const datePicker = document.querySelector('date-picker');
+
+                // Set a date programmatically
+                datePicker.selectedDate = new Date(2025, 2, 30); // March 30, 2025
+                datePicker.input.value = datePicker.formatDate(datePicker.selectedDate);
+                datePicker.updateCalendarView();
+
+                // Listen for changes
+                datePicker.addEventListener('change', (event) => {
+                console.log('Selected date:', datePicker.selectedDate);
+                });
+
+                // Get a reference to a super-select
+                const superSelect = document.querySelector('super-select');
+
+                // Set value programmatically
+                superSelect.value = 'option2';  // For single select
+                // or
+                superSelect.value = ['option1', 'option3'];  // For multiple select
+
+                // Get the current value
+                console.log(superSelect.value);
+
+                // Toggle switch state
+                const toggle = document.querySelector('toggle-switch');
+                const input = toggle.querySelector('input[type="checkbox"]');
+                input.checked = true;  // Programmatically check the toggle</code>
+        </div>
+    </section>
+    <section class="example-section">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-2xl font-bold mb-4">WYSIWYG Editor</h1>
+            <wysiwyg-editor></wysiwyg-editor>
+            <div class="mt-4"
+                 x-data="{ htmlContent: '' }"
+                 @content-updated.window="htmlContent = $event.detail">
+                <h2 class="text-lg font-semibold mb-2">Editor Output:</h2>
+                <div class="p-4 bg-white border rounded-lg min-h-[100px]" x-html="htmlContent"></div>
+                <div class="mt-2">
+                    <h3 class="text-md font-semibold mb-1">HTML Source:</h3>
+                    <pre class="p-3 bg-gray-100 border rounded-lg text-sm overflow-auto"><code x-text="htmlContent"></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- QR Code Component Examples -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">QR Code</h2>
+        <p>The QR Code component creates QR codes from text or URLs.</p>
+
+        <div class="component-demo">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Basic QR Code</h3>
+                    <qr-code value="https://example.com"></qr-code>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Customized QR Code</h3>
+                    <qr-code
+                            value="https://www.qwigo.com"
+                            size="150"
+                            foreground="#1a73e8"
+                            background="#f8f9fa"
+                            error-correction="H">
+                    </qr-code>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Dynamic QR Code</h3>
+                    <div class="mb-2">
+                        <input type="text" id="qr-input" class="px-3 py-2 border border-gray-300 rounded w-full"
+                               value="Hello World!" placeholder="Enter text to generate QR code">
+                    </div>
+                    <qr-code id="dynamic-qr" value="Hello World!"></qr-code>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const input = document.getElementById('qr-input');
+                            const qrCode = document.getElementById('dynamic-qr');
+
+                            input.addEventListener('input', function() {
+                                qrCode.value = this.value;
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-code">
+            <code>&lt;!-- Basic QR Code --&gt;
+                &lt;qr-code value="https://example.com"&gt;&lt;/qr-code&gt;
+
+                &lt;!-- Customized QR Code --&gt;
+                &lt;qr-code
+                value="https://example.com/customized"
+                size="150"
+                foreground="#1a73e8"
+                background="#f8f9fa"
+                error-correction="H"&gt;
+                &lt;/qr-code&gt;
+
+                &lt;!-- Dynamic QR Code --&gt;
+                &lt;input type="text" id="qr-input" value="Hello World!"&gt;
+                &lt;qr-code id="dynamic-qr" value="Hello World!"&gt;&lt;/qr-code&gt;
+                &lt;script&gt;
+                document.getElementById('qr-input').addEventListener('input', function() {
+                document.getElementById('dynamic-qr').value = this.value;
+                });
+                &lt;/script&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>value</code></td>
+                <td class="border px-4 py-2">Text or URL to encode in the QR code</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>size</code></td>
+                <td class="border px-4 py-2">Size of the QR code in pixels</td>
+                <td class="border px-4 py-2">200</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>foreground</code></td>
+                <td class="border px-4 py-2">Foreground color (hex code)</td>
+                <td class="border px-4 py-2">#000000</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>background</code></td>
+                <td class="border px-4 py-2">Background color (hex code)</td>
+                <td class="border px-4 py-2">#ffffff</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>error-correction</code></td>
+                <td class="border px-4 py-2">Error correction level (L, M, Q, H)</td>
+                <td class="border px-4 py-2">M</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Tabs Component</h2>
+        <p>The Tabs Component provides an easy way to create tabbed interfaces with customizable styling.</p>
+
+        <div class="component-demo">
+            <h3 class="text-lg font-medium mb-3">Basic Tabs</h3>
+            <tabs-component>
+                <tab-item title="Home">
+                    <p>This is the home tab content. Welcome to the tabs component!</p>
+                    <p class="mt-2">You can put any content you want inside a tab.</p>
+                </tab-item>
+                <tab-item title="Profile">
+                    <div class="p-4 bg-gray-100 rounded">
+                        <h4 class="font-medium mb-2">User Profile</h4>
+                        <p>This tab could contain profile information.</p>
+                    </div>
+                </tab-item>
+                <tab-item title="Settings">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span>Enable notifications</span>
+                            <toggle-switch id="tab-toggle" name="tab-toggle"></toggle-switch>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Dark mode</span>
+                            <toggle-switch id="tab-toggle-2" name="tab-toggle-2"></toggle-switch>
+                        </div>
+                    </div>
+                </tab-item>
+            </tabs-component>
+
+            <h3 class="text-lg font-medium mb-3 mt-6">Custom Styled Tabs</h3>
+            <tabs-component
+                    container-class="bg-gray-50 rounded-lg"
+                    header-container-class="flex border-b border-gray-200 bg-gray-100 rounded-t-lg"
+                    active-tab-class="px-4 py-3 text-indigo-600 font-medium border-b-2 border-indigo-600 -mb-px bg-white"
+                    inactive-tab-class="px-4 py-3 text-gray-500 hover:text-indigo-500 hover:bg-gray-50"
+                    content-container-class="p-4">
+                <tab-item title="Information" icon="fa-solid fa-circle-info">
+                    <p>This tab uses custom styling for the entire component.</p>
+                    <p class="mt-2">You can customize:</p>
+                    <ul class="list-disc ml-5 mt-1">
+                        <li>Container styles</li>
+                        <li>Header styles</li>
+                        <li>Active and inactive tab styles</li>
+                        <li>Content container padding</li>
+                    </ul>
+                </tab-item>
+                <tab-item title="Downloads" icon="fa-solid fa-download">
+                    <div class="p-4 bg-indigo-50 rounded">
+                        <h4 class="font-medium mb-2">Downloads</h4>
+                        <p>This tab demonstrates icon support in tab headers.</p>
+                        <button class="mt-3 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">
+                            Download Files
+                        </button>
+                    </div>
+                </tab-item>
+                <tab-item title="Help" icon="fa-solid fa-question-circle">
+                    <p>This tab shows how to use Font Awesome icons in tab headers.</p>
+                    <p class="mt-3">Simply set the <code>icon</code> attribute with the appropriate icon class.</p>
+                </tab-item>
+            </tabs-component>
+        </div>
+
+        <div class="example-code">
+            <code>&lt;!-- Basic Tabs Example --&gt;
+                &lt;tabs-component&gt;
+                &lt;tab-item title="Home"&gt;
+                &lt;p&gt;This is the home tab content. Welcome to the tabs component!&lt;/p&gt;
+                &lt;/tab-item&gt;
+                &lt;tab-item title="Profile"&gt;
+                &lt;div class="p-4 bg-gray-100 rounded"&gt;
+                &lt;h4 class="font-medium mb-2"&gt;User Profile&lt;/h4&gt;
+                &lt;p&gt;This tab could contain profile information.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;/tab-item&gt;
+                &lt;tab-item title="Settings"&gt;
+                &lt;!-- Your settings content here --&gt;
+                &lt;/tab-item&gt;
+                &lt;/tabs-component&gt;
+
+                &lt;!-- Custom Styled Tabs Example --&gt;
+                &lt;tabs-component
+                container-class="bg-gray-50 rounded-lg"
+                header-container-class="flex border-b border-gray-200 bg-gray-100 rounded-t-lg"
+                active-tab-class="px-4 py-3 text-indigo-600 font-medium border-b-2 border-indigo-600 -mb-px bg-white"
+                inactive-tab-class="px-4 py-3 text-gray-500 hover:text-indigo-500 hover:bg-gray-50"
+                content-container-class="p-4"&gt;
+                &lt;tab-item title="Information" icon="fa-solid fa-circle-info"&gt;
+                &lt;!-- Tab content here --&gt;
+                &lt;/tab-item&gt;
+                &lt;tab-item title="Downloads" icon="fa-solid fa-download"&gt;
+                &lt;!-- Tab content here --&gt;
+                &lt;/tab-item&gt;
+                &lt;tab-item title="Help" icon="fa-solid fa-question-circle"&gt;
+                &lt;!-- Tab content here --&gt;
+                &lt;/tab-item&gt;
+                &lt;/tabs-component&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Component</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2" rowspan="6"><code>tabs-component</code></td>
+                <td class="border px-4 py-2"><code>container-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the entire tabs container</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>header-container-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the tabs header row</td>
+                <td class="border px-4 py-2">"flex border-b"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>active-tab-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the active tab</td>
+                <td class="border px-4 py-2">"px-4 py-2 text-blue-500 border-b-2 border-blue-500 -mb-px"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>inactive-tab-class</code></td>
+                <td class="border px-4 py-2">CSS classes for inactive tabs</td>
+                <td class="border px-4 py-2">"px-4 py-2 text-gray-500 hover:text-blue-500"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>content-container-class</code></td>
+                <td class="border px-4 py-2">CSS classes for the content container</td>
+                <td class="border px-4 py-2">"pt-4"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>content-class</code></td>
+                <td class="border px-4 py-2">CSS classes for each tab content</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2" rowspan="2"><code>tab-item</code></td>
+                <td class="border px-4 py-2"><code>title</code></td>
+                <td class="border px-4 py-2">Title text for the tab</td>
+                <td class="border px-4 py-2">"Tab [index]"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>icon</code></td>
+                <td class="border px-4 py-2">Font Awesome icon class for the tab</td>
+                <td class="border px-4 py-2">None</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">JavaScript Usage</h3>
+        <div class="example-code">
+            <code>// Get a reference to the tabs component
+                const tabs = document.querySelector('tabs-component');
+
+                // Change the active tab programmatically (zero-based index)
+                tabs.activeTab = 1; // Switch to the second tab
+
+                // Listen for tab change events
+                tabs.addEventListener('tab-changed', (event) => {
+                console.log('Active tab changed to:', event.detail.index);
+                // Do something when the tab changes
+                });</code>
+        </div>
+    </section>
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Toast Component</h2>
+        <p>The Toast component provides temporary notifications that appear and disappear automatically.</p>
+
+        <div class="component-demo">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Basic Toast Types</h3>
+                    <div class="space-y-2">
+                        <button id="info-toast" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Show Info Toast
+                        </button>
+                        <button id="success-toast" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                            Show Success Toast
+                        </button>
+                        <button id="warning-toast" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                            Show Warning Toast
+                        </button>
+                        <button id="error-toast" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            Show Error Toast
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                <h3 class="text-lg font-medium mb-3">Toast Positions</h3>
+                <div class="space-y-2">
+                                <button id="top-left" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                                                Top Left
+                                </button>
+                        <button id="top-center" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                            Top Center
+                        </button>
+                        <button id="top-right" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                            Top Right
+                        </button>
+                        <button id="bottom-left" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                            Bottom Left
+                        </button>
+                        <button id="bottom-center" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                            Bottom Center
+                        </button>
+                        <button id="bottom-right" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                            Bottom Right
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Custom Duration</h3>
+                    <div class="space-y-2">
+                        <button id="short-toast" class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">
+                            Short Toast (1s)
+                        </button>
+                        <button id="long-toast" class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">
+                            Long Toast (8s)
+                        </button>
+                        <button id="persistent-toast" class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">
+                            Persistent Toast
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">Multiple Toasts</h3>
+                    <button id="multiple-toasts" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800">
+                        Show Multiple Toasts
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Basic toast types
+                document.getElementById('info-toast').addEventListener('click', () => {
+                    Toast.info('This is an informational message.');
+                });
+                document.getElementById('success-toast').addEventListener('click', () => {
+                    Toast.success('Operation completed successfully!');
+                });
+                document.getElementById('warning-toast').addEventListener('click', () => {
+                    Toast.warning('Please review your input before continuing.');
+                });
+                document.getElementById('error-toast').addEventListener('click', () => {
+                    Toast.error('An error occurred. Please try again.');
+                });
+
+                // Toast positions
+                document.getElementById('top-left').addEventListener('click', () => {
+                    Toast.info('Toast positioned at the top left.', { position: 'top-left' });
+                });
+                document.getElementById('top-center').addEventListener('click', () => {
+                    Toast.info('Toast positioned at the top center.', { position: 'top-center' });
+                });
+                document.getElementById('top-right').addEventListener('click', () => {
+                    Toast.info('Toast positioned at the top right.', { position: 'top-right' });
+                });
+                document.getElementById('bottom-left').addEventListener('click', () => {
+                    Toast.info('Toast positioned at the bottom left.', { position: 'bottom-left' });
+                });
+                document.getElementById('bottom-center').addEventListener('click', () => {
+                    Toast.info('Toast positioned at the bottom center.', { position: 'bottom-center' });
+                });
+                document.getElementById('bottom-right').addEventListener('click', () => {
+                    Toast.info('Toast positioned at the bottom right.', { position: 'bottom-right' });
+                });
+
+                // Custom durations
+                document.getElementById('short-toast').addEventListener('click', () => {
+                    Toast.info('This toast disappears quickly.', { duration: 1000 });
+                });
+                document.getElementById('long-toast').addEventListener('click', () => {
+                    Toast.info('This toast stays for a longer time.', { duration: 8000 });
+                });
+                document.getElementById('persistent-toast').addEventListener('click', () => {
+                    Toast.info('This toast will stay until dismissed.', { duration: 0 });
+                });
+
+                // Multiple toasts
+                document.getElementById('multiple-toasts').addEventListener('click', () => {
+                    Toast.info('First toast message.');
+                    setTimeout(() => {
+                        Toast.success('Second toast message.');
+                    }, 300);
+                    setTimeout(() => {
+                        Toast.warning('Third toast message.');
+                    }, 600);
+                    setTimeout(() => {
+                        Toast.error('Fourth toast message.');
+                    }, 900);
+                });
+            });
+        </script>
+
+        <div class="example-code">
+            <code>&lt;!-- Basic toast created declaratively --&gt;
+                &lt;toast-component
+                type="success"
+                position="bottom-right"
+                duration="3000"
+                auto-show&gt;
+                Your changes have been saved!
+                &lt;/toast-component&gt;
+
+                &lt;!-- Creating toasts with JavaScript --&gt;
+                &lt;script&gt;
+                // Show a simple info toast
+                Toast.info('This is an informational message.');
+
+                // Show a success toast with custom position
+                Toast.success('Operation completed successfully!', {
+                position: 'top-right'
+                });
+
+                // Show a warning toast with custom duration
+                Toast.warning('Please review your input.', {
+                duration: 5000
+                });
+
+                // Show an error toast with custom position and duration
+                Toast.error('An error occurred.', {
+                position: 'top-center',
+                duration: 8000
+                });
+
+                // Show a persistent toast (stays until dismissed)
+                Toast.info('This toast stays until dismissed.', {
+                duration: 0
+                });
+                &lt;/script&gt;</code>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Attributes</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>type</code></td>
+                <td class="border px-4 py-2">Toast type: info, success, warning, error</td>
+                <td class="border px-4 py-2">"info"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>position</code></td>
+                <td class="border px-4 py-2">Toast position on screen</td>
+                <td class="border px-4 py-2">"bottom-right"</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>duration</code></td>
+                <td class="border px-4 py-2">Time in milliseconds before auto-dismiss (0 for persistent)</td>
+                <td class="border px-4 py-2">3000</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>message</code></td>
+                <td class="border px-4 py-2">Toast message (alternative to innerHTML)</td>
+                <td class="border px-4 py-2">""</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>auto-show</code></td>
+                <td class="border px-4 py-2">Show toast automatically when created</td>
+                <td class="border px-4 py-2">false</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>toast-class</code></td>
+                <td class="border px-4 py-2">Custom CSS classes for the toast element</td>
+                <td class="border px-4 py-2">Based on type</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>container-class</code></td>
+                <td class="border px-4 py-2">Custom CSS classes for the toast container</td>
+                <td class="border px-4 py-2">Based on position</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 class="text-lg font-medium mt-6 mb-3">Static Methods</h3>
+        <table class="min-w-full border-collapse">
+            <thead>
+            <tr>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Method</th>
+                <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2"><code>Toast.info(message, options)</code></td>
+                <td class="border px-4 py-2">Show an info toast</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>Toast.success(message, options)</code></td>
+                <td class="border px-4 py-2">Show a success toast</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>Toast.warning(message, options)</code></td>
+                <td class="border px-4 py-2">Show a warning toast</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>Toast.error(message, options)</code></td>
+                <td class="border px-4 py-2">Show an error toast</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2"><code>Toast.showToast(message, options)</code></td>
+                <td class="border px-4 py-2">Generic method to show a toast with custom options</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <!-- Speed Dial Examples -->
+    <section class="example-section">
+        <h2 class="text-2xl font-semibold mb-4">Speed Dial Component</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- Basic Speed Dial Example -->
+            <div class="relative min-h-[250px] bg-gray-100 rounded-lg p-4 flex items-center justify-center">
+                <h3 class="text-lg font-medium mb-3">Bottom Right (Default)</h3>
+                <speed-dial
+                        position="bottom-right"
+                        button-class="w-14 h-14 rounded-full bg-pink-500 text-white flex items-center justify-center shadow-lg hover:bg-pink-600 focus:outline-none transform transition-transform duration-300 hover:scale-110"
+                        auto-close>
+                    <speed-dial-item
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
+                            label="Edit"
+                            action="#"
+                            color="text-blue-600"></speed-dial-item>
+                    <speed-dial-item
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>'
+                            label="Download"
+                            action="#"
+                            color="text-green-600"></speed-dial-item>
+                    <speed-dial-item
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>'
+                            label="Share"
+                            action="#"
+                            color="text-purple-600"></speed-dial-item>
+                </speed-dial>
+                <p class="text-gray-600 text-center">Click the pink button to see the speed dial</p>
+            </div>
+
+            <!-- Top Left Speed Dial Example -->
+            <div class="relative min-h-[250px] bg-gray-100 rounded-lg p-4 flex items-center justify-center">
+                <h3 class="text-lg font-medium mb-3">Top Left Position</h3>
+                <speed-dial
+                        position="top-left"
+                        button-class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg hover:bg-green-600 focus:outline-none transform transition-transform duration-300 hover:scale-110">
+                    <speed-dial-item
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line><line x1="12" y1="8" x2="12" y2="16"></line></svg>'
+                            label="Add"
+                            action="#"
+                            color="text-indigo-600"></speed-dial-item>
+                    <speed-dial-item
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>'
+                            label="Create"
+                            action="#"
+                            color="text-red-600"></speed-dial-item>
+                    <speed-dial-item
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>'
+                            label="Edit"
+                            action="#"
+                            color="text-amber-600"></speed-dial-item>
+                </speed-dial>
+                <p class="text-gray-600 text-center">Speed dial in the top-left position</p>
+            </div>
+        </div>
+
+        <div class="example-code">
+        <pre><code>&lt;speed-dial
+    position="bottom-right"
+    button-class="w-14 h-14 rounded-full bg-pink-500 text-white flex items-center justify-center shadow-lg hover:bg-pink-600 focus:outline-none transform transition-transform duration-300 hover:scale-110"
+    auto-close&gt;
+    &lt;speed-dial-item
+        icon='&lt;svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"&gt;&lt;/path&gt;&lt;/svg&gt;'
+        label="Edit"
+        action="#"
+        color="text-blue-600"&gt;&lt;/speed-dial-item&gt;
+    &lt;speed-dial-item
+        icon='&lt;svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"&gt;&lt;/path&gt;&lt;polyline points="7 10 12 15 17 10"&gt;&lt;/polyline&gt;&lt;line x1="12" y1="15" x2="12" y2="3"&gt;&lt;/line&gt;&lt;/svg&gt;'
+        label="Download"
+        action="#"
+        color="text-green-600"&gt;&lt;/speed-dial-item&gt;
+    &lt;speed-dial-item
+        icon='&lt;svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"&gt;&lt;/path&gt;&lt;polyline points="16 6 12 2 8 6"&gt;&lt;/polyline&gt;&lt;line x1="12" y1="2" x2="12" y2="15"&gt;&lt;/line&gt;&lt;/svg&gt;'
+        label="Share"
+        action="#"
+        color="text-purple-600"&gt;&lt;/speed-dial-item&gt;
+&lt;/speed-dial&gt;</code></pre>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-xl font-medium mb-3">API Reference</h3>
+            <table class="min-w-full border-collapse">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Default</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="border px-4 py-2"><code>position</code></td>
+                    <td class="border px-4 py-2">Position of the speed dial: "bottom-right", "bottom-left", "top-right", "top-left"</td>
+                    <td class="border px-4 py-2">"bottom-right"</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>button-class</code></td>
+                    <td class="border px-4 py-2">CSS classes for the main button</td>
+                    <td class="border px-4 py-2">"w-12 h-12 rounded-full bg-blue-500 text-white..."</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>item-class</code></td>
+                    <td class="border px-4 py-2">CSS classes for the action items</td>
+                    <td class="border px-4 py-2">"w-10 h-10 my-1 rounded-full bg-white..."</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>auto-close</code></td>
+                    <td class="border px-4 py-2">Automatically close the speed dial after an action is clicked</td>
+                    <td class="border px-4 py-2">false</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>icon</code></td>
+                    <td class="border px-4 py-2">Main button icon HTML (typically SVG)</td>
+                    <td class="border px-4 py-2">Default plus icon</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-xl font-medium mb-3">Speed Dial Item Attributes</h3>
+            <table class="min-w-full border-collapse">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Attribute</th>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="border px-4 py-2"><code>icon</code></td>
+                    <td class="border px-4 py-2">SVG or HTML for the item's icon</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>label</code></td>
+                    <td class="border px-4 py-2">Label for the action (shown as tooltip)</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>action</code></td>
+                    <td class="border px-4 py-2">URL or "#" for JavaScript actions</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>color</code></td>
+                    <td class="border px-4 py-2">Text color class for the icon</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-xl font-medium mb-3">Events</h3>
+            <table class="min-w-full border-collapse">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Event</th>
+                    <th class="border px-4 py-2 bg-gray-100 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="border px-4 py-2"><code>speed-dial:opened</code></td>
+                    <td class="border px-4 py-2">Fired when the speed dial is opened</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>speed-dial:closed</code></td>
+                    <td class="border px-4 py-2">Fired when the speed dial is closed</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2"><code>speed-dial:action</code></td>
+                    <td class="border px-4 py-2">Fired when an action item is clicked, with item details in event.detail</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-xl font-medium mb-3">JavaScript API</h3>
+            <div class="example-code">
+            <pre><code>// Get a reference to the speed dial
+const speedDial = document.querySelector('speed-dial');
+
+// Open the speed dial
+speedDial.open();
+
+// Close the speed dial
+speedDial.close();
+
+// Toggle the speed dial
+speedDial.toggle();
+
+// Listen for events
+speedDial.addEventListener('speed-dial:action', (e) => {
+  console.log('Action clicked:', e.detail.label);
+  // e.detail contains index, action, and label
+});</code></pre>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+</body>
+</html>

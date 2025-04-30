@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Component Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Avatar Component</h1>
+            <p class="text-lg text-gray-600">A customizable avatar component to display user profile images with fallback options.</p>
+        </header>
+        
+        <main>
+            <!-- Sizes Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Avatar Sizes</h2>
+                <p class="demo-description">The Avatar component supports different sizes.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <avatar-component name="John Doe" size="xs"></avatar-component>
+                    <avatar-component name="John Doe" size="sm"></avatar-component>
+                    <avatar-component name="John Doe" size="md"></avatar-component>
+                    <avatar-component name="John Doe" size="lg"></avatar-component>
+                    <avatar-component name="John Doe" size="xl"></avatar-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;avatar-component name="John Doe" size="xs"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="John Doe" size="sm"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="John Doe" size="md"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="John Doe" size="lg"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="John Doe" size="xl"&gt;&lt;/avatar-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Shapes Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Avatar Shapes</h2>
+                <p class="demo-description">The Avatar component can be displayed in different shapes.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <avatar-component name="John Doe" shape="circle"></avatar-component>
+                    <avatar-component name="John Doe" shape="square"></avatar-component>
+                    <avatar-component name="John Doe" shape="rounded"></avatar-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;avatar-component name="John Doe" shape="circle"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="John Doe" shape="square"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="John Doe" shape="rounded"&gt;&lt;/avatar-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Images Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Avatar with Images</h2>
+                <p class="demo-description">The Avatar component can display images, with fallback to initials.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <avatar-component 
+                        name="John Doe" 
+                        image="https://picsum.photos/200">
+                    </avatar-component>
+                    <avatar-component 
+                        name="Jane Smith" 
+                        image="https://picsum.photos/200">
+                    </avatar-component>
+                    <avatar-component 
+                        name="Invalid Image" 
+                        image="invalid-url.jpg">
+                    </avatar-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;avatar-component 
+    name="John Doe" 
+    image="https://i.pravatar.cc/150?img=1"&gt;
+&lt;/avatar-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Colors Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Avatar Colors</h2>
+                <p class="demo-description">Avatar initials can be displayed with different background colors.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <avatar-component name="John Doe" bg-color="#3B82F6"></avatar-component>
+                    <avatar-component name="Jane Smith" bg-color="#10B981"></avatar-component>
+                    <avatar-component name="Robert Johnson" bg-color="#F59E0B"></avatar-component>
+                    <avatar-component name="Emily Davis" bg-color="#EF4444"></avatar-component>
+                    <avatar-component name="Michael Brown" bg-color="#8B5CF6"></avatar-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;avatar-component name="John Doe" bg-color="#3B82F6"&gt;&lt;/avatar-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Avatar Group Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Avatar Group</h2>
+                <p class="demo-description">Group multiple avatars together with overlap.</p>
+                
+                <div class="demo-container">
+                    <avatar-group max="3" more-count="2">
+                        <avatar-component 
+                            name="John Doe" 
+                            image="https://i.pravatar.cc/150?img=1">
+                        </avatar-component>
+                        <avatar-component 
+                            name="Jane Smith" 
+                            image="https://i.pravatar.cc/150?img=5">
+                        </avatar-component>
+                        <avatar-component 
+                            name="Robert Johnson" 
+                            bg-color="#F59E0B">
+                        </avatar-component>
+                        <avatar-component 
+                            name="Emily Davis" 
+                            bg-color="#EF4444">
+                        </avatar-component>
+                        <avatar-component 
+                            name="Michael Brown" 
+                            bg-color="#8B5CF6">
+                        </avatar-component>
+                    </avatar-group>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;avatar-group max="3" more-count="2"&gt;
+    &lt;avatar-component name="John Doe" image="..."&gt;&lt;/avatar-component&gt;
+    &lt;avatar-component name="Jane Smith" image="..."&gt;&lt;/avatar-component&gt;
+    &lt;avatar-component name="Robert Johnson" bg-color="#F59E0B"&gt;&lt;/avatar-component&gt;
+    &lt;avatar-component name="Emily Davis" bg-color="#EF4444"&gt;&lt;/avatar-component&gt;
+    &lt;avatar-component name="Michael Brown" bg-color="#8B5CF6"&gt;&lt;/avatar-component&gt;
+&lt;/avatar-group&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- API Reference -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Avatar Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">name</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">User name used to generate initials</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">image</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">null</td>
+                            <td class="px-4 py-2">URL of the avatar image</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">alt</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'Avatar'</td>
+                            <td class="px-4 py-2">Alt text for the avatar image</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">size</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'md'</td>
+                            <td class="px-4 py-2">Size of the avatar: 'xs', 'sm', 'md', 'lg', 'xl'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">shape</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'circle'</td>
+                            <td class="px-4 py-2">Shape of the avatar: 'circle', 'square', 'rounded'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">bg-color</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">random</td>
+                            <td class="px-4 py-2">Background color for initials</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Avatar Group Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">max</td>
+                            <td class="px-4 py-2">number</td>
+                            <td class="px-4 py-2">3</td>
+                            <td class="px-4 py-2">Maximum number of avatars to display</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">spacing</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'-10px'</td>
+                            <td class="px-4 py-2">Spacing between avatars</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">size</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'md'</td>
+                            <td class="px-4 py-2">Size for all avatars in the group</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>DRY2 Web Components Library</p>
+            <p class="mt-2">
+                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

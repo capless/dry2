@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Component Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/card-component.js"></script>
+    
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Card Component</h1>
+            <p class="text-lg text-gray-600">A flexible container for displaying related content with consistent styling.</p>
+        </header>
+        
+        <main>
+            <!-- Basic Card Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Basic Card</h2>
+                <p class="demo-description">A simple card with default styling.</p>
+                
+                <div class="demo-container">
+                    <card-component>
+                        <p>This is a basic card with default styling. The content is placed in the card body automatically.</p>
+                    </card-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component&gt;
+    &lt;p&gt;This is a basic card with default styling. The content is placed in the card body automatically.&lt;/p&gt;
+&lt;/card-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Card with Sections -->
+            <section class="demo-section">
+                <h2 class="demo-title">Card with Sections</h2>
+                <p class="demo-description">A card with header, body, and footer sections.</p>
+                
+                <div class="demo-container">
+                    <card-component>
+                        <div slot="header">
+                            <h3 class="text-lg font-semibold">Card Title</h3>
+                        </div>
+                        <div slot="body">
+                            <p>This is the main content of the card. You can place any content here including text, images, and other components.</p>
+                        </div>
+                        <div slot="footer">
+                            <div class="flex justify-end">
+                                <button class="px-4 py-2 bg-blue-500 text-white rounded">Action</button>
+                            </div>
+                        </div>
+                    </card-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold"&gt;Card Title&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p&gt;This is the main content of the card. You can place any content here including text, images, and other components.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="footer"&gt;
+        &lt;div class="flex justify-end"&gt;
+            &lt;button class="px-4 py-2 bg-blue-500 text-white rounded"&gt;Action&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/card-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Card with Media -->
+            <section class="demo-section">
+                <h2 class="demo-title">Card with Media</h2>
+                <p class="demo-description">A card that includes media content.</p>
+                
+                <div class="demo-container">
+                    <card-component>
+                        <div slot="media">
+                            <img src="https://via.placeholder.com/800x400" alt="Placeholder" class="w-full h-48 object-cover">
+                        </div>
+                        <div slot="body">
+                            <h3 class="text-lg font-semibold mb-2">Media Card</h3>
+                            <p>This card includes an image at the top. You can also use the horizontal layout to place the image to the side.</p>
+                        </div>
+                    </card-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component&gt;
+    &lt;div slot="media"&gt;
+        &lt;img src="https://via.placeholder.com/800x400" alt="Placeholder" class="w-full h-48 object-cover"&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;h3 class="text-lg font-semibold mb-2"&gt;Media Card&lt;/h3&gt;
+        &lt;p&gt;This card includes an image at the top. You can also use the horizontal layout to place the image to the side.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/card-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Card Layouts -->
+            <section class="demo-section">
+                <h2 class="demo-title">Card Layouts</h2>
+                <p class="demo-description">Cards can be displayed in vertical or horizontal layouts.</p>
+                
+                <div class="demo-container">
+                    <h3 class="mb-4 font-medium">Horizontal Layout</h3>
+                    <card-component layout="horizontal">
+                        <div slot="media">
+                            <img src="https://via.placeholder.com/300x300" alt="Placeholder" class="w-32 h-full object-cover">
+                        </div>
+                        <div slot="body">
+                            <h3 class="text-lg font-semibold mb-2">Horizontal Card</h3>
+                            <p>This card uses a horizontal layout with the media on the left and content on the right.</p>
+                        </div>
+                    </card-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component layout="horizontal"&gt;
+    &lt;div slot="media"&gt;
+        &lt;img src="https://via.placeholder.com/300x300" alt="Placeholder" class="w-32 h-full object-cover"&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;h3 class="text-lg font-semibold mb-2"&gt;Horizontal Card&lt;/h3&gt;
+        &lt;p&gt;This card uses a horizontal layout with the media on the left and content on the right.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/card-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Card Variants -->
+            <section class="demo-section">
+                <h2 class="demo-title">Card Variants</h2>
+                <p class="demo-description">Cards can have different variants: default, outlined, or filled.</p>
+                
+                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <card-component variant="default">
+                        <div slot="body">
+                            <h3 class="font-medium mb-1">Default Card</h3>
+                            <p class="text-sm">Standard card with shadow</p>
+                        </div>
+                    </card-component>
+                    
+                    <card-component variant="outlined">
+                        <div slot="body">
+                            <h3 class="font-medium mb-1">Outlined Card</h3>
+                            <p class="text-sm">Card with border outline</p>
+                        </div>
+                    </card-component>
+                    
+                    <card-component variant="filled">
+                        <div slot="body">
+                            <h3 class="font-medium mb-1">Filled Card</h3>
+                            <p class="text-sm">Card with gray background</p>
+                        </div>
+                    </card-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component variant="default"&gt;...&lt;/card-component&gt;
+&lt;card-component variant="outlined"&gt;...&lt;/card-component&gt;
+&lt;card-component variant="filled"&gt;...&lt;/card-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Card Elevation -->
+            <section class="demo-section">
+                <h2 class="demo-title">Card Elevation</h2>
+                <p class="demo-description">Cards can have different elevation (shadow) levels.</p>
+                
+                <div class="demo-container grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <card-component elevation="none">
+                        <div slot="body">
+                            <p class="text-center font-medium">No Shadow</p>
+                        </div>
+                    </card-component>
+                    
+                    <card-component elevation="sm">
+                        <div slot="body">
+                            <p class="text-center font-medium">Small Shadow</p>
+                        </div>
+                    </card-component>
+                    
+                    <card-component elevation="md">
+                        <div slot="body">
+                            <p class="text-center font-medium">Medium Shadow</p>
+                        </div>
+                    </card-component>
+                    
+                    <card-component elevation="lg">
+                        <div slot="body">
+                            <p class="text-center font-medium">Large Shadow</p>
+                        </div>
+                    </card-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component elevation="none"&gt;...&lt;/card-component&gt;
+&lt;card-component elevation="sm"&gt;...&lt;/card-component&gt;
+&lt;card-component elevation="md"&gt;...&lt;/card-component&gt;
+&lt;card-component elevation="lg"&gt;...&lt;/card-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Interactive Card -->
+            <section class="demo-section">
+                <h2 class="demo-title">Interactive Card</h2>
+                <p class="demo-description">Cards can be made interactive with hover and focus states.</p>
+                
+                <div class="demo-container">
+                    <card-component interactive>
+                        <div slot="body">
+                            <h3 class="font-medium mb-2">Interactive Card</h3>
+                            <p>This card is interactive. Click or use keyboard to trigger events.</p>
+                            <p class="mt-2 text-blue-500">Click me!</p>
+                        </div>
+                    </card-component>
+                    
+                    <div class="mt-4 p-3 bg-gray-100 rounded">
+                        <p class="text-sm font-medium">Event Output:</p>
+                        <pre id="event-output" class="text-sm mt-2">No events yet. Click the card above.</pre>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;card-component interactive&gt;
+    &lt;div slot="body"&gt;
+        &lt;h3 class="font-medium mb-2"&gt;Interactive Card&lt;/h3&gt;
+        &lt;p&gt;This card is interactive. Click or use keyboard to trigger events.&lt;/p&gt;
+        &lt;p class="mt-2 text-blue-500"&gt;Click me!&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/card-component&gt;
+
+&lt;script&gt;
+    document.addEventListener('card:click', (event) => {
+        console.log('Card clicked:', event.detail);
+        document.getElementById('event-output').textContent = 
+            `Card clicked at ${new Date().toLocaleTimeString()}`;
+    });
+&lt;/script&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- API Reference -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Card Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">elevation</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'md'</td>
+                            <td class="px-4 py-2">Shadow size: 'none', 'sm', 'md', 'lg', 'xl'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">variant</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'default'</td>
+                            <td class="px-4 py-2">Visual style: 'default', 'outlined', 'filled'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">interactive</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether the card is interactive (clickable)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">layout</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'vertical'</td>
+                            <td class="px-4 py-2">Card layout: 'vertical', 'horizontal'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">header-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'p-4 border-b border-gray-200 font-medium'</td>
+                            <td class="px-4 py-2">CSS classes for header section</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">media-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">CSS classes for media section</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">body-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'p-4'</td>
+                            <td class="px-4 py-2">CSS classes for body section</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">footer-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'p-4 border-t border-gray-200 bg-gray-50'</td>
+                            <td class="px-4 py-2">CSS classes for footer section</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Card Slots</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Slot Name</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">header</td>
+                            <td class="px-4 py-2">Card header content</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">media</td>
+                            <td class="px-4 py-2">Card media content (images, videos)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">body</td>
+                            <td class="px-4 py-2">Card main content</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">footer</td>
+                            <td class="px-4 py-2">Card footer content</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">(default)</td>
+                            <td class="px-4 py-2">Fallback slot (goes to body)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Card Events</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Event</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">card:click</td>
+                            <td class="px-4 py-2">Fired when an interactive card is clicked or activated via keyboard</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>DRY2 Web Components Library</p>
+            <p class="mt-2">
+                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Event handler for interactive card example
+        document.addEventListener('card:click', (event) => {
+            console.log('Card clicked:', event.detail);
+            document.getElementById('event-output').textContent = 
+                `Card clicked at ${new Date().toLocaleTimeString()}`;
+        });
+    </script>
+</body>
+</html>

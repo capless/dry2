@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Component Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+
+    
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+        
+        /* Additional styles for carousel slides */
+        .slide-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Carousel Component</h1>
+            <p class="text-lg text-gray-600">A carousel component to display a collection of items that can be browsed sequentially, with various navigation options.</p>
+        </header>
+        
+        <main>
+            <!-- Basic Carousel Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Basic Carousel</h2>
+                <p class="demo-description">A simple carousel with navigation arrows and indicators.</p>
+                
+                <div class="demo-container">
+                    <carousel-component navigation indicators>
+                        <carousel-slide>
+                            <div class="slide-content bg-blue-500">Slide 1</div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="slide-content bg-green-500">Slide 2</div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="slide-content bg-red-500">Slide 3</div>
+                        </carousel-slide>
+                    </carousel-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;carousel-component navigation indicators&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="slide-content bg-blue-500"&gt;Slide 1&lt;/div&gt;
+    &lt;/carousel-slide&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="slide-content bg-green-500"&gt;Slide 2&lt;/div&gt;
+    &lt;/carousel-slide&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="slide-content bg-red-500"&gt;Slide 3&lt;/div&gt;
+    &lt;/carousel-slide&gt;
+&lt;/carousel-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Autoplay Carousel Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Autoplay Carousel</h2>
+                <p class="demo-description">A carousel with autoplay enabled and customizable interval.</p>
+                
+                <div class="demo-container">
+                    <carousel-component autoplay interval="3000" navigation indicators pause-on-hover>
+                        <carousel-slide>
+                            <div class="slide-content bg-indigo-500">Autoplaying Slide 1</div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="slide-content bg-purple-500">Autoplaying Slide 2</div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="slide-content bg-pink-500">Autoplaying Slide 3</div>
+                        </carousel-slide>
+                    </carousel-component>
+                    <p class="text-sm text-gray-500 mt-2">This carousel advances automatically every 3 seconds. Hover to pause.</p>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;carousel-component autoplay interval="3000" navigation indicators pause-on-hover&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="slide-content bg-indigo-500"&gt;Autoplaying Slide 1&lt;/div&gt;
+    &lt;/carousel-slide&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="slide-content bg-purple-500"&gt;Autoplaying Slide 2&lt;/div&gt;
+    &lt;/carousel-slide&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="slide-content bg-pink-500"&gt;Autoplaying Slide 3&lt;/div&gt;
+    &lt;/carousel-slide&gt;
+&lt;/carousel-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Image Carousel Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Image Carousel</h2>
+                <p class="demo-description">A carousel displaying images with captions.</p>
+                
+                <div class="demo-container">
+                    <carousel-component navigation indicators>
+                        <carousel-slide>
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/800x400?text=Image+1" alt="Slide 1" class="w-full h-auto">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                                    <h3 class="text-lg font-semibold">Beautiful Mountains</h3>
+                                    <p>Explore stunning mountain landscapes.</p>
+                                </div>
+                            </div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/800x400?text=Image+2" alt="Slide 2" class="w-full h-auto">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                                    <h3 class="text-lg font-semibold">Ocean Views</h3>
+                                    <p>Discover beautiful coastal scenery.</p>
+                                </div>
+                            </div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/800x400?text=Image+3" alt="Slide 3" class="w-full h-auto">
+                                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                                    <h3 class="text-lg font-semibold">Forest Trails</h3>
+                                    <p>Wander through serene forest paths.</p>
+                                </div>
+                            </div>
+                        </carousel-slide>
+                    </carousel-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;carousel-component navigation indicators&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="relative"&gt;
+            &lt;img src="image1.jpg" alt="Slide 1" class="w-full h-auto"&gt;
+            &lt;div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"&gt;
+                &lt;h3 class="text-lg font-semibold"&gt;Beautiful Mountains&lt;/h3&gt;
+                &lt;p&gt;Explore stunning mountain landscapes.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/carousel-slide&gt;
+    &lt;!-- Additional slides... --&gt;
+&lt;/carousel-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Content Card Carousel Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Content Card Carousel</h2>
+                <p class="demo-description">A carousel displaying content cards like testimonials.</p>
+                
+                <div class="demo-container">
+                    <carousel-component navigation indicators>
+                        <carousel-slide>
+                            <div class="bg-white p-6 shadow-md rounded-lg">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 font-bold">JD</div>
+                                    <div class="ml-4">
+                                        <h3 class="font-semibold">John Doe</h3>
+                                        <p class="text-sm text-gray-500">CEO, Example Corp</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700">"This component library has transformed how we build interfaces. The flexibility and ease of use is unmatched."</p>
+                                <div class="mt-4 flex text-yellow-400">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                </div>
+                            </div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="bg-white p-6 shadow-md rounded-lg">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-500 font-bold">JS</div>
+                                    <div class="ml-4">
+                                        <h3 class="font-semibold">Jane Smith</h3>
+                                        <p class="text-sm text-gray-500">Developer, Tech Inc</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700">"I've been able to create complex UIs in a fraction of the time. The documentation is excellent and components just work."</p>
+                                <div class="mt-4 flex text-yellow-400">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                </div>
+                            </div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="bg-white p-6 shadow-md rounded-lg">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-500 font-bold">RJ</div>
+                                    <div class="ml-4">
+                                        <h3 class="font-semibold">Robert Johnson</h3>
+                                        <p class="text-sm text-gray-500">Designer, Creative Co</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700">"As a designer, I appreciate how well-crafted these components are. They're visually consistent and adaptable to our brand."</p>
+                                <div class="mt-4 flex text-yellow-400">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                                </div>
+                            </div>
+                        </carousel-slide>
+                    </carousel-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;carousel-component navigation indicators&gt;
+    &lt;carousel-slide&gt;
+        &lt;div class="bg-white p-6 shadow-md rounded-lg"&gt;
+            &lt;!-- Testimonial content --&gt;
+        &lt;/div&gt;
+    &lt;/carousel-slide&gt;
+    &lt;!-- Additional slides... --&gt;
+&lt;/carousel-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Event Handling Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Carousel Events</h2>
+                <p class="demo-description">The carousel emits events when slides change.</p>
+                
+                <div class="demo-container">
+                    <carousel-component id="event-carousel" navigation indicators>
+                        <carousel-slide>
+                            <div class="slide-content bg-yellow-500">Event Slide 1</div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="slide-content bg-orange-500">Event Slide 2</div>
+                        </carousel-slide>
+                        <carousel-slide>
+                            <div class="slide-content bg-amber-500">Event Slide 3</div>
+                        </carousel-slide>
+                    </carousel-component>
+                    
+                    <div class="mt-4 p-3 bg-gray-100 rounded">
+                        <p class="text-sm font-medium">Event Output:</p>
+                        <pre id="carousel-event-output" class="text-sm mt-2">No events yet. Navigate between slides to see events.</pre>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;carousel-component id="event-carousel" navigation indicators&gt;
+    &lt;!-- Slides... --&gt;
+&lt;/carousel-component&gt;
+
+&lt;script&gt;
+    document.addEventListener('carousel:slide', (event) => {
+        console.log('Slide changed:', event.detail);
+        const output = document.getElementById('carousel-event-output');
+        output.textContent = `Slide changed from ${event.detail.previousSlide} to ${event.detail.currentSlide} at ${new Date().toLocaleTimeString()}`;
+    });
+&lt;/script&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- API Reference -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Carousel Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">autoplay</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether slides should advance automatically</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">interval</td>
+                            <td class="px-4 py-2">number</td>
+                            <td class="px-4 py-2">5000</td>
+                            <td class="px-4 py-2">Time in milliseconds between slide transitions</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">pause-on-hover</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether autoplay should pause when hovering</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">navigation</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether to show previous/next buttons</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">indicators</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether to show indicator dots</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">Additional CSS classes for the carousel container</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">button-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">Additional CSS classes for navigation buttons</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">indicator-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">Additional CSS classes for indicators container</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Carousel Methods</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">prevSlide()</td>
+                            <td class="px-4 py-2">Goes to the previous slide</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">nextSlide()</td>
+                            <td class="px-4 py-2">Goes to the next slide</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">goToSlide(index)</td>
+                            <td class="px-4 py-2">Goes to the slide at the specified index</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">pauseAutoplay()</td>
+                            <td class="px-4 py-2">Pauses autoplay if it's enabled</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">resumeAutoplay()</td>
+                            <td class="px-4 py-2">Resumes autoplay if it was paused</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Carousel Events</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Event</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">carousel:slide</td>
+                            <td class="px-4 py-2">Fired when a slide changes, with detail containing carousel reference, current slide index, and previous slide index</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>DRY2 Web Components Library</p>
+            <p class="mt-2">
+                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Event handler for carousel slide events
+        document.addEventListener('carousel:slide', (event) => {
+            console.log('Slide changed:', event.detail);
+            const output = document.getElementById('carousel-event-output');
+            output.textContent = `Slide changed from ${event.detail.previousSlide} to ${event.detail.currentSlide} at ${new Date().toLocaleTimeString()}`;
+        });
+    </script>
+</body>
+</html>

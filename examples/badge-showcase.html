@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge Component Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/badge-component.js"></script>
+    
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Badge Component</h1>
+            <p class="text-lg text-gray-600">A customizable badge component to display short status indicators, counts, or labels.</p>
+        </header>
+        
+        <main>
+            <!-- Variants Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Badge Variants</h2>
+                <p class="demo-description">The Badge component supports different color variants.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <badge-component variant="primary">Primary</badge-component>
+                    <badge-component variant="success">Success</badge-component>
+                    <badge-component variant="danger">Danger</badge-component>
+                    <badge-component variant="warning">Warning</badge-component>
+                    <badge-component variant="info">Info</badge-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;badge-component variant="primary"&gt;Primary&lt;/badge-component&gt;
+&lt;badge-component variant="success"&gt;Success&lt;/badge-component&gt;
+&lt;badge-component variant="danger"&gt;Danger&lt;/badge-component&gt;
+&lt;badge-component variant="warning"&gt;Warning&lt;/badge-component&gt;
+&lt;badge-component variant="info"&gt;Info&lt;/badge-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Sizes Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Badge Sizes</h2>
+                <p class="demo-description">The Badge component supports different sizes.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <badge-component size="sm">Small</badge-component>
+                    <badge-component size="md">Medium</badge-component>
+                    <badge-component size="lg">Large</badge-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;badge-component size="sm"&gt;Small&lt;/badge-component&gt;
+&lt;badge-component size="md"&gt;Medium&lt;/badge-component&gt;
+&lt;badge-component size="lg"&gt;Large&lt;/badge-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Numeric Badges Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Numeric Badges</h2>
+                <p class="demo-description">Badges can display numbers with maximum value options.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <badge-component>5</badge-component>
+                    <badge-component>42</badge-component>
+                    <badge-component max="99">100</badge-component>
+                    <badge-component max="999">1000</badge-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;badge-component&gt;5&lt;/badge-component&gt;
+&lt;badge-component&gt;42&lt;/badge-component&gt;
+&lt;badge-component max="99"&gt;100&lt;/badge-component&gt;
+&lt;badge-component max="999"&gt;1000&lt;/badge-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Dot Badges Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Dot Badges</h2>
+                <p class="demo-description">Display badges as simple dots without content.</p>
+                
+                <div class="demo-container flex items-center gap-4">
+                    <badge-component dot size="sm" variant="primary"></badge-component>
+                    <badge-component dot size="md" variant="success"></badge-component>
+                    <badge-component dot size="lg" variant="danger"></badge-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;badge-component dot size="sm" variant="primary"&gt;&lt;/badge-component&gt;
+&lt;badge-component dot size="md" variant="success"&gt;&lt;/badge-component&gt;
+&lt;badge-component dot size="lg" variant="danger"&gt;&lt;/badge-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Positioned Badges Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Positioned Badges</h2>
+                <p class="demo-description">Badges can be positioned relative to other elements.</p>
+                
+                <div class="demo-container flex items-center gap-8">
+                    <div>
+                        <badge-component position="top-right" variant="danger">5</badge-component>
+                        <button class="px-4 py-2 bg-gray-200 rounded-md">Notifications</button>
+                    </div>
+                    
+                    <div>
+                        <badge-component position="top-left" variant="primary">New</badge-component>
+                        <div class="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                            Icon
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <badge-component position="bottom-right" dot variant="success"></badge-component>
+                        <div class="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                            Status
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;div&gt;
+    &lt;badge-component position="top-right" variant="danger"&gt;5&lt;/badge-component&gt;
+    &lt;button class="px-4 py-2 bg-gray-200 rounded-md"&gt;Notifications&lt;/button&gt;
+&lt;/div&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- API Reference -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Badge Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">variant</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'primary'</td>
+                            <td class="px-4 py-2">Color variant: 'primary', 'success', 'danger', 'warning', 'info'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">size</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'md'</td>
+                            <td class="px-4 py-2">Size of the badge: 'sm', 'md', 'lg'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">position</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'standalone'</td>
+                            <td class="px-4 py-2">Position relative to parent: 'standalone', 'top-right', 'top-left', 'bottom-right', 'bottom-left'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">dot</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether to display as a dot without content</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">max</td>
+                            <td class="px-4 py-2">number</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">Maximum value for numeric content (displays as max+)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">visible</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">true</td>
+                            <td class="px-4 py-2">Whether the badge is visible</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">Additional CSS classes to apply</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Badge Methods</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">show()</td>
+                            <td class="px-4 py-2">Shows the badge</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">hide()</td>
+                            <td class="px-4 py-2">Hides the badge</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">toggle()</td>
+                            <td class="px-4 py-2">Toggles the visibility of the badge</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>DRY2 Web Components Library</p>
+            <p class="mt-2">
+                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
