@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRY2 Web Components Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    
+    <style>
+        .component-section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: #f9fafb;
+        }
+        
+        .component-title {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .component-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .component-demo {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .component-code {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-white p-8">
+    <header class="max-w-4xl mx-auto mb-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">DRY2 Web Components Showcase</h1>
+        <p class="text-lg text-gray-600">A demonstration of reusable web components following the user stories specified in the project.</p>
+    </header>
+    
+    <main class="max-w-4xl mx-auto">
+        <!-- Swap Component -->
+        <section class="component-section">
+            <h2 class="component-title">Swap Component</h2>
+            <p class="component-description">A component that swaps between two states or icons when clicked.</p>
+            
+            <div class="component-demo flex flex-wrap gap-8">
+                <swap-component
+                    icon-on='<i class="fas fa-minus"></i>'
+                    icon-off='<i class="fas fa-plus"></i>'>
+                </swap-component>
+                
+                <swap-component 
+                    icon-on='<i class="fas fa-heart" style="color: red;"></i>'
+                    icon-off='<i class="far fa-heart"></i>'>
+                </swap-component>
+                
+                <swap-component 
+                    icon-on='<i class="fas fa-sun" style="color: orange;"></i>'
+                    icon-off='<i class="fas fa-moon" style="color: blue;"></i>'>
+                </swap-component>
+                
+                <swap-component size="large"
+                    icon-on='<i class="fas fa-volume-up"></i>'
+                    icon-off='<i class="fas fa-volume-mute"></i>'>
+                </swap-component>
+                
+                <swap-component disabled
+                    icon-on='<i class="fas fa-lock-open"></i>'
+                    icon-off='<i class="fas fa-lock"></i>'>
+                </swap-component>
+            </div>
+            
+            <div class="component-code">
+                <pre>&lt;swap-component
+    icon-on='&lt;i class="fas fa-minus"&gt;&lt;/i&gt;'
+    icon-off='&lt;i class="fas fa-plus"&gt;&lt;/i&gt;'&gt;
+&lt;/swap-component&gt;
+
+&lt;swap-component 
+    icon-on='&lt;i class="fas fa-heart" style="color: red;"&gt;&lt;/i&gt;'
+    icon-off='&lt;i class="far fa-heart"&gt;&lt;/i&gt;'&gt;
+&lt;/swap-component&gt;</pre>
+            </div>
+        </section>
+        
+        <!-- Avatar Component -->
+        <section class="component-section">
+            <h2 class="component-title">Avatar Component</h2>
+            <p class="component-description">Avatar components for displaying user profile images with fallback options.</p>
+            
+            <div class="component-demo flex flex-wrap items-center gap-6">
+                <div>
+                    <p class="text-sm text-gray-500 mb-2">Image Avatar</p>
+                    <avatar-component 
+                        image="https://randomuser.me/api/portraits/women/44.jpg" 
+                        alt="Jane Doe">
+                    </avatar-component>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500 mb-2">Initials Avatar</p>
+                    <avatar-component 
+                        name="John Smith">
+                    </avatar-component>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500 mb-2">Custom Initials</p>
+                    <avatar-component 
+                        initials="JS">
+                    </avatar-component>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500 mb-2">Sizes</p>
+                    <div class="flex items-center gap-2">
+                        <avatar-component size="xs" name="XS"></avatar-component>
+                        <avatar-component size="sm" name="SM"></avatar-component>
+                        <avatar-component size="md" name="MD"></avatar-component>
+                        <avatar-component size="lg" name="LG"></avatar-component>
+                        <avatar-component size="xl" name="XL"></avatar-component>
+                    </div>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500 mb-2">Shapes</p>
+                    <div class="flex items-center gap-2">
+                        <avatar-component shape="circle" name="AB"></avatar-component>
+                        <avatar-component shape="square" name="CD"></avatar-component>
+                        <avatar-component shape="rounded" name="EF"></avatar-component>
+                    </div>
+                </div>
+                
+                <div class="w-full mt-4">
+                    <p class="text-sm text-gray-500 mb-2">Avatar Group</p>
+                    <avatar-group max="3" overlap="16">
+                        <avatar-component image="https://randomuser.me/api/portraits/women/44.jpg"></avatar-component>
+                        <avatar-component image="https://randomuser.me/api/portraits/men/32.jpg"></avatar-component>
+                        <avatar-component name="John Doe"></avatar-component>
+                        <avatar-component name="Jane Smith"></avatar-component>
+                        <avatar-component name="Bob Johnson"></avatar-component>
+                    </avatar-group>
+                </div>
+            </div>
+            
+            <div class="component-code">
+                <pre>&lt;!-- Image Avatar --&gt;
+&lt;avatar-component 
+    image="https://randomuser.me/api/portraits/women/44.jpg" 
+    alt="Jane Doe"&gt;
+&lt;/avatar-component&gt;
+
+&lt;!-- Initials Avatar --&gt;
+&lt;avatar-component name="John Smith"&gt;&lt;/avatar-component&gt;
+
+&lt;!-- Custom Initials --&gt;
+&lt;avatar-component initials="JS"&gt;&lt;/avatar-component&gt;
+
+&lt;!-- Different Sizes --&gt;
+&lt;avatar-component size="xs" name="XS"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component size="sm" name="SM"&gt;&lt;/avatar-component&gt;
+
+&lt;!-- Avatar Group --&gt;
+&lt;avatar-group max="3" overlap="16"&gt;
+    &lt;avatar-component image="..."&gt;&lt;/avatar-component&gt;
+    &lt;avatar-component name="John Doe"&gt;&lt;/avatar-component&gt;
+    &lt;avatar-component name="Jane Smith"&gt;&lt;/avatar-component&gt;
+&lt;/avatar-group&gt;</pre>
+            </div>
+        </section>
+        
+        <!-- More components would continue here -->
+        
+        <!-- Badge Component -->
+        <section class="component-section">
+            <h2 class="component-title">Badge Component</h2>
+            <p class="component-description">Badge components for displaying short status indicators, counts, or labels.</p>
+            
+            <div class="component-demo">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-2">Standalone Badges</p>
+                        <div class="flex flex-wrap gap-2">
+                            <badge-component variant="primary">New</badge-component>
+                            <badge-component variant="success">Success</badge-component>
+                            <badge-component variant="danger">Alert</badge-component>
+                            <badge-component variant="warning">Warning</badge-component>
+                            <badge-component variant="info">Info</badge-component>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-gray-500 mb-2">Dot Badges</p>
+                        <div class="flex flex-wrap gap-2">
+                            <badge-component variant="primary" dot></badge-component>
+                            <badge-component variant="success" dot></badge-component>
+                            <badge-component variant="danger" dot></badge-component>
+                            <badge-component variant="warning" dot></badge-component>
+                            <badge-component variant="info" dot></badge-component>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-gray-500 mb-2">Number Badges</p>
+                        <div class="flex flex-wrap gap-2">
+                            <badge-component variant="primary">1</badge-component>
+                            <badge-component variant="primary">25</badge-component>
+                            <badge-component variant="primary" max="99">100</badge-component>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-gray-500 mb-2">Positioned Badges</p>
+                        <div class="flex items-center gap-6">
+                            <div class="relative inline-block">
+                                <button class="px-3 py-2 bg-gray-100 rounded-md">
+                                    <i class="fas fa-bell text-lg"></i>
+                                </button>
+                                <badge-component variant="danger" position="top-right">5</badge-component>
+                            </div>
+                            
+                            <div class="relative inline-block">
+                                <button class="px-3 py-2 bg-gray-100 rounded-md">
+                                    <i class="fas fa-envelope text-lg"></i>
+                                </button>
+                                <badge-component variant="primary" position="top-right" dot></badge-component>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="component-code">
+                <pre>&lt;!-- Standalone Badges --&gt;
+&lt;badge-component variant="primary"&gt;New&lt;/badge-component&gt;
+&lt;badge-component variant="success"&gt;Success&lt;/badge-component&gt;
+
+&lt;!-- Dot Badges --&gt;
+&lt;badge-component variant="danger" dot&gt;&lt;/badge-component&gt;
+
+&lt;!-- Number Badges with Max --&gt;
+&lt;badge-component variant="primary" max="99"&gt;100&lt;/badge-component&gt;
+
+&lt;!-- Positioned Badges --&gt;
+&lt;div class="relative inline-block"&gt;
+    &lt;button&gt;&lt;i class="fas fa-bell"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;badge-component variant="danger" position="top-right"&gt;5&lt;/badge-component&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </section>
+        
+        <!-- Card Component -->
+        <section class="component-section">
+            <h2 class="component-title">Card Component</h2>
+            <p class="component-description">A flexible card container for displaying related content with different layouts.</p>
+            
+            <div class="component-demo">
+                <div class="grid grid-cols-2 gap-6">
+                    <card-component>
+                        <div slot="header">Basic Card</div>
+                        <div slot="body">
+                            <p>This is a basic card with header, body, and footer sections.</p>
+                            <p class="mt-2">Cards provide a flexible container for related content.</p>
+                        </div>
+                        <div slot="footer">Card Footer</div>
+                    </card-component>
+                    
+                    <card-component variant="outlined" elevation="none">
+                        <div slot="header">Outlined Card</div>
+                        <div slot="body">This card has an outlined variant with no elevation/shadow.</div>
+                        <div slot="footer">Card Footer</div>
+                    </card-component>
+                    
+                    <card-component elevation="lg" interactive>
+                        <div slot="header">Interactive Card</div>
+                        <div slot="body">This card is interactive (clickable) with larger shadow.</div>
+                    </card-component>
+                    
+                    <card-component layout="horizontal">
+                        <div slot="media" style="width: 100px; background-color: #e0e7ff;">
+                            <div class="flex items-center justify-center h-full">
+                                <i class="fas fa-image text-3xl text-indigo-500"></i>
+                            </div>
+                        </div>
+                        <div slot="header">Horizontal Layout</div>
+                        <div slot="body">This card uses a horizontal layout with media on the left.</div>
+                    </card-component>
+                </div>
+            </div>
+            
+            <div class="component-code">
+                <pre>&lt;card-component&gt;
+    &lt;div slot="header"&gt;Basic Card&lt;/div&gt;
+    &lt;div slot="body"&gt;This is a basic card with header, body, and footer sections.&lt;/div&gt;
+    &lt;div slot="footer"&gt;Card Footer&lt;/div&gt;
+&lt;/card-component&gt;
+
+&lt;card-component variant="outlined" elevation="none"&gt;
+    &lt;div slot="header"&gt;Outlined Card&lt;/div&gt;
+    &lt;div slot="body"&gt;This card has an outlined variant with no elevation.&lt;/div&gt;
+&lt;/card-component&gt;
+
+&lt;card-component layout="horizontal"&gt;
+    &lt;div slot="media"&gt;...&lt;/div&gt;
+    &lt;div slot="body"&gt;Horizontal layout with media on the left.&lt;/div&gt;
+&lt;/card-component&gt;</pre>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="max-w-4xl mx-auto mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+        <p>DRY2 Web Components Library Showcase</p>
+    </footer>
+</body>
+</html>

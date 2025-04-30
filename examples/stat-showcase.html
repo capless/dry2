@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stat Component Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/stat-component.js"></script>
+    
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+        
+        /* Additional styles for stat cards */
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Stat Component</h1>
+            <p class="text-lg text-gray-600">A stat component to display key metrics or statistics with visual emphasis and optional comparison indicators.</p>
+        </header>
+        
+        <main>
+            <!-- Basic Stats Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Basic Stats</h2>
+                <p class="demo-description">Basic stat components with different data types.</p>
+                
+                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="stat-card">
+                        <stat-component
+                            value="1234"
+                            label="Total Users"
+                            type="number">
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="75.5"
+                            label="Completion Rate"
+                            type="percentage"
+                            percentage-value>
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="9875.42"
+                            label="Revenue"
+                            type="currency"
+                            currency="USD">
+                        </stat-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;stat-component
+    value="1234"
+    label="Total Users"
+    type="number"&gt;
+&lt;/stat-component&gt;
+
+&lt;stat-component
+    value="75.5"
+    label="Completion Rate"
+    type="percentage"
+    percentage-value&gt;
+&lt;/stat-component&gt;
+
+&lt;stat-component
+    value="9875.42"
+    label="Revenue"
+    type="currency"
+    currency="USD"&gt;
+&lt;/stat-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Stats with Trends Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Stats with Trends</h2>
+                <p class="demo-description">Stat components with trend indicators showing increase, decrease, or neutral trends.</p>
+                
+                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="stat-card">
+                        <stat-component
+                            value="1256"
+                            label="New Subscribers"
+                            trend="up"
+                            trend-value="+12.5%">
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="89.2"
+                            label="Page Load Time"
+                            type="number"
+                            decimal-places="1"
+                            trend="down"
+                            trend-value="-5.3%">
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="540"
+                            label="Active Sessions"
+                            trend="neutral"
+                            trend-value="±0%">
+                        </stat-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;stat-component
+    value="1256"
+    label="New Subscribers"
+    trend="up"
+    trend-value="+12.5%"&gt;
+&lt;/stat-component&gt;
+
+&lt;stat-component
+    value="89.2"
+    label="Page Load Time"
+    type="number"
+    decimal-places="1"
+    trend="down"
+    trend-value="-5.3%"&gt;
+&lt;/stat-component&gt;
+
+&lt;stat-component
+    value="540"
+    label="Active Sessions"
+    trend="neutral"
+    trend-value="±0%"&gt;
+&lt;/stat-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Stats with Comparisons Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Stats with Comparisons</h2>
+                <p class="demo-description">Stat components with comparison text to provide context against a prior period.</p>
+                
+                <div class="demo-container grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="stat-card">
+                        <stat-component
+                            value="8452"
+                            label="Page Views"
+                            trend="up"
+                            trend-value="+24%"
+                            comparison="vs. Previous Week">
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="3.2"
+                            label="Average Session Duration"
+                            type="number"
+                            decimal-places="1"
+                            trend="down"
+                            trend-value="-1.5%"
+                            comparison="vs. Last Month">
+                        </stat-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;stat-component
+    value="8452"
+    label="Page Views"
+    trend="up"
+    trend-value="+24%"
+    comparison="vs. Previous Week"&gt;
+&lt;/stat-component&gt;
+
+&lt;stat-component
+    value="3.2"
+    label="Average Session Duration"
+    type="number"
+    decimal-places="1"
+    trend="down"
+    trend-value="-1.5%"
+    comparison="vs. Last Month"&gt;
+&lt;/stat-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Stats with Icons Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Stats with Icons</h2>
+                <p class="demo-description">Stat components with custom icons to visually represent the metric.</p>
+                
+                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="stat-card">
+                        <stat-component
+                            value="24.5K"
+                            label="Total Followers"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>'>
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="14,328"
+                            label="Revenue"
+                            type="currency"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
+                        </stat-component>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <stat-component
+                            value="92.7"
+                            label="Customer Satisfaction"
+                            type="percentage"
+                            percentage-value
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
+                        </stat-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;stat-component
+    value="24.5K"
+    label="Total Followers"
+    icon='&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /&gt;&lt;/svg&gt;'&gt;
+&lt;/stat-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Layout Variations Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Layout Variations</h2>
+                <p class="demo-description">Stat components with vertical and horizontal layouts.</p>
+                
+                <div class="demo-container space-y-6">
+                    <h3 class="font-medium mb-2">Vertical Layout (Default)</h3>
+                    <div class="stat-card w-64">
+                        <stat-component
+                            value="1,234"
+                            label="Downloads"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>'
+                            trend="up"
+                            trend-value="+8.3%"
+                            layout="vertical">
+                        </stat-component>
+                    </div>
+                    
+                    <h3 class="font-medium mb-2 mt-6">Horizontal Layout</h3>
+                    <div class="stat-card">
+                        <stat-component
+                            value="1,234"
+                            label="Downloads"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>'
+                            trend="up"
+                            trend-value="+8.3%"
+                            layout="horizontal">
+                        </stat-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;stat-component
+    value="1,234"
+    label="Downloads"
+    icon='...'
+    trend="up"
+    trend-value="+8.3%"
+    layout="vertical"&gt;
+&lt;/stat-component&gt;
+
+&lt;stat-component
+    value="1,234"
+    label="Downloads"
+    icon='...'
+    trend="up"
+    trend-value="+8.3%"
+    layout="horizontal"&gt;
+&lt;/stat-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Customized Stats Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Customized Stats</h2>
+                <p class="demo-description">Stat components with custom styling and formatting.</p>
+                
+                <div class="demo-container grid grid-cols-1 gap-6">
+                    <div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white">
+                        <stat-component
+                            value="5280"
+                            label="Active Users"
+                            trend="up"
+                            trend-value="+15%"
+                            class="text-white"
+                            comparison="Month-over-month growth">
+                        </stat-component>
+                    </div>
+                    
+                    <div class="p-6 bg-gray-900 rounded-lg text-white">
+                        <stat-component
+                            value="99.9"
+                            label="Uptime"
+                            type="percentage"
+                            percentage-value
+                            decimal-places="1"
+                            class="text-white">
+                        </stat-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white"&gt;
+    &lt;stat-component
+        value="5280"
+        label="Active Users"
+        trend="up"
+        trend-value="+15%"
+        class="text-white"
+        comparison="Month-over-month growth"&gt;
+    &lt;/stat-component&gt;
+&lt;/div&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Stats Dashboard Example -->
+            <section class="demo-section">
+                <h2 class="demo-title">Stats Dashboard Example</h2>
+                <p class="demo-description">Example of multiple stat components used together in a dashboard layout.</p>
+                
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="stat-card bg-blue-50">
+                            <stat-component
+                                value="84,394"
+                                label="Page Views"
+                                trend="up"
+                                trend-value="+5.7%"
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>'>
+                            </stat-component>
+                        </div>
+                        
+                        <div class="stat-card bg-green-50">
+                            <stat-component
+                                value="46,782"
+                                label="Revenue"
+                                type="currency"
+                                currency="USD"
+                                trend="up"
+                                trend-value="+12.3%"
+                                comparison="vs. Last Month"
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
+                            </stat-component>
+                        </div>
+                        
+                        <div class="stat-card bg-yellow-50">
+                            <stat-component
+                                value="2.34"
+                                label="Avg. Time on Page"
+                                type="number"
+                                decimal-places="2"
+                                trend="down"
+                                trend-value="-0.8%"
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
+                            </stat-component>
+                        </div>
+                        
+                        <div class="stat-card bg-red-50">
+                            <stat-component
+                                value="3.8"
+                                label="Bounce Rate"
+                                type="percentage"
+                                percentage-value
+                                decimal-places="1"
+                                trend="down"
+                                trend-value="-1.2%"
+                                comparison="vs. Industry Avg: 4.2%"
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" /></svg>'>
+                            </stat-component>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"&gt;
+    &lt;div class="stat-card bg-blue-50"&gt;
+        &lt;stat-component
+            value="84,394"
+            label="Page Views"
+            trend="up"
+            trend-value="+5.7%"
+            icon='...'&gt;
+        &lt;/stat-component&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Additional stat cards... --&gt;
+&lt;/div&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- API Reference -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Stat Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">value</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'0'</td>
+                            <td class="px-4 py-2">The value to display in the stat</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">label</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'Statistic'</td>
+                            <td class="px-4 py-2">Label describing the stat</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">trend</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">Trend direction: 'up', 'down', or 'neutral'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">trend-value</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">Value to display next to trend indicator</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">comparison</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">Comparison text (e.g., 'vs. Previous Month')</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">icon</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">HTML string for an icon (SVG recommended)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">type</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'number'</td>
+                            <td class="px-4 py-2">Value type: 'number', 'percentage', or 'currency'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">decimal-places</td>
+                            <td class="px-4 py-2">number</td>
+                            <td class="px-4 py-2">0 for number, 2 for currency</td>
+                            <td class="px-4 py-2">Number of decimal places to display</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">currency</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'USD'</td>
+                            <td class="px-4 py-2">Currency code for currency type values</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">percentage-value</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether value is already in percentage format</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">layout</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'vertical'</td>
+                            <td class="px-4 py-2">Layout orientation: 'vertical' or 'horizontal'</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">''</td>
+                            <td class="px-4 py-2">Additional CSS classes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>DRY2 Web Components Library</p>
+            <p class="mt-2">
+                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Component Showcase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/countdown-component.js"></script>
+    
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Countdown Component</h1>
+            <p class="text-lg text-gray-600">A countdown component that displays time remaining until a specific date/time with flexible formatting options.</p>
+        </header>
+        
+        <main>
+            <!-- Basic Countdown Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Basic Countdown</h2>
+                <p class="demo-description">A simple countdown timer with a fixed duration.</p>
+                
+                <div class="demo-container">
+                    <countdown-component 
+                        duration="60" 
+                        autostart 
+                        leading-zeros
+                        expiry-text="Time's up!">
+                    </countdown-component>
+                    
+                    <div class="mt-4 flex gap-2">
+                        <button id="basic-pause" class="px-3 py-1 bg-blue-500 text-white rounded">Pause</button>
+                        <button id="basic-resume" class="px-3 py-1 bg-blue-500 text-white rounded">Resume</button>
+                        <button id="basic-reset" class="px-3 py-1 bg-blue-500 text-white rounded">Reset</button>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;countdown-component 
+    duration="60" 
+    autostart 
+    leading-zeros
+    expiry-text="Time's up!"&gt;
+&lt;/countdown-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Target Date Countdown -->
+            <section class="demo-section">
+                <h2 class="demo-title">Target Date Countdown</h2>
+                <p class="demo-description">Countdown to a specific future date and time.</p>
+                
+                <div class="demo-container">
+                    <div class="mb-4">
+                        <label for="target-date-input" class="block mb-2 font-medium">Set Target Date:</label>
+                        <input 
+                            type="datetime-local" 
+                            id="target-date-input" 
+                            class="px-3 py-2 border rounded"
+                            value="2025-12-31T23:59:59">
+                        <button id="set-target-date" class="ml-2 px-3 py-2 bg-blue-500 text-white rounded">Set Date</button>
+                    </div>
+                    
+                    <countdown-component 
+                        id="target-date-countdown"
+                        target-date="2025-12-31T23:59:59" 
+                        autostart 
+                        leading-zeros
+                        show-zeros
+                        class="text-center">
+                    </countdown-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;countdown-component 
+    target-date="2025-12-31T23:59:59" 
+    autostart 
+    leading-zeros
+    show-zeros
+    class="text-center"&gt;
+&lt;/countdown-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Custom Format Countdown -->
+            <section class="demo-section">
+                <h2 class="demo-title">Custom Format Countdown</h2>
+                <p class="demo-description">Customize which time units are displayed in the countdown.</p>
+                
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-medium mb-2">Days & Hours Only</h3>
+                            <countdown-component 
+                                duration="172800" 
+                                format="days,hours" 
+                                autostart 
+                                leading-zeros>
+                            </countdown-component>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium mb-2">Minutes & Seconds Only</h3>
+                            <countdown-component 
+                                duration="3600" 
+                                format="minutes,seconds" 
+                                autostart 
+                                leading-zeros>
+                            </countdown-component>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;!-- Days & Hours Only --&gt;
+&lt;countdown-component 
+    duration="172800" 
+    format="days,hours" 
+    autostart 
+    leading-zeros&gt;
+&lt;/countdown-component&gt;
+
+&lt;!-- Minutes & Seconds Only --&gt;
+&lt;countdown-component 
+    duration="3600" 
+    format="minutes,seconds" 
+    autostart 
+    leading-zeros&gt;
+&lt;/countdown-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Custom Labels Countdown -->
+            <section class="demo-section">
+                <h2 class="demo-title">Custom Unit Labels</h2>
+                <p class="demo-description">Customize the labels for time units with support for singular/plural forms.</p>
+                
+                <div class="demo-container">
+                    <countdown-component 
+                        duration="90061" 
+                        autostart 
+                        leading-zeros
+                        days-label="Day|Days"
+                        hours-label="Hr|Hrs"
+                        minutes-label="Min|Mins"
+                        seconds-label="Sec|Secs">
+                    </countdown-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;countdown-component 
+    duration="90061" 
+    autostart 
+    leading-zeros
+    days-label="Day|Days"
+    hours-label="Hr|Hrs"
+    minutes-label="Min|Mins"
+    seconds-label="Sec|Secs"&gt;
+&lt;/countdown-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Styled Countdown -->
+            <section class="demo-section">
+                <h2 class="demo-title">Styled Countdown</h2>
+                <p class="demo-description">Customize the appearance of the countdown timer.</p>
+                
+                <div class="demo-container">
+                    <countdown-component 
+                        duration="3600" 
+                        autostart 
+                        leading-zeros
+                        class="flex justify-center p-4 bg-blue-100 rounded-lg"
+                        unit-class="mx-4 bg-white p-4 rounded-lg shadow-md w-24 flex flex-col items-center">
+                    </countdown-component>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;countdown-component 
+    duration="3600" 
+    autostart 
+    leading-zeros
+    class="flex justify-center p-4 bg-blue-100 rounded-lg"
+    unit-class="mx-4 bg-white p-4 rounded-lg shadow-md w-24 flex flex-col items-center"&gt;
+&lt;/countdown-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Expired Content Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Custom Expired Content</h2>
+                <p class="demo-description">Display custom content when the countdown expires.</p>
+                
+                <div class="demo-container">
+                    <div class="mb-4">
+                        <countdown-component 
+                            id="expire-countdown"
+                            duration="5" 
+                            autostart 
+                            leading-zeros>
+                            <div slot="expired" class="bg-red-100 text-red-700 p-4 rounded-lg text-center">
+                                <p class="text-xl font-bold">Time's Up!</p>
+                                <p>Your countdown has expired.</p>
+                                <button id="restart-expire" class="mt-2 px-3 py-1 bg-red-500 text-white rounded">Restart</button>
+                            </div>
+                        </countdown-component>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;countdown-component 
+    duration="5" 
+    autostart 
+    leading-zeros&gt;
+    &lt;div slot="expired" class="bg-red-100 text-red-700 p-4 rounded-lg text-center"&gt;
+        &lt;p class="text-xl font-bold"&gt;Time's Up!&lt;/p&gt;
+        &lt;p&gt;Your countdown has expired.&lt;/p&gt;
+        &lt;button id="restart-expire" class="mt-2 px-3 py-1 bg-red-500 text-white rounded"&gt;Restart&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/countdown-component&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- Event Handling Section -->
+            <section class="demo-section">
+                <h2 class="demo-title">Event Handling</h2>
+                <p class="demo-description">The countdown component emits events for different states.</p>
+                
+                <div class="demo-container">
+                    <countdown-component 
+                        id="event-countdown"
+                        duration="10" 
+                        autostart 
+                        leading-zeros
+                        format="seconds">
+                    </countdown-component>
+                    
+                    <div class="mt-4 flex gap-2">
+                        <button id="event-pause" class="px-3 py-1 bg-blue-500 text-white rounded">Pause</button>
+                        <button id="event-resume" class="px-3 py-1 bg-blue-500 text-white rounded">Resume</button>
+                        <button id="event-reset" class="px-3 py-1 bg-blue-500 text-white rounded">Reset</button>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-gray-100 rounded">
+                        <p class="text-sm font-medium">Event Log:</p>
+                        <pre id="event-log" class="text-sm mt-2">No events yet. Interact with the countdown above to see events.</pre>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>&lt;countdown-component 
+    id="event-countdown"
+    duration="10" 
+    autostart 
+    leading-zeros
+    format="seconds"&gt;
+&lt;/countdown-component&gt;
+
+&lt;script&gt;
+    document.addEventListener('countdown:completed', (e) => {
+        console.log('Countdown completed');
+        document.getElementById('event-log').textContent = 
+            `Countdown completed at ${new Date().toLocaleTimeString()}`;
+    });
+    
+    document.addEventListener('countdown:paused', (e) => {
+        console.log('Countdown paused');
+        document.getElementById('event-log').textContent = 
+            `Countdown paused at ${new Date().toLocaleTimeString()}`;
+    });
+    
+    // ... more event handlers
+&lt;/script&gt;</pre>
+                </div>
+            </section>
+            
+            <!-- API Reference -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Countdown Properties</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Property</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Default</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">target-date</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">ISO date string for the target date/time</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">duration</td>
+                            <td class="px-4 py-2">number</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">Duration in seconds for the countdown</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">format</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'days,hours,minutes,seconds'</td>
+                            <td class="px-4 py-2">Comma-separated list of time units to display</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">autostart</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether to start the countdown automatically</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">expiry-text</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">undefined</td>
+                            <td class="px-4 py-2">Text to display when countdown expires</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">leading-zeros</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether to display leading zeros for values</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">show-zeros</td>
+                            <td class="px-4 py-2">boolean</td>
+                            <td class="px-4 py-2">false</td>
+                            <td class="px-4 py-2">Whether to show zero values for units</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">unit-class</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'mx-2'</td>
+                            <td class="px-4 py-2">CSS classes for each time unit container</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">days-label</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'Day|Days'</td>
+                            <td class="px-4 py-2">Label for days (singular|plural)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">hours-label</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'Hour|Hours'</td>
+                            <td class="px-4 py-2">Label for hours (singular|plural)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">minutes-label</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'Minute|Minutes'</td>
+                            <td class="px-4 py-2">Label for minutes (singular|plural)</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">seconds-label</td>
+                            <td class="px-4 py-2">string</td>
+                            <td class="px-4 py-2">'Second|Seconds'</td>
+                            <td class="px-4 py-2">Label for seconds (singular|plural)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Countdown Methods</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">startCountdown()</td>
+                            <td class="px-4 py-2">Starts the countdown</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">pause()</td>
+                            <td class="px-4 py-2">Pauses the countdown</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">resume()</td>
+                            <td class="px-4 py-2">Resumes a paused countdown</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">reset()</td>
+                            <td class="px-4 py-2">Resets the countdown to its initial state</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">Countdown Events</h3>
+                <table class="min-w-full border border-gray-300 rounded">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Event</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">countdown:completed</td>
+                            <td class="px-4 py-2">Fired when the countdown reaches zero</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">countdown:paused</td>
+                            <td class="px-4 py-2">Fired when the countdown is paused</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">countdown:resumed</td>
+                            <td class="px-4 py-2">Fired when the countdown is resumed</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-medium">countdown:reset</td>
+                            <td class="px-4 py-2">Fired when the countdown is reset</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>DRY2 Web Components Library</p>
+            <p class="mt-2">
+                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Basic countdown controls
+        document.getElementById('basic-pause').addEventListener('click', () => {
+            const countdown = document.querySelector('countdown-component');
+            countdown.pause();
+        });
+        
+        document.getElementById('basic-resume').addEventListener('click', () => {
+            const countdown = document.querySelector('countdown-component');
+            countdown.resume();
+        });
+        
+        document.getElementById('basic-reset').addEventListener('click', () => {
+            const countdown = document.querySelector('countdown-component');
+            countdown.reset();
+        });
+        
+        // Target date countdown
+        document.getElementById('set-target-date').addEventListener('click', () => {
+            const dateInput = document.getElementById('target-date-input').value;
+            const targetCountdown = document.getElementById('target-date-countdown');
+            targetCountdown.targetDate = dateInput;
+            targetCountdown.reset();
+        });
+        
+        // Expired countdown restart
+        document.getElementById('restart-expire').addEventListener('click', () => {
+            const countdown = document.getElementById('expire-countdown');
+            countdown.reset();
+        });
+        
+        // Event countdown controls
+        document.getElementById('event-pause').addEventListener('click', () => {
+            document.getElementById('event-countdown').pause();
+        });
+        
+        document.getElementById('event-resume').addEventListener('click', () => {
+            document.getElementById('event-countdown').resume();
+        });
+        
+        document.getElementById('event-reset').addEventListener('click', () => {
+            document.getElementById('event-countdown').reset();
+        });
+        
+        // Event logging
+        const eventLog = document.getElementById('event-log');
+        
+        document.addEventListener('countdown:completed', (e) => {
+            console.log('Countdown completed', e.detail);
+            eventLog.textContent = `Countdown completed at ${new Date().toLocaleTimeString()}`;
+        });
+        
+        document.addEventListener('countdown:paused', (e) => {
+            console.log('Countdown paused', e.detail);
+            eventLog.textContent = `Countdown paused at ${new Date().toLocaleTimeString()}`;
+        });
+        
+        document.addEventListener('countdown:resumed', (e) => {
+            console.log('Countdown resumed', e.detail);
+            eventLog.textContent = `Countdown resumed at ${new Date().toLocaleTimeString()}`;
+        });
+        
+        document.addEventListener('countdown:reset', (e) => {
+            console.log('Countdown reset', e.detail);
+            eventLog.textContent = `Countdown reset at ${new Date().toLocaleTimeString()}`;
+        });
+    </script>
+</body>
+</html>
