@@ -1,6 +1,4 @@
-// Swap Component for DRY2 Web Components
-
-class SwapComponent extends BaseWebComponent {
+class Swap extends BaseWebComponent {
     constructor() {
         super();
         this._active = false;
@@ -56,14 +54,14 @@ class SwapComponent extends BaseWebComponent {
 
     getContainerClasses(size, disabled) {
         let classes = 'inline-flex items-center justify-center ';
-        
+
         // Add disabled styling
         if (disabled) {
             classes += 'opacity-50 cursor-not-allowed ';
         } else {
             classes += 'cursor-pointer hover:scale-110 transition-transform duration-200 ';
         }
-        
+
         // Add size classes
         switch (size) {
             case 'small':
@@ -76,12 +74,12 @@ class SwapComponent extends BaseWebComponent {
                 // Default to medium size
                 classes += 'h-6 w-6 ';
         }
-        
+
         // Add custom classes
         if (this.class) {
             classes += this.class + ' ';
         }
-        
+
         return classes.trim();
     }
 
@@ -97,7 +95,7 @@ class SwapComponent extends BaseWebComponent {
             if (name === 'disabled') {
                 this._disabled = newValue !== null;
             }
-            
+
             // Re-render to update the DOM
             if (this.isConnected) {
                 this.render();
@@ -107,7 +105,7 @@ class SwapComponent extends BaseWebComponent {
 
     // Getters and setters for attributes
     get iconOn() {
-        return this.getAttribute('icon-on') || 
+        return this.getAttribute('icon-on') ||
             '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>';
     }
 
@@ -116,7 +114,7 @@ class SwapComponent extends BaseWebComponent {
     }
 
     get iconOff() {
-        return this.getAttribute('icon-off') || 
+        return this.getAttribute('icon-off') ||
             '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
     }
 
@@ -132,19 +130,19 @@ class SwapComponent extends BaseWebComponent {
         const shouldActivate = Boolean(value);
         if (this._active !== shouldActivate) {
             this._active = shouldActivate;
-            
+
             // Update attribute
             if (this._active) {
                 this.setAttribute('active', '');
             } else {
                 this.removeAttribute('active');
             }
-            
+
             // Update DOM if connected
             if (this.isConnected) {
                 const iconOff = this.querySelector('.swap-icon:first-child');
                 const iconOn = this.querySelector('.swap-icon:last-child');
-                
+
                 if (iconOff && iconOn) {
                     if (this._active) {
                         iconOff.classList.add('hidden');
@@ -154,11 +152,11 @@ class SwapComponent extends BaseWebComponent {
                         iconOn.classList.add('hidden');
                     }
                 }
-                
+
                 // Dispatch event for state change
                 this.dispatchEvent(new CustomEvent('swap:change', {
                     bubbles: true,
-                    detail: { active: this._active }
+                    detail: {active: this._active}
                 }));
             }
         }
@@ -174,7 +172,7 @@ class SwapComponent extends BaseWebComponent {
         } else {
             this.removeAttribute('disabled');
         }
-        
+
         // Update tabindex if connected
         if (this.isConnected) {
             const container = this.querySelector('[data-swap-container]');
@@ -210,4 +208,4 @@ class SwapComponent extends BaseWebComponent {
 }
 
 // Define the custom element
-customElements.define('swap-component', SwapComponent);
+customElements.define('swap-component', Swap);

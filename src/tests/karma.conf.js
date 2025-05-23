@@ -16,10 +16,12 @@ module.exports = function(config) {
             // Components to test
             '../dry2/drawer-components.js',
             '../dry2/dry2.js',
+            '../dry2/avatar.js', // Added avatar component
 
             // Test files
             'drawer-components.test.js',
-            'web-components.test.js'
+            'web-components.test.js',
+            'avatar-component.test.js' // Added avatar component test
         ],
 
         // list of files / patterns to exclude
@@ -28,7 +30,8 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         preprocessors: {
             '../dry2/drawer-components.js': ['coverage'],
-            '../dry2/web-components.js': ['coverage']
+            '../dry2/web-components.js': ['coverage'],
+            '../dry2/avatar-component.js': ['coverage'] // Added coverage for avatar component
         },
 
         // test results reporter to use

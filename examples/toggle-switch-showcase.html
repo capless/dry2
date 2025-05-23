@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Switch Component Showcase</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/toggle-switch.js"></script>
+
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Toggle Switch Component</h1>
+        <p class="text-lg text-gray-600">A customizable toggle switch component for binary states with accessibility support.</p>
+    </header>
+
+    <main>
+        <!-- Basic Toggle Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Basic Toggle Switches</h2>
+            <p class="demo-description">Simple on/off toggles with different initial states.</p>
+
+            <div class="demo-container space-y-4">
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="basic-off"></toggle-switch>
+                    <span class="text-sm text-gray-600">Unchecked</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="basic-on" checked></toggle-switch>
+                    <span class="text-sm text-gray-600">Checked</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="basic-disabled" disabled></toggle-switch>
+                    <span class="text-sm text-gray-600">Disabled</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="basic-disabled-checked" disabled checked></toggle-switch>
+                    <span class="text-sm text-gray-600">Disabled & Checked</span>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;toggle-switch name="basic-off"&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch name="basic-on" checked&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch name="basic-disabled" disabled&gt;&lt;/toggle-switch&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Sizes Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Toggle Switch Sizes</h2>
+            <p class="demo-description">The toggle switch supports three different sizes.</p>
+
+            <div class="demo-container flex items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <toggle-switch name="size-sm" size="sm" checked></toggle-switch>
+                    <span class="text-sm text-gray-600">Small</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <toggle-switch name="size-md" size="md" checked></toggle-switch>
+                    <span class="text-sm text-gray-600">Medium</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <toggle-switch name="size-lg" size="lg" checked></toggle-switch>
+                    <span class="text-sm text-gray-600">Large</span>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;toggle-switch name="size-sm" size="sm"&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch name="size-md" size="md"&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch name="size-lg" size="lg"&gt;&lt;/toggle-switch&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Colors Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Custom Colors</h2>
+            <p class="demo-description">Customize the toggle appearance with different color schemes.</p>
+
+            <div class="demo-container space-y-4">
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="color-blue" checked active-bg="bg-blue-500"></toggle-switch>
+                    <span class="text-sm text-gray-600">Blue (default)</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="color-green" checked active-bg="bg-green-500"></toggle-switch>
+                    <span class="text-sm text-gray-600">Green</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="color-purple" checked active-bg="bg-purple-500"></toggle-switch>
+                    <span class="text-sm text-gray-600">Purple</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="color-red" checked active-bg="bg-red-500"></toggle-switch>
+                    <span class="text-sm text-gray-600">Red</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <toggle-switch name="color-custom" checked
+                                   active-bg="bg-gradient-to-r from-pink-500 to-yellow-500"
+                                   inactive-bg="bg-gray-200"
+                                   switch-color="bg-white"></toggle-switch>
+                    <span class="text-sm text-gray-600">Gradient</span>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;toggle-switch name="color-green" checked active-bg="bg-green-500"&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch name="color-gradient" checked
+               active-bg="bg-gradient-to-r from-pink-500 to-yellow-500"&gt;&lt;/toggle-switch&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Labels Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Toggle Switches with Labels</h2>
+            <p class="demo-description">Add descriptive labels to your toggle switches.</p>
+
+            <div class="demo-container space-y-4">
+                <toggle-switch name="notifications" label="Email Notifications" checked></toggle-switch>
+                <toggle-switch name="darkmode" label="Dark Mode" size="lg"></toggle-switch>
+                <toggle-switch name="2fa" label="Two-Factor Authentication" checked active-bg="bg-green-500"></toggle-switch>
+                <toggle-switch name="marketing" label="Marketing Emails" disabled></toggle-switch>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;toggle-switch name="notifications" label="Email Notifications" checked&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch name="darkmode" label="Dark Mode" size="lg"&gt;&lt;/toggle-switch&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Slot Content Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Toggle Switches with Custom Content</h2>
+            <p class="demo-description">Add custom content using slots for enhanced descriptions.</p>
+
+            <div class="demo-container space-y-6">
+                <toggle-switch name="premium" checked>
+                    <div class="text-sm">
+                        <div class="font-medium text-gray-900">Premium Features</div>
+                        <div class="text-gray-500">Unlock advanced functionality</div>
+                    </div>
+                </toggle-switch>
+
+                <toggle-switch name="sync" label="Cloud Sync" checked>
+                    <div class="flex items-center text-xs text-gray-500">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                        </svg>
+                        Last synced 2 minutes ago
+                    </div>
+                </toggle-switch>
+
+                <toggle-switch name="location" size="lg">
+                    <div>
+                        <div class="flex items-center text-sm font-medium text-gray-900">
+                            <svg class="w-4 h-4 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Location Services
+                        </div>
+                        <div class="text-xs text-gray-500 ml-6">Allow app to access your location</div>
+                    </div>
+                </toggle-switch>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;toggle-switch name="premium" checked&gt;
+    &lt;div class="text-sm"&gt;
+        &lt;div class="font-medium text-gray-900"&gt;Premium Features&lt;/div&gt;
+        &lt;div class="text-gray-500"&gt;Unlock advanced functionality&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/toggle-switch&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Interactive Demo</h2>
+            <p class="demo-description">Try interacting with these toggles to see the events in action.</p>
+
+            <div class="demo-container">
+                <div class="space-y-4">
+                    <toggle-switch name="demo1" label="Toggle 1" id="demo-toggle-1"></toggle-switch>
+                    <toggle-switch name="demo2" label="Toggle 2" id="demo-toggle-2" checked></toggle-switch>
+
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-medium mb-2">Event Log:</h4>
+                        <div id="event-log" class="text-sm text-gray-600 space-y-1 max-h-32 overflow-y-auto"></div>
+                        <button id="clear-log" class="mt-2 px-3 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600">Clear Log</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>// Listen for toggle events
+document.addEventListener('toggle:changed', (event) => {
+    console.log('Toggle changed:', {
+        name: event.detail.name,
+        checked: event.detail.checked,
+        value: event.detail.value
+    });
+});</pre>
+            </div>
+        </section>
+
+        <!-- API Reference -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Toggle Switch Component</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Attribute</th>
+                    <th class="px-4 py-2 text-left">Type</th>
+                    <th class="px-4 py-2 text-left">Default</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">name</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Form input name</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">checked</td>
+                    <td class="px-4 py-2">boolean</td>
+                    <td class="px-4 py-2">false</td>
+                    <td class="px-4 py-2">Toggle state</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">disabled</td>
+                    <td class="px-4 py-2">boolean</td>
+                    <td class="px-4 py-2">false</td>
+                    <td class="px-4 py-2">Disable interaction</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">size</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'md'</td>
+                    <td class="px-4 py-2">Size: 'sm', 'md', 'lg'</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">label</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Toggle label text</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">value</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'true'</td>
+                    <td class="px-4 py-2">Value when checked</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">active-bg</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'bg-blue-500'</td>
+                    <td class="px-4 py-2">Background when active</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">inactive-bg</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'bg-gray-300'</td>
+                    <td class="px-4 py-2">Background when inactive</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">switch-color</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'bg-white'</td>
+                    <td class="px-4 py-2">Switch thumb color</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Methods</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Method</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">toggle()</td>
+                    <td class="px-4 py-2">Toggle the switch state</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">check()</td>
+                    <td class="px-4 py-2">Set switch to checked state</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">uncheck()</td>
+                    <td class="px-4 py-2">Set switch to unchecked state</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">enable()</td>
+                    <td class="px-4 py-2">Enable the switch</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">disable()</td>
+                    <td class="px-4 py-2">Disable the switch</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Events</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Event</th>
+                    <th class="px-4 py-2 text-left">Detail</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">toggle:changed</td>
+                    <td class="px-4 py-2">{ checked, value, name }</td>
+                    <td class="px-4 py-2">Fired when toggle state changes</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+        <p>DRY2 Web Components Library</p>
+        <p class="mt-2">
+            <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+        </p>
+    </footer>
+</div>
+
+<script>
+    // Interactive demo event handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const eventLog = document.getElementById('event-log');
+        const clearBtn = document.getElementById('clear-log');
+
+        function addLogEntry(message) {
+            const entry = document.createElement('div');
+            entry.className = 'text-xs';
+            entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            eventLog.appendChild(entry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        // Listen for toggle events
+        document.addEventListener('toggle:changed', function(event) {
+            const { name, checked, value } = event.detail;
+            addLogEntry(`${name} toggled to ${checked ? 'ON' : 'OFF'} (value: ${value})`);
+        });
+
+        // Clear log button
+        clearBtn.addEventListener('click', function() {
+            eventLog.innerHTML = '';
+        });
+
+        // Initial log entry
+        addLogEntry('Event logging started');
+    });
+</script>
+</body>
+</html>

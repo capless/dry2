@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperSelect Component Showcase</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Component Scripts -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/super-select-component.js"></script>
+
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+        }
+
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .demo-description {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .demo-container {
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            background-color: #1f2937;
+            color: #f9fafb;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .event-log {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+<div class="max-w-4xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">SuperSelect Component</h1>
+        <p class="text-lg text-gray-600">A customizable select component with search functionality and multi-select support.</p>
+    </header>
+
+    <main>
+        <!-- Basic Select Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Basic Select</h2>
+            <p class="demo-description">Simple single selection with search functionality.</p>
+
+            <div class="demo-container">
+                <div class="max-w-md">
+                    <super-select name="basic-select" placeholder="Choose a fruit">
+                        <option value="apple">Apple</option>
+                        <option value="banana">Banana</option>
+                        <option value="orange" selected>Orange</option>
+                        <option value="grape">Grape</option>
+                        <option value="pineapple">Pineapple</option>
+                        <option value="mango">Mango</option>
+                        <option value="strawberry">Strawberry</option>
+                        <option value="kiwi">Kiwi</option>
+                    </super-select>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;super-select name="basic-select" placeholder="Choose a fruit"&gt;
+    &lt;option value="apple"&gt;Apple&lt;/option&gt;
+    &lt;option value="banana"&gt;Banana&lt;/option&gt;
+    &lt;option value="orange" selected&gt;Orange&lt;/option&gt;
+    &lt;option value="grape"&gt;Grape&lt;/option&gt;
+&lt;/super-select&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Multi-Select Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Multi-Select</h2>
+            <p class="demo-description">Multiple selection with pill display inside the dropdown.</p>
+
+            <div class="demo-container">
+                <div class="max-w-md">
+                    <super-select name="multi-select" multiple placeholder="Choose categories">
+                        <option value="tech">Technology</option>
+                        <option value="design" selected>Design</option>
+                        <option value="business">Business</option>
+                        <option value="marketing" selected>Marketing</option>
+                        <option value="finance">Finance</option>
+                        <option value="health">Healthcare</option>
+                        <option value="education">Education</option>
+                        <option value="entertainment">Entertainment</option>
+                    </super-select>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;super-select name="multi-select" multiple placeholder="Choose categories"&gt;
+    &lt;option value="tech"&gt;Technology&lt;/option&gt;
+    &lt;option value="design" selected&gt;Design&lt;/option&gt;
+    &lt;option value="business"&gt;Business&lt;/option&gt;
+    &lt;option value="marketing" selected&gt;Marketing&lt;/option&gt;
+&lt;/super-select&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Custom Styling Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Custom Styling</h2>
+            <p class="demo-description">SuperSelect with custom button and dropdown styles.</p>
+
+            <div class="demo-container">
+                <div class="demo-grid">
+                    <div>
+                        <h4 class="font-medium mb-2">Custom Button Style</h4>
+                        <super-select
+                                name="custom-style"
+                                button-class="w-full flex items-center justify-between px-4 py-3 text-sm bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-300"
+                                dropdown-class="absolute w-full z-10 mt-1 bg-white border border-purple-200 rounded-lg shadow-xl">
+                            <option value="option1">Purple Theme</option>
+                            <option value="option2">Custom Design</option>
+                            <option value="option3">Beautiful UI</option>
+                        </super-select>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Dark Theme</h4>
+                        <super-select
+                                name="dark-theme"
+                                button-class="w-full flex items-center justify-between px-4 py-3 text-sm bg-gray-800 text-white border border-gray-600 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-500"
+                                dropdown-class="absolute w-full z-10 mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-xl text-white">
+                            <option value="dark1">Dark Option 1</option>
+                            <option value="dark2">Dark Option 2</option>
+                            <option value="dark3">Dark Option 3</option>
+                        </super-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;super-select
+    name="custom-style"
+    button-class="w-full flex items-center justify-between px-4 py-3 text-sm bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-300"
+    dropdown-class="absolute w-full z-10 mt-1 bg-white border border-purple-200 rounded-lg shadow-xl"&gt;
+    &lt;option value="option1"&gt;Purple Theme&lt;/option&gt;
+&lt;/super-select&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Disabled State Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Disabled State</h2>
+            <p class="demo-description">SuperSelect in disabled state.</p>
+
+            <div class="demo-container">
+                <div class="max-w-md">
+                    <super-select name="disabled-select" disabled>
+                        <option value="option1">Option 1</option>
+                        <option value="option2" selected>Option 2 (Selected)</option>
+                        <option value="option3">Option 3</option>
+                    </super-select>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;super-select name="disabled-select" disabled&gt;
+    &lt;option value="option1"&gt;Option 1&lt;/option&gt;
+    &lt;option value="option2" selected&gt;Option 2 (Selected)&lt;/option&gt;
+&lt;/super-select&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Form Integration Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Form Integration</h2>
+            <p class="demo-description">SuperSelect integrated with a form, including validation and events.</p>
+
+            <div class="demo-container">
+                <div class="demo-grid">
+                    <div>
+                        <form id="demo-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Single Select</label>
+                                <super-select name="single-choice" id="single-select">
+                                    <option value="">Select an option...</option>
+                                    <option value="option1">Option 1</option>
+                                    <option value="option2">Option 2</option>
+                                    <option value="option3">Option 3</option>
+                                </super-select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Multiple Select</label>
+                                <super-select name="multiple-choice" id="multi-select" multiple>
+                                    <option value="tag1">Tag 1</option>
+                                    <option value="tag2">Tag 2</option>
+                                    <option value="tag3">Tag 3</option>
+                                    <option value="tag4">Tag 4</option>
+                                </super-select>
+                            </div>
+
+                            <div class="flex space-x-2">
+                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                    Submit Form
+                                </button>
+                                <button type="button" id="clear-multi" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                    Clear Multi
+                                </button>
+                                <button type="button" id="select-all" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                                    Select All
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Event Log</h4>
+                        <div id="event-log" class="event-log">
+                            <div class="text-gray-500">Events will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;form&gt;
+    &lt;super-select name="single-choice"&gt;
+        &lt;option value="option1"&gt;Option 1&lt;/option&gt;
+    &lt;/super-select&gt;
+
+    &lt;super-select name="multiple-choice" multiple&gt;
+        &lt;option value="tag1"&gt;Tag 1&lt;/option&gt;
+    &lt;/super-select&gt;
+&lt;/form&gt;</pre>
+            </div>
+        </section>
+
+        <!-- JavaScript API Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">JavaScript API</h2>
+            <p class="demo-description">Programmatic control of SuperSelect components.</p>
+
+            <div class="demo-container">
+                <div class="demo-grid">
+                    <div>
+                        <h4 class="font-medium mb-2">API Demo</h4>
+                        <super-select name="api-demo" id="api-select" multiple>
+                            <option value="js">JavaScript</option>
+                            <option value="ts">TypeScript</option>
+                            <option value="py">Python</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="rust">Rust</option>
+                        </super-select>
+
+                        <div class="mt-4 space-y-2">
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="apiDemo.setValue(['js', 'ts'])" class="px-3 py-1 bg-blue-500 text-white rounded text-sm">
+                                    Set JS & TS
+                                </button>
+                                <button onclick="apiDemo.clear()" class="px-3 py-1 bg-red-500 text-white rounded text-sm">
+                                    Clear All
+                                </button>
+                                <button onclick="apiDemo.selectAll()" class="px-3 py-1 bg-green-500 text-white rounded text-sm">
+                                    Select All
+                                </button>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="showCurrentValue()" class="px-3 py-1 bg-gray-500 text-white rounded text-sm">
+                                    Get Value
+                                </button>
+                                <button onclick="addRandomOption()" class="px-3 py-1 bg-purple-500 text-white rounded text-sm">
+                                    Add Option
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">API Result</h4>
+                        <div id="api-result" class="event-log">
+                            <div class="text-gray-500">API results will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>// Get reference to component
+const select = document.getElementById('api-select');
+
+// Set value programmatically
+select.value = ['js', 'ts'];
+
+// Clear selection
+select.clear();
+
+// Select all (multi-select only)
+select.selectAll();
+
+// Get current value
+console.log(select.value);</pre>
+            </div>
+        </section>
+
+        <!-- API Reference -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">SuperSelect Component</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Attribute</th>
+                    <th class="px-4 py-2 text-left">Type</th>
+                    <th class="px-4 py-2 text-left">Default</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">name</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Form input name</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">multiple</td>
+                    <td class="px-4 py-2">boolean</td>
+                    <td class="px-4 py-2">false</td>
+                    <td class="px-4 py-2">Enable multi-select mode</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">disabled</td>
+                    <td class="px-4 py-2">boolean</td>
+                    <td class="px-4 py-2">false</td>
+                    <td class="px-4 py-2">Disable the component</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">placeholder</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'Select an option'</td>
+                    <td class="px-4 py-2">Button placeholder text</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">search-placeholder</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'Search options...'</td>
+                    <td class="px-4 py-2">Search input placeholder</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">button-class</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">default styles</td>
+                    <td class="px-4 py-2">Custom button CSS classes</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">dropdown-class</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">default styles</td>
+                    <td class="px-4 py-2">Custom dropdown CSS classes</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">option-class</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Additional option CSS classes</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">pill-class</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Additional pill CSS classes</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">max-display-length</td>
+                    <td class="px-4 py-2">number</td>
+                    <td class="px-4 py-2">25</td>
+                    <td class="px-4 py-2">Max characters before truncation</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">max-height</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">'15rem'</td>
+                    <td class="px-4 py-2">Maximum dropdown height</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Properties</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Property</th>
+                    <th class="px-4 py-2 text-left">Type</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">value</td>
+                    <td class="px-4 py-2">string | array</td>
+                    <td class="px-4 py-2">Get/set selected value(s)</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Methods</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Method</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">clear()</td>
+                    <td class="px-4 py-2">Clear all selections</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">selectAll()</td>
+                    <td class="px-4 py-2">Select all options (multi-select only)</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-xl font-semibold mt-6 mb-3">Events</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Event</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">change</td>
+                    <td class="px-4 py-2">Fired when selection changes</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">option-selected</td>
+                    <td class="px-4 py-2">Fired when an option is selected</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">option-deselected</td>
+                    <td class="px-4 py-2">Fired when an option is deselected</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+        <p>DRY2 Web Components Library</p>
+        <p class="mt-2">
+            <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+        </p>
+    </footer>
+</div>
+
+<script>
+    // Event logging for demo
+    const eventLog = document.getElementById('event-log');
+    const singleSelect = document.getElementById('single-select');
+    const multiSelect = document.getElementById('multi-select');
+    const apiSelect = document.getElementById('api-select');
+    const apiResult = document.getElementById('api-result');
+
+    function logEvent(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const entry = document.createElement('div');
+        entry.textContent = `[${timestamp}] ${message}`;
+        entry.className = 'text-sm mb-1';
+        eventLog.insertBefore(entry, eventLog.firstChild);
+
+        // Keep only last 10 entries
+        while (eventLog.children.length > 10) {
+            eventLog.removeChild(eventLog.lastChild);
+        }
+    }
+
+    function logApiResult(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const entry = document.createElement('div');
+        entry.textContent = `[${timestamp}] ${message}`;
+        entry.className = 'text-sm mb-1';
+        apiResult.insertBefore(entry, apiResult.firstChild);
+
+        // Keep only last 10 entries
+        while (apiResult.children.length > 10) {
+            apiResult.removeChild(apiResult.lastChild);
+        }
+    }
+
+    // Event listeners for form integration demo
+    [singleSelect, multiSelect].forEach(select => {
+        select.addEventListener('change', (e) => {
+            logEvent(`${select.id} changed: ${JSON.stringify(e.target.value)}`);
+        });
+
+        select.addEventListener('option-selected', (e) => {
+            logEvent(`${select.id} option selected: ${e.detail.value}`);
+        });
+
+        select.addEventListener('option-deselected', (e) => {
+            logEvent(`${select.id} option deselected: ${e.detail.value}`);
+        });
+    });
+
+    // Form submission
+    document.getElementById('demo-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        logEvent(`Form submitted: ${JSON.stringify(Object.fromEntries(formData))}`);
+    });
+
+    // Control buttons
+    document.getElementById('clear-multi').addEventListener('click', () => {
+        multiSelect.clear();
+        logEvent('Multi-select cleared programmatically');
+    });
+
+    document.getElementById('select-all').addEventListener('click', () => {
+        multiSelect.selectAll();
+        logEvent('All multi-select options selected programmatically');
+    });
+
+    // API Demo functions
+    const apiDemo = {
+        setValue: (value) => {
+            apiSelect.value = value;
+            logApiResult(`Set value to: ${JSON.stringify(value)}`);
+        },
+        clear: () => {
+            apiSelect.clear();
+            logApiResult('Cleared all selections');
+        },
+        selectAll: () => {
+            apiSelect.selectAll();
+            logApiResult('Selected all options');
+        }
+    };
+
+    function showCurrentValue() {
+        logApiResult(`Current value: ${JSON.stringify(apiSelect.value)}`);
+    }
+
+    let optionCounter = 1;
+    function addRandomOption() {
+        const option = document.createElement('option');
+        option.value = `new-option-${optionCounter}`;
+        option.textContent = `New Option ${optionCounter}`;
+        apiSelect.appendChild(option);
+
+        // Force component to re-parse options
+        apiSelect._parseOptions();
+        apiSelect.forceRender();
+
+        logApiResult(`Added new option: ${option.textContent}`);
+        optionCounter++;
+    }
+
+    // API select event listeners
+    apiSelect.addEventListener('change', (e) => {
+        logApiResult(`API select changed: ${JSON.stringify(e.target.value)}`);
+    });
+</script>
+</body>
+</html>

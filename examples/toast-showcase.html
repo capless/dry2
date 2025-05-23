@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Toast Component Showcase</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- DRY2 core and Toast component -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/toast.js"></script>
+
+    <style>
+        .demo-section      { margin-bottom: 2rem; }
+        .demo-title        { font-size: 1.25rem; font-weight: 600; margin-bottom: .5rem; }
+        .demo-description  { margin-bottom: 1rem; color: #4b5563; }
+        .demo-container    { background: white; border: 1px solid #e5e7eb; border-radius: .375rem;
+            padding: 1.5rem; position: relative; }
+        .showcase-relative { min-height: 160px; }
+        .code-block        { background: #1f2937; color: #f9fafb; font-family: monospace;
+            font-size: .875rem; padding: 1rem; border-radius: .375rem;
+            overflow-x: auto; margin-top: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold mb-2 text-gray-900">Toast Component</h1>
+        <p class="text-gray-600">
+            Lightweight notifications that slide in and out, with configurable type, position, duration, and styling.
+        </p>
+    </header>
+
+    <main>
+        <!-- Basic -->
+        <section class="demo-section">
+            <h2 class="demo-title">Basic Toast</h2>
+            <p class="demo-description">An info toast in the default bottom-right corner.</p>
+
+            <div class="demo-container showcase-relative flex items-center justify-center">
+                <dry-toast message="Hello, this is an info toast!" auto-show></dry-toast>
+            </div>
+
+            <div class="code-block"><pre>&lt;dry-toast message="Hello, this is an info toast!" auto-show&gt;&lt;/dry-toast&gt;</pre></div>
+        </section>
+
+        <!-- Types -->
+        <section class="demo-section">
+            <h2 class="demo-title">Types</h2>
+            <p class="demo-description">
+                Use the <code>type</code> attribute or static methods for different styles.
+            </p>
+
+            <div class="demo-container showcase-relative space-x-2">
+                <button id="btn-info"    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Show Info</button>
+                <button id="btn-success" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Show Success</button>
+                <button id="btn-warning" class="bg-yellow-500 text-gray-800 px-4 py-2 rounded hover:bg-yellow-600">Show Warning</button>
+                <button id="btn-error"   class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Show Error</button>
+            </div>
+
+            <div class="code-block"><pre>
+// via static methods:
+Toast.info('This is an info toast');
+Toast.success('That worked!');
+Toast.warning('Be careful…');
+Toast.error('Something went wrong');
+        </pre></div>
+
+            <script>
+                document.getElementById('btn-info')   .addEventListener('click', () => Toast.info('This is an info toast'));
+                document.getElementById('btn-success').addEventListener('click', () => Toast.success('That worked!'));
+                document.getElementById('btn-warning').addEventListener('click', () => Toast.warning('Be careful…'));
+                document.getElementById('btn-error')  .addEventListener('click', () => Toast.error('Something went wrong'));
+            </script>
+        </section>
+
+        <!-- Positions -->
+        <section class="demo-section">
+            <h2 class="demo-title">Position Variants</h2>
+            <p class="demo-description">
+                Pass <code>position</code> in options to move the toast around the viewport.
+            </p>
+
+            <div class="demo-container showcase-relative grid grid-cols-3 gap-2">
+                <button id="pos-tl" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Top-Left</button>
+                <button id="pos-tc" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Top-Center</button>
+                <button id="pos-tr" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Top-Right</button>
+                <button id="pos-bl" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Bottom-Left</button>
+                <button id="pos-bc" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Bottom-Center</button>
+                <button id="pos-br" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Bottom-Right</button>
+            </div>
+
+            <div class="code-block"><pre>
+// e.g.:
+Toast.info('Top-Left toast',  { position: 'top-left' });
+Toast.success('Top-Center toast', { position: 'top-center' });
+        </pre></div>
+
+            <script>
+                const positions = {
+                    'pos-tl': 'top-left',
+                    'pos-tc': 'top-center',
+                    'pos-tr': 'top-right',
+                    'pos-bl': 'bottom-left',
+                    'pos-bc': 'bottom-center',
+                    'pos-br': 'bottom-right'
+                };
+                Object.entries(positions).forEach(([id,pos]) =>
+                    document.getElementById(id)
+                        .addEventListener('click', () => Toast.info(`${pos} toast`, { position: pos }))
+                );
+            </script>
+        </section>
+
+        <!-- Duration & Styling -->
+        <section class="demo-section">
+            <h2 class="demo-title">Duration &amp; Custom Styling</h2>
+            <p class="demo-description">
+                Override <code>duration</code>, <code>container-class</code>, or <code>toast-class</code>.
+            </p>
+
+            <div class="demo-container showcase-relative space-x-2">
+                <button id="long-toast" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">
+                    10s Duration
+                </button>
+                <button id="styled-toast" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    Custom Style
+                </button>
+            </div>
+
+            <div class="code-block"><pre>
+// 10 second toast:
+Toast.info('Lasts 10 seconds', { duration: 10000 });
+
+// custom CSS classes:
+Toast.success('Styled toast', {
+  toastClass: 'bg-purple-100 text-purple-800 border-l-4 border-purple-400 p-4 rounded',
+  duration: 5000
+});
+        </pre></div>
+
+            <script>
+                document.getElementById('long-toast')
+                    .addEventListener('click', () => Toast.info('Lasts 10 seconds', { duration: 10000 }));
+
+                document.getElementById('styled-toast')
+                    .addEventListener('click', () => Toast.success('Styled toast', {
+                        toastClass: 'bg-purple-100 text-purple-800 border-l-4 border-purple-400 p-4 rounded',
+                        duration: 5000
+                    }));
+            </script>
+        </section>
+
+        <!-- JS API -->
+        <section class="demo-section">
+            <h2 class="demo-title">JavaScript API</h2>
+            <p class="demo-description">
+                Control individual <code>&lt;dry-toast&gt;</code> elements and listen for show/hide events.
+            </p>
+
+            <div class="demo-container showcase-relative">
+                <dry-toast id="api-toast" message="Manual toast"></dry-toast>
+
+                <div class="mt-4 space-x-2">
+                    <button id="api-show" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Show</button>
+                    <button id="api-hide" class="bg-red-500  text-white px-4 py-2 rounded hover:bg-red-600">Hide</button>
+                </div>
+
+                <div id="api-log" class="hidden mt-4 p-3 bg-gray-100 rounded text-sm"></div>
+            </div>
+
+            <div class="code-block"><pre>// element API:
+const t = document.getElementById('api-toast');
+t.show();
+t.hide();
+
+// events:
+t.addEventListener('toast:show', () =&gt; console.log('shown'));
+t.addEventListener('toast:hide', () =&gt; console.log('hidden'));
+        </pre></div>
+
+            <script>
+                const t = document.getElementById('api-toast');
+                const log = document.getElementById('api-log');
+                function write(msg) {
+                    log.classList.remove('hidden');
+                    log.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
+                }
+                t.addEventListener('toast:show', () => write('toast shown'));
+                t.addEventListener('toast:hide', () => write('toast hidden'));
+                document.getElementById('api-show').addEventListener('click', () => t.show());
+                document.getElementById('api-hide').addEventListener('click', () => t.hide());
+            </script>
+        </section>
+
+        <!-- API Reference -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+
+            <h3 class="text-xl font-semibold mb-2">Attributes</h3>
+            <table class="w-full border border-gray-300 rounded mb-6">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Attribute</th>
+                    <th class="px-4 py-2 text-left">Type</th>
+                    <th class="px-4 py-2 text-left">Default</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">message</td><td class="px-4 py-2">string</td><td class="px-4 py-2">—</td><td class="px-4 py-2">Text or HTML content of the toast.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">type</td><td class="px-4 py-2">string</td><td class="px-4 py-2">info</td><td class="px-4 py-2">One of <code>info</code>, <code>success</code>, <code>warning</code>, <code>error</code>.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">position</td><td class="px-4 py-2">string</td><td class="px-4 py-2">bottom-right</td><td class="px-4 py-2">Corner: <code>top-left</code>, <code>top-center</code>, etc.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">duration</td><td class="px-4 py-2">number</td><td class="px-4 py-2">3000</td><td class="px-4 py-2">Milliseconds before auto-hide (0 = persistent).</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">auto-show</td><td class="px-4 py-2">boolean</td><td class="px-4 py-2">false</td><td class="px-4 py-2">Show immediately on render when present.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">container-class</td><td class="px-4 py-2">string</td><td class="px-4 py-2">—</td><td class="px-4 py-2">Override default toast container classes.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">toast-class</td><td class="px-4 py-2">string</td><td class="px-4 py-2">—</td><td class="px-4 py-2">Override default toast styling classes.</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-xl font-semibold mb-2">Methods &amp; Events</h3>
+            <table class="w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">API</th>
+                    <th class="px-4 py-2 text-left">Usage</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">show()</td><td class="px-4 py-2">instance.show()</td><td class="px-4 py-2">Programmatically display this toast.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">hide()</td><td class="px-4 py-2">instance.hide()</td><td class="px-4 py-2">Hide and remove this toast.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.info()</td><td class="px-4 py-2">Toast.info(msg, opts)</td><td class="px-4 py-2">Static helper for info toasts.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.success()</td><td class="px-4 py-2">Toast.success(msg, opts)</td><td class="px-4 py-2">Static helper for success toasts.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.warning()</td><td class="px-4 py-2">Toast.warning(msg, opts)</td><td class="px-4 py-2">Static helper for warning toasts.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.error()</td><td class="px-4 py-2">Toast.error(msg, opts)</td><td class="px-4 py-2">Static helper for error toasts.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">toast:show</td><td class="px-4 py-2">element.addEventListener</td><td class="px-4 py-2">Fired when a toast becomes visible.</td></tr>
+                <tr class="border-t"><td class="px-4 py-2 font-medium">toast:hide</td><td class="px-4 py-2">element.addEventListener</td><td class="px-4 py-2">Fired after a toast is hidden.</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+        <p>DRY2 Web Components Library</p>
+        <p class="mt-2"><a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a></p>
+    </footer>
+</div>
+</body>
+</html>

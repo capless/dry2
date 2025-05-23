@@ -1,6 +1,6 @@
 // Timeline Component for DRY2 Web Components
 
-class TimelineComponent extends BaseWebComponent {
+class Timeline extends BaseWebComponent {
     constructor() {
         super();
     }
@@ -303,5 +303,5 @@ class TimelineItem extends BaseWebComponent {
 }
 
 // Define the custom elements
-customElements.define('timeline-component', TimelineComponent);
+customElements.define('timeline-component', Timeline);
 customElements.define('timeline-item', TimelineItem);

@@ -10,7 +10,8 @@
     
     <!-- Component Scripts -->
     <script src="../src/dry2/dry2.js"></script>
-    <script src="../src/dry2/badge-component.js"></script>
+    <script src="../src/dry2/badge.js"></script>
+
     
     <style>
         .demo-section {
@@ -61,19 +62,19 @@
                 <p class="demo-description">The Badge component supports different color variants.</p>
                 
                 <div class="demo-container flex items-center gap-4">
-                    <badge-component variant="primary">Primary</badge-component>
-                    <badge-component variant="success">Success</badge-component>
-                    <badge-component variant="danger">Danger</badge-component>
-                    <badge-component variant="warning">Warning</badge-component>
-                    <badge-component variant="info">Info</badge-component>
+                    <dry-badge variant="primary">Primary</dry-badge>
+                    <dry-badge variant="success">Success</dry-badge>
+                    <dry-badge variant="danger">Danger</dry-badge>
+                    <dry-badge variant="warning">Warning</dry-badge>
+                    <dry-badge variant="info">Info</dry-badge>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;badge-component variant="primary"&gt;Primary&lt;/badge-component&gt;
-&lt;badge-component variant="success"&gt;Success&lt;/badge-component&gt;
-&lt;badge-component variant="danger"&gt;Danger&lt;/badge-component&gt;
-&lt;badge-component variant="warning"&gt;Warning&lt;/badge-component&gt;
-&lt;badge-component variant="info"&gt;Info&lt;/badge-component&gt;</pre>
+                    <pre>&lt;dry-badge variant="primary"&gt;Primary&lt;/dry-badge&gt;
+&lt;dry-badge variant="success"&gt;Success&lt;/dry-badge&gt;
+&lt;dry-badge variant="danger"&gt;Danger&lt;/dry-badge&gt;
+&lt;dry-badge variant="warning"&gt;Warning&lt;/dry-badge&gt;
+&lt;dry-badge variant="info"&gt;Info&lt;/dry-badge&gt;</pre>
                 </div>
             </section>
             
@@ -83,15 +84,15 @@
                 <p class="demo-description">The Badge component supports different sizes.</p>
                 
                 <div class="demo-container flex items-center gap-4">
-                    <badge-component size="sm">Small</badge-component>
-                    <badge-component size="md">Medium</badge-component>
-                    <badge-component size="lg">Large</badge-component>
+                    <dry-badge size="sm">Small</dry-badge>
+                    <dry-badge size="md">Medium</dry-badge>
+                    <dry-badge size="lg">Large</dry-badge>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;badge-component size="sm"&gt;Small&lt;/badge-component&gt;
-&lt;badge-component size="md"&gt;Medium&lt;/badge-component&gt;
-&lt;badge-component size="lg"&gt;Large&lt;/badge-component&gt;</pre>
+                    <pre>&lt;dry-badge size="sm"&gt;Small&lt;/dry-badge&gt;
+&lt;dry-badge size="md"&gt;Medium&lt;/dry-badge&gt;
+&lt;dry-badge size="lg"&gt;Large&lt;/dry-badge&gt;</pre>
                 </div>
             </section>
             
@@ -101,17 +102,17 @@
                 <p class="demo-description">Badges can display numbers with maximum value options.</p>
                 
                 <div class="demo-container flex items-center gap-4">
-                    <badge-component>5</badge-component>
-                    <badge-component>42</badge-component>
-                    <badge-component max="99">100</badge-component>
-                    <badge-component max="999">1000</badge-component>
+                    <dry-badge>5</dry-badge>
+                    <dry-badge>42</dry-badge>
+                    <dry-badge max="99">100</dry-badge>
+                    <dry-badge max="999">1000</dry-badge>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;badge-component&gt;5&lt;/badge-component&gt;
-&lt;badge-component&gt;42&lt;/badge-component&gt;
-&lt;badge-component max="99"&gt;100&lt;/badge-component&gt;
-&lt;badge-component max="999"&gt;1000&lt;/badge-component&gt;</pre>
+                    <pre>&lt;dry-badge&gt;5&lt;/dry-badge&gt;
+&lt;dry-badge&gt;42&lt;/dry-badge&gt;
+&lt;dry-badge max="99"&gt;100&lt;/dry-badge&gt;
+&lt;dry-badge max="999"&gt;1000&lt;/dry-badge&gt;</pre>
                 </div>
             </section>
             
@@ -121,15 +122,15 @@
                 <p class="demo-description">Display badges as simple dots without content.</p>
                 
                 <div class="demo-container flex items-center gap-4">
-                    <badge-component dot size="sm" variant="primary"></badge-component>
-                    <badge-component dot size="md" variant="success"></badge-component>
-                    <badge-component dot size="lg" variant="danger"></badge-component>
+                    <dry-badge dot size="sm" variant="primary"></dry-badge>
+                    <dry-badge dot size="md" variant="success"></dry-badge>
+                    <dry-badge dot size="lg" variant="danger"></dry-badge>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;badge-component dot size="sm" variant="primary"&gt;&lt;/badge-component&gt;
-&lt;badge-component dot size="md" variant="success"&gt;&lt;/badge-component&gt;
-&lt;badge-component dot size="lg" variant="danger"&gt;&lt;/badge-component&gt;</pre>
+                    <pre>&lt;dry-badge dot size="sm" variant="primary"&gt;&lt;/dry-badge&gt;
+&lt;dry-badge dot size="md" variant="success"&gt;&lt;/dry-badge&gt;
+&lt;dry-badge dot size="lg" variant="danger"&gt;&lt;/dry-badge&gt;</pre>
                 </div>
             </section>
             
@@ -140,19 +141,19 @@
                 
                 <div class="demo-container flex items-center gap-8">
                     <div>
-                        <badge-component position="top-right" variant="danger">5</badge-component>
+                        <dry-badge position="top-right" variant="danger">5</dry-badge>
                         <button class="px-4 py-2 bg-gray-200 rounded-md">Notifications</button>
                     </div>
                     
                     <div>
-                        <badge-component position="top-left" variant="primary">New</badge-component>
+                        <dry-badge position="top-left" variant="primary">New</dry-badge>
                         <div class="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
                             Icon
                         </div>
                     </div>
                     
                     <div>
-                        <badge-component position="bottom-right" dot variant="success"></badge-component>
+                        <dry-badge position="bottom-right" dot variant="success"></dry-badge>
                         <div class="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
                             Status
                         </div>
@@ -161,7 +162,7 @@
                 
                 <div class="code-block">
                     <pre>&lt;div&gt;
-    &lt;badge-component position="top-right" variant="danger"&gt;5&lt;/badge-component&gt;
+    &lt;dry-badge position="top-right" variant="danger"&gt;5&lt;/dry-badge&gt;
     &lt;button class="px-4 py-2 bg-gray-200 rounded-md"&gt;Notifications&lt;/button&gt;
 &lt;/div&gt;</pre>
                 </div>

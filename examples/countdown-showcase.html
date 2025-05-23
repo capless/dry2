@@ -10,7 +10,7 @@
     
     <!-- Component Scripts -->
     <script src="../src/dry2/dry2.js"></script>
-    <script src="../src/dry2/countdown-component.js"></script>
+    <script src="../src/dry2/countdown.js"></script>
     
     <style>
         .demo-section {
@@ -61,12 +61,12 @@
                 <p class="demo-description">A simple countdown timer with a fixed duration.</p>
                 
                 <div class="demo-container">
-                    <countdown-component 
+                    <dry-countdown 
                         duration="60" 
                         autostart 
                         leading-zeros
                         expiry-text="Time's up!">
-                    </countdown-component>
+                    </dry-countdown>
                     
                     <div class="mt-4 flex gap-2">
                         <button id="basic-pause" class="px-3 py-1 bg-blue-500 text-white rounded">Pause</button>
@@ -76,12 +76,12 @@
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;countdown-component 
+                    <pre>&lt;dry-countdown 
     duration="60" 
     autostart 
     leading-zeros
     expiry-text="Time's up!"&gt;
-&lt;/countdown-component&gt;</pre>
+&lt;/dry-countdown&gt;</pre>
                 </div>
             </section>
             
@@ -101,24 +101,24 @@
                         <button id="set-target-date" class="ml-2 px-3 py-2 bg-blue-500 text-white rounded">Set Date</button>
                     </div>
                     
-                    <countdown-component 
+                    <dry-countdown 
                         id="target-date-countdown"
                         target-date="2025-12-31T23:59:59" 
                         autostart 
                         leading-zeros
                         show-zeros
                         class="text-center">
-                    </countdown-component>
+                    </dry-countdown>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;countdown-component 
+                    <pre>&lt;dry-countdown 
     target-date="2025-12-31T23:59:59" 
     autostart 
     leading-zeros
     show-zeros
     class="text-center"&gt;
-&lt;/countdown-component&gt;</pre>
+&lt;/dry-countdown&gt;</pre>
                 </div>
             </section>
             
@@ -131,42 +131,42 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <h3 class="font-medium mb-2">Days & Hours Only</h3>
-                            <countdown-component 
+                            <dry-countdown 
                                 duration="172800" 
                                 format="days,hours" 
                                 autostart 
                                 leading-zeros>
-                            </countdown-component>
+                            </dry-countdown>
                         </div>
                         
                         <div>
                             <h3 class="font-medium mb-2">Minutes & Seconds Only</h3>
-                            <countdown-component 
+                            <dry-countdown 
                                 duration="3600" 
                                 format="minutes,seconds" 
                                 autostart 
                                 leading-zeros>
-                            </countdown-component>
+                            </dry-countdown>
                         </div>
                     </div>
                 </div>
                 
                 <div class="code-block">
                     <pre>&lt;!-- Days & Hours Only --&gt;
-&lt;countdown-component 
+&lt;dry-countdown 
     duration="172800" 
     format="days,hours" 
     autostart 
     leading-zeros&gt;
-&lt;/countdown-component&gt;
+&lt;/dry-countdown&gt;
 
 &lt;!-- Minutes & Seconds Only --&gt;
-&lt;countdown-component 
+&lt;dry-countdown 
     duration="3600" 
     format="minutes,seconds" 
     autostart 
     leading-zeros&gt;
-&lt;/countdown-component&gt;</pre>
+&lt;/dry-countdown&gt;</pre>
                 </div>
             </section>
             
@@ -176,7 +176,7 @@
                 <p class="demo-description">Customize the labels for time units with support for singular/plural forms.</p>
                 
                 <div class="demo-container">
-                    <countdown-component 
+                    <dry-countdown 
                         duration="90061" 
                         autostart 
                         leading-zeros
@@ -184,11 +184,11 @@
                         hours-label="Hr|Hrs"
                         minutes-label="Min|Mins"
                         seconds-label="Sec|Secs">
-                    </countdown-component>
+                    </dry-countdown>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;countdown-component 
+                    <pre>&lt;dry-countdown 
     duration="90061" 
     autostart 
     leading-zeros
@@ -196,7 +196,7 @@
     hours-label="Hr|Hrs"
     minutes-label="Min|Mins"
     seconds-label="Sec|Secs"&gt;
-&lt;/countdown-component&gt;</pre>
+&lt;/dry-countdown&gt;</pre>
                 </div>
             </section>
             
@@ -206,23 +206,23 @@
                 <p class="demo-description">Customize the appearance of the countdown timer.</p>
                 
                 <div class="demo-container">
-                    <countdown-component 
+                    <dry-countdown 
                         duration="3600" 
                         autostart 
                         leading-zeros
                         class="flex justify-center p-4 bg-blue-100 rounded-lg"
                         unit-class="mx-4 bg-white p-4 rounded-lg shadow-md w-24 flex flex-col items-center">
-                    </countdown-component>
+                    </dry-countdown>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;countdown-component 
+                    <pre>&lt;dry-countdown 
     duration="3600" 
     autostart 
     leading-zeros
     class="flex justify-center p-4 bg-blue-100 rounded-lg"
     unit-class="mx-4 bg-white p-4 rounded-lg shadow-md w-24 flex flex-col items-center"&gt;
-&lt;/countdown-component&gt;</pre>
+&lt;/dry-countdown&gt;</pre>
                 </div>
             </section>
             
@@ -233,7 +233,7 @@
                 
                 <div class="demo-container">
                     <div class="mb-4">
-                        <countdown-component 
+                        <dry-countdown 
                             id="expire-countdown"
                             duration="5" 
                             autostart 
@@ -243,12 +243,12 @@
                                 <p>Your countdown has expired.</p>
                                 <button id="restart-expire" class="mt-2 px-3 py-1 bg-red-500 text-white rounded">Restart</button>
                             </div>
-                        </countdown-component>
+                        </dry-countdown>
                     </div>
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;countdown-component 
+                    <pre>&lt;dry-countdown 
     duration="5" 
     autostart 
     leading-zeros&gt;
@@ -257,7 +257,7 @@
         &lt;p&gt;Your countdown has expired.&lt;/p&gt;
         &lt;button id="restart-expire" class="mt-2 px-3 py-1 bg-red-500 text-white rounded"&gt;Restart&lt;/button&gt;
     &lt;/div&gt;
-&lt;/countdown-component&gt;</pre>
+&lt;/dry-countdown&gt;</pre>
                 </div>
             </section>
             
@@ -267,13 +267,13 @@
                 <p class="demo-description">The countdown component emits events for different states.</p>
                 
                 <div class="demo-container">
-                    <countdown-component 
+                    <dry-countdown 
                         id="event-countdown"
                         duration="10" 
                         autostart 
                         leading-zeros
                         format="seconds">
-                    </countdown-component>
+                    </dry-countdown>
                     
                     <div class="mt-4 flex gap-2">
                         <button id="event-pause" class="px-3 py-1 bg-blue-500 text-white rounded">Pause</button>
@@ -288,13 +288,13 @@
                 </div>
                 
                 <div class="code-block">
-                    <pre>&lt;countdown-component 
+                    <pre>&lt;dry-countdown 
     id="event-countdown"
     duration="10" 
     autostart 
     leading-zeros
     format="seconds"&gt;
-&lt;/countdown-component&gt;
+&lt;/dry-countdown&gt;
 
 &lt;script&gt;
     document.addEventListener('countdown:completed', (e) => {
@@ -473,17 +473,17 @@
     <script>
         // Basic countdown controls
         document.getElementById('basic-pause').addEventListener('click', () => {
-            const countdown = document.querySelector('countdown-component');
+            const countdown = document.querySelector('dry-countdown');
             countdown.pause();
         });
         
         document.getElementById('basic-resume').addEventListener('click', () => {
-            const countdown = document.querySelector('countdown-component');
+            const countdown = document.querySelector('dry-countdown');
             countdown.resume();
         });
         
         document.getElementById('basic-reset').addEventListener('click', () => {
-            const countdown = document.querySelector('countdown-component');
+            const countdown = document.querySelector('dry-countdown');
             countdown.reset();
         });
         

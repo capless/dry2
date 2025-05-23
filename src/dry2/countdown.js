@@ -1,5 +1,3 @@
-// Countdown Component for DRY2 Web Components
-
 class CountdownComponent extends BaseWebComponent {
     constructor() {
         super();
@@ -13,68 +11,68 @@ class CountdownComponent extends BaseWebComponent {
     render() {
         // Create container for countdown display
         const containerClasses = `countdown-container ${this.class || ''}`.trim();
-        
+
         let content;
-        
+
         if (this._isCompleted) {
             // Show expiry content if countdown is completed
-            content = this.expiryText ? 
-                `<div class="countdown-expired">${this.expiryText}</div>` : 
+            content = this.expiryText ?
+                `<div class="countdown-expired">${this.expiryText}</div>` :
                 `<slot name="expired">Expired</slot>`;
         } else {
             // Show countdown timer
             content = this.createCountdownDisplay();
         }
-        
+
         const countdownHTML = `
             <div class="${containerClasses}" aria-live="polite">
                 ${content}
             </div>
         `;
-        
+
         this.innerHTML = countdownHTML;
     }
 
     createCountdownDisplay() {
         // Calculate time units from remaining time
         const timeUnits = this.calculateTimeUnits(this._remainingTime);
-        
+
         // Determine which units to display based on format
         const format = this.format.toLowerCase().split(',');
-        
+
         let displayHTML = '<div class="countdown-units flex">';
-        
+
         // Create display for each enabled unit
         if (format.includes('days') && (timeUnits.days > 0 || this.showZeros)) {
             displayHTML += this.createTimeUnit('days', timeUnits.days);
         }
-        
+
         if (format.includes('hours') && (timeUnits.hours > 0 || this.showZeros || timeUnits.days > 0)) {
             displayHTML += this.createTimeUnit('hours', timeUnits.hours);
         }
-        
+
         if (format.includes('minutes') && (timeUnits.minutes > 0 || this.showZeros || timeUnits.hours > 0 || timeUnits.days > 0)) {
             displayHTML += this.createTimeUnit('minutes', timeUnits.minutes);
         }
-        
+
         if (format.includes('seconds') && (timeUnits.seconds > 0 || this.showZeros || timeUnits.minutes > 0 || timeUnits.hours > 0 || timeUnits.days > 0)) {
             displayHTML += this.createTimeUnit('seconds', timeUnits.seconds);
         }
-        
+
         displayHTML += '</div>';
-        
+
         return displayHTML;
     }
 
     createTimeUnit(unit, value) {
         // Format the value with leading zeros if needed
         const formattedValue = this.formatValue(value);
-        
+
         // Get unit label (singular or plural based on value)
-        const label = value === 1 ? 
-            this.getUnitLabel(unit, true) : 
+        const label = value === 1 ?
+            this.getUnitLabel(unit, true) :
             this.getUnitLabel(unit, false);
-        
+
         // Create the HTML for this time unit
         return `
             <div class="countdown-unit countdown-${unit} ${this.unitClass}">
@@ -93,7 +91,7 @@ class CountdownComponent extends BaseWebComponent {
         // Custom labels from attributes
         const labelAttribute = `${unit}-label`;
         const customLabel = this.getAttribute(labelAttribute);
-        
+
         if (customLabel) {
             // If custom label contains a pipe, split into singular|plural
             if (customLabel.includes('|')) {
@@ -102,14 +100,19 @@ class CountdownComponent extends BaseWebComponent {
             }
             return customLabel;
         }
-        
+
         // Default labels
         switch (unit) {
-            case 'days': return singular ? 'Day' : 'Days';
-            case 'hours': return singular ? 'Hour' : 'Hours';
-            case 'minutes': return singular ? 'Minute' : 'Minutes';
-            case 'seconds': return singular ? 'Second' : 'Seconds';
-            default: return unit;
+            case 'days':
+                return singular ? 'Day' : 'Days';
+            case 'hours':
+                return singular ? 'Hour' : 'Hours';
+            case 'minutes':
+                return singular ? 'Minute' : 'Minutes';
+            case 'seconds':
+                return singular ? 'Second' : 'Seconds';
+            default:
+                return unit;
         }
     }
 
@@ -119,7 +122,7 @@ class CountdownComponent extends BaseWebComponent {
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
-        
+
         return {
             days: days,
             hours: hours % 24,
@@ -130,29 +133,29 @@ class CountdownComponent extends BaseWebComponent {
 
     startCountdown() {
         if (this._intervalId) return; // Already running
-        
+
         // Set the end time if target date is provided
         if (this.targetDate && !this._endTime) {
             this._endTime = new Date(this.targetDate).getTime();
         }
-        
+
         // Calculate initial remaining time
         this.updateRemainingTime();
-        
+
         // Start the interval
         const intervalMs = 1000; // Update every second
         this._intervalId = setInterval(() => {
             if (this._isPaused) return;
-            
+
             this.updateRemainingTime();
             this.render();
-            
+
             // Check if countdown is complete
             if (this._remainingTime <= 0) {
                 this.completeCountdown();
             }
         }, intervalMs);
-        
+
         // Initial render
         this.render();
     }
@@ -170,50 +173,50 @@ class CountdownComponent extends BaseWebComponent {
 
     pause() {
         this._isPaused = true;
-        
+
         // Dispatch paused event
         this.dispatchEvent(new CustomEvent('countdown:paused', {
             bubbles: true,
-            detail: { countdown: this }
+            detail: {countdown: this}
         }));
     }
 
     resume() {
         this._isPaused = false;
-        
+
         // Dispatch resumed event
         this.dispatchEvent(new CustomEvent('countdown:resumed', {
             bubbles: true,
-            detail: { countdown: this }
+            detail: {countdown: this}
         }));
     }
 
     reset() {
         // Stop current countdown
         this.stopCountdown();
-        
+
         // Reset state
         this._isCompleted = false;
         this._isPaused = false;
         this._endTime = null;
-        
+
         // Set new end time if target date is provided
         if (this.targetDate) {
             this._endTime = new Date(this.targetDate).getTime();
         }
-        
+
         // Reset remaining time for duration-based countdown
         if (this.duration) {
             this._remainingTime = parseInt(this.duration, 10) * 1000;
         }
-        
+
         // Start the countdown again
         this.startCountdown();
-        
+
         // Dispatch reset event
         this.dispatchEvent(new CustomEvent('countdown:reset', {
             bubbles: true,
-            detail: { countdown: this }
+            detail: {countdown: this}
         }));
     }
 
@@ -229,24 +232,24 @@ class CountdownComponent extends BaseWebComponent {
         this._isCompleted = true;
         this._remainingTime = 0;
         this.render();
-        
+
         // Dispatch completed event
         this.dispatchEvent(new CustomEvent('countdown:completed', {
             bubbles: true,
-            detail: { countdown: this }
+            detail: {countdown: this}
         }));
     }
 
     connectedCallback() {
         super.connectedCallback();
-        
+
         // Determine countdown mode (target date or duration)
         if (this.targetDate) {
             this._endTime = new Date(this.targetDate).getTime();
         } else if (this.duration) {
             this._remainingTime = parseInt(this.duration, 10) * 1000;
         }
-        
+
         // Start countdown automatically if autostart is enabled
         if (this.autostart) {
             this.startCountdown();
@@ -279,7 +282,7 @@ class CountdownComponent extends BaseWebComponent {
                 // Start countdown if autostart is enabled
                 this.startCountdown();
             }
-            
+
             if (this.isConnected && this._intervalId) {
                 this.render();
             }
@@ -361,4 +364,4 @@ class CountdownComponent extends BaseWebComponent {
 }
 
 // Define the custom element
-customElements.define('countdown-component', CountdownComponent);
+customElements.define('dry-countdown', CountdownComponent);

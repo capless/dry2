@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>QR Code Component Showcase</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- QRious library (peer dependency) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
+    <!-- DRY2 core and QR component -->
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/qr.js"></script>
+
+    <style>
+        .demo-section      { margin-bottom: 2rem; }
+        .demo-title        { font-size: 1.25rem; font-weight: 600; margin-bottom: .5rem; }
+        .demo-description  { margin-bottom: 1rem; color: #4b5563; }
+        .demo-container    { background: white; border: 1px solid #e5e7eb; border-radius: .375rem;
+            padding: 1.5rem; position: relative; }
+        .showcase-relative { min-height: 240px; }
+        .code-block        { background: #1f2937; color: #f9fafb; font-family: monospace;
+            font-size: .875rem; padding: 1rem; border-radius: .375rem;
+            overflow-x: auto; margin-top: 1rem; }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-8">
+<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold mb-2 text-gray-900">QR Code Component</h1>
+        <p class="text-gray-600">
+            A simple custom element for generating QR codes via the QRious library.
+            Configure via attributes or JS API.
+        </p>
+    </header>
+
+    <main>
+        <!-- Basic -->
+        <section class="demo-section">
+            <h2 class="demo-title">Basic QR Code</h2>
+            <p class="demo-description">Provide a <code>value</code> to generate a code (default size: 200×200).</p>
+
+            <div class="demo-container showcase-relative flex items-center justify-center">
+                <dry-qr-code value="https://example.com"></dry-qr-code>
+            </div>
+
+            <div class="code-block"><pre>&lt;dry-qr-code value="https://example.com"&gt;&lt;/dry-qr-code&gt;</pre></div>
+        </section>
+
+        <!-- Size variants -->
+        <section class="demo-section">
+            <h2 class="demo-title">Size Variants</h2>
+            <p class="demo-description">
+                Adjust the <code>size</code> attribute (pixels).
+            </p>
+
+            <div class="demo-container showcase-relative flex items-center space-x-8">
+                <dry-qr-code value="small" size="100"></dry-qr-code>
+                <dry-qr-code value="medium" size="200"></dry-qr-code>
+                <dry-qr-code value="large" size="300"></dry-qr-code>
+            </div>
+
+            <div class="code-block"><pre>&lt;dry-qr-code value="small" size="100"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="medium" size="200"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="large" size="300"&gt;&lt;/dry-qr-code&gt;</pre></div>
+        </section>
+
+        <!-- Colour customization -->
+        <section class="demo-section">
+            <h2 class="demo-title">Custom Colours</h2>
+            <p class="demo-description">
+                Use <code>foreground</code> and <code>background</code> for color overrides.
+            </p>
+
+            <div class="demo-container showcase-relative flex items-center space-x-8">
+                <dry-qr-code value="Red FG" foreground="#e11d48"></dry-qr-code>
+                <dry-qr-code value="Yellow BG" background="#fde047"></dry-qr-code>
+                <dry-qr-code value="Custom" foreground="#10b981" background="#1f2937"></dry-qr-code>
+            </div>
+
+            <div class="code-block"><pre>&lt;dry-qr-code value="Red FG" foreground="#e11d48"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="Yellow BG" background="#fde047"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="Custom" foreground="#10b981" background="#1f2937"&gt;&lt;/dry-qr-code&gt;</pre></div>
+        </section>
+
+        <!-- Error correction levels -->
+        <section class="demo-section">
+            <h2 class="demo-title">Error Correction Levels</h2>
+            <p class="demo-description">
+                Set <code>error-correction</code> to <code>L</code>, <code>M</code> (default), <code>Q</code> or <code>H</code>.
+            </p>
+
+            <div class="demo-container showcase-relative flex items-center space-x-8">
+                <dry-qr-code value="L-level" error-correction="L"></dry-qr-code>
+                <dry-qr-code value="M-level" error-correction="M"></dry-qr-code>
+                <dry-qr-code value="Q-level" error-correction="Q"></dry-qr-code>
+                <dry-qr-code value="H-level" error-correction="H"></dry-qr-code>
+            </div>
+
+            <div class="code-block"><pre>&lt;dry-qr-code value="L-level" error-correction="L"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="M-level" error-correction="M"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="Q-level" error-correction="Q"&gt;&lt;/dry-qr-code&gt;
+&lt;dry-qr-code value="H-level" error-correction="H"&gt;&lt;/dry-qr-code&gt;</pre></div>
+        </section>
+
+        <!-- JS API -->
+        <section class="demo-section">
+            <h2 class="demo-title">JavaScript API</h2>
+            <p class="demo-description">
+                Change properties at runtime—set <code>value</code>, <code>size</code>, etc., and it auto-re-renders.
+            </p>
+
+            <div class="demo-container showcase-relative">
+                <dry-qr-code id="api-qr" value="initial"></dry-qr-code>
+
+                <div class="mt-4 space-x-2">
+                    <input id="qr-input" type="text" placeholder="New value…" class="border px-2 py-1 rounded">
+                    <button id="update-btn" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+                        Update
+                    </button>
+                </div>
+            </div>
+
+            <div class="code-block"><pre>
+// Grab the element and input
+const qr = document.getElementById('api-qr');
+const input = document.getElementById('qr-input');
+
+// Update on button click
+document.getElementById('update-btn').addEventListener('click', () => {
+  qr.value = input.value;
+});</pre></div>
+        </section>
+
+        <!-- API reference -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+
+            <h3 class="text-xl font-semibold mb-2">Attributes</h3>
+            <table class="w-full border border-gray-300 rounded mb-6">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left">Attribute</th>
+                    <th class="px-4 py-2 text-left">Type</th>
+                    <th class="px-4 py-2 text-left">Default</th>
+                    <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">value</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Data/content for QR encoding.</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">size</td>
+                    <td class="px-4 py-2">number</td>
+                    <td class="px-4 py-2">200</td>
+                    <td class="px-4 py-2">Width &amp; height in pixels.</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">foreground</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">#000000</td>
+                    <td class="px-4 py-2">QR code color.</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">background</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">#ffffff</td>
+                    <td class="px-4 py-2">Canvas background color.</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">error-correction</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">M</td>
+                    <td class="px-4 py-2">One of L, M, Q, H.</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+        <p>DRY2 Web Components Library</p>
+        <p class="mt-2">
+            <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
+        </p>
+    </footer>
+</div>
+</body>
+</html>

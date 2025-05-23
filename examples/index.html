@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRY2 Web Components Library</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <style>
         .component-card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        
+
         .component-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -23,353 +23,224 @@
     </style>
 </head>
 <body class="bg-gray-100">
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between">
-                <h1 class="text-3xl font-bold text-gray-900">DRY2 Web Components Library</h1>
-                <a href="https://github.com/yourusername/dry-2" target="_blank" class="text-gray-500 hover:text-gray-700">
-                    <i class="fab fa-github text-2xl"></i>
-                </a>
+<header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-gray-900">DRY2 Web Components Library</h1>
+            <a href="https://github.com/yourusername/dry-2" target="_blank" class="text-gray-500 hover:text-gray-700">
+                <i class="fab fa-github text-2xl"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Component Showcase</h2>
+        <p class="text-lg text-gray-600">Explore our collection of web components based on user stories. Each component
+            has its own showcase page with examples and API documentation.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Swap Component Card -->
+        <a href="swap-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Swap Component</h3>
+                    <i class="fas fa-exchange-alt text-green-500"></i>
+                </div>
+                <p class="text-gray-600">A component that swaps between two states or icons based on toggle state.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">toggle</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">states</span>
+                </div>
             </div>
-        </div>
-    </header>
-    
-    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Component Showcase</h2>
-            <p class="text-lg text-gray-600">Explore our collection of web components based on user stories. Each component has its own showcase page with examples and API documentation.</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Swap Component Card -->
-            <a href="swap-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Swap Component</h3>
-                        <i class="fas fa-exchange-alt text-green-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component that swaps between two states or icons based on toggle state.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">toggle</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">states</span>
-                    </div>
+        </a>
+
+        <!-- Avatar Component Card -->
+        <a href="avatar-showcase.html"
+           class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Avatar Component</h3>
+                    <i class="fas fa-user-circle text-red-500"></i>
                 </div>
-            </a>
-            
-            <!-- Avatar Component Card -->
-            <a href="avatar-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Avatar Component</h3>
-                        <i class="fas fa-user-circle text-red-500"></i>
-                    </div>
-                    <p class="text-gray-600">Display user profile images with fallbacks to initials when no image is available.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">shapes</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">sizes</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">group</span>
-                    </div>
+                <p class="text-gray-600">Display user profile images with fallbacks to initials when no image is
+                    available.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">shapes</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">sizes</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">group</span>
                 </div>
-            </a>
-            
-            <!-- Badge Component Card -->
-            <a href="badge-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Badge Component</h3>
-                        <i class="fas fa-certificate text-amber-500"></i>
-                    </div>
-                    <p class="text-gray-600">Display short status indicators, counts, or labels that can be attached to other elements.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">variants</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">positioning</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">dot</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Card Component Card -->
-            <a href="card-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Card Component</h3>
-                        <i class="fas fa-square text-indigo-500"></i>
-                    </div>
-                    <p class="text-gray-600">A flexible container for displaying related content with consistent styling.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">sections</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">layout</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">elevation</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Carousel Component Card -->
-            <a href="carousel-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Carousel Component</h3>
-                        <i class="fas fa-images text-green-500"></i>
-                    </div>
-                    <p class="text-gray-600">A slideshow component for cycling through images, text, or custom content.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">auto-play</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">indicators</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Chat Bubble Component Card -->
-            <a href="chat-bubble-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Chat Bubble Component</h3>
-                        <i class="fas fa-comment-alt text-blue-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component for displaying conversation messages with sender/receiver styling.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">sent/received</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">timestamp</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">status</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Collapse Component Card -->
-            <a href="collapse-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Collapse Component</h3>
-                        <i class="fas fa-compress-alt text-purple-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component for creating expandable and collapsible content sections.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">animation</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">toggle</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">events</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Countdown Component Card -->
-            <a href="countdown-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Countdown Component</h3>
-                        <i class="fas fa-clock text-orange-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component for displaying a countdown timer to a specific date or duration.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">timer</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">format</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">expiry</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Timeline Component Card -->
-            <a href="timeline-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Timeline Component</h3>
-                        <i class="fas fa-stream text-teal-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component for displaying a chronological series of events or steps.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">events</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">vertical/horizontal</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Breadcrumbs Component Card -->
-            <a href="breadcrumbs-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Breadcrumbs Component</h3>
-                        <i class="fas fa-chevron-right text-amber-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component for displaying the current location within a website's hierarchy.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">separators</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">links</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Dock Component Card -->
-            <a href="dock-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Dock Component</h3>
-                        <i class="fas fa-grip-horizontal text-pink-500"></i>
-                    </div>
-                    <p class="text-gray-600">A macOS-style dock for displaying app shortcuts with magnification effects.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">magnification</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">tooltips</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">orientation</span>
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Stat Component Card -->
-            <a href="stat-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">Stat Component</h3>
-                        <i class="fas fa-chart-line text-cyan-500"></i>
-                    </div>
-                    <p class="text-gray-600">A component for displaying key metrics and statistics with trend indicators.</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">trends</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">comparisons</span>
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">formatting</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-        <div class="mt-16">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Implementation Status</h2>
-            
-            <div class="overflow-hidden bg-white shadow rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Component</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Showcase</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Swap Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="swap-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Avatar Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="avatar-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Badge Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="badge-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Card Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="card-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Carousel Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="carousel-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Chat Bubble Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="chat-bubble-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Collapse Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="collapse-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Countdown Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="countdown-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Stat Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="stat-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Timeline Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="timeline-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Breadcrumbs Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="breadcrumbs-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Dock Component</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="dock-showcase.html" class="text-blue-600 hover:text-blue-900">View Demo</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-        </div>
-    </main>
-    
-    <footer class="bg-white mt-12">
-        <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
-            <p class="text-center text-base text-gray-500">
-                DRY2 Web Components Library — A collection of reusable, accessible web components.
-            </p>
-            <p class="text-center text-sm text-gray-500 mt-2">
-                Based on user stories and implementation by Claude.
-            </p>
-        </div>
-    </footer>
+        </a>
+
+        <!-- Badge Component Card -->
+        <a href="badge-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Badge Component</h3>
+                    <i class="fas fa-certificate text-amber-500"></i>
+                </div>
+                <p class="text-gray-600">Display short status indicators, counts, or labels that can be attached to
+                    other elements.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">variants</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">positioning</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">dot</span>
+                </div>
+            </div>
+        </a>
+
+
+        <!-- Countdown Component Card -->
+        <a href="countdown-showcase.html"
+           class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Countdown Component</h3>
+                    <i class="fas fa-clock text-orange-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying a countdown timer to a specific date or
+                    duration.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">timer</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">format</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">expiry</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Timeline Component Card -->
+        <a href="timeline-showcase.html"
+           class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Timeline Component</h3>
+                    <i class="fas fa-stream text-teal-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying a chronological series of events or steps.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">events</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">vertical/horizontal</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Breadcrumbs Component Card -->
+        <a href="breadcrumbs-showcase.html"
+           class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Breadcrumbs Component</h3>
+                    <i class="fas fa-chevron-right text-amber-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying the current location within a website's
+                    hierarchy.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">separators</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">links</span>
+                </div>
+            </div>
+        </a>
+
+
+        <!-- Stat Component Card -->
+        <a href="stat-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Stat Component</h3>
+                    <i class="fas fa-chart-line text-cyan-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying key metrics and statistics with trend
+                    indicators.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">trends</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">comparisons</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">formatting</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- QR Component Card -->
+        <a href="qr-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">QR Component</h3>
+                    <i class="fas fa-qrcode text-purple-500"></i>
+                </div>
+                <p class="text-gray-600">A component for generating and displaying QR codes for URLs or text.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">generate</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">scan</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">download</span>
+                </div>
+            </div>
+        </a>
+        <!-- Toast Component Card -->
+        <a href="toast-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Toast Component</h3>
+                    <i class="fas fa-bell text-pink-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying brief messages or notifications to the user.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">notifications</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">dismiss</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">positioning</span>
+                </div>
+            </div>
+        </a>
+        <!-- Toggle Switch Component Card -->
+        <a href="toggle-switch-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Toggle Switch Component</h3>
+                    <i class="fas fa-toggle-on text-green-500"></i>
+                </div>
+                <p class="text-gray-600">A component for toggling between two states, often used for settings or
+                    preferences.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">toggle</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">settings</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">preferences</span>
+                </div>
+            </div>
+        </a>
+        <!-- Drawer Component Card -->
+        <a href="drawer-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Drawer Component</h3>
+                    <i class="fas fa-archive text-blue-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying a side panel that can be opened or closed to show
+                    additional content.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">content</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">overlay</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+
+</main>
+
+<footer class="bg-white mt-12">
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+        <p class="text-center text-base text-gray-500">
+            DRY2 Web Components Library — A collection of reusable, accessible web components.
+        </p>
+        <p class="text-center text-sm text-gray-500 mt-2">
+            Based on user stories and implementation by Claude.
+        </p>
+    </div>
+</footer>
 </body>
 </html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRY2 Web Components - Modern UI Components Made Simple</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Include the components -->
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="src/dry2/dry2.js" defer></script>
+
+    <style>
+        /* Custom animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<!-- Navigation -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold gradient-text">DRY2</span>
+                <span class="ml-2 text-gray-600">Web Components</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-600 hover:text-gray-900">Features</a>
+                <a href="#components" class="text-gray-600 hover:text-gray-900">Components</a>
+                <a href="#docs" class="text-gray-600 hover:text-gray-900">Documentation</a>
+                <a href="https://github.com" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h1 class="text-5xl font-bold text-gray-900 mb-6">
+                    Build Modern UIs with
+                    <span class="gradient-text">Native Web Components</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    A comprehensive library of reusable web components built with vanilla JavaScript, HTMX, and Alpine.js. No framework dependencies, just pure web standards.
+                </p>
+                <div class="flex space-x-4">
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        Get Started <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:border-gray-400 transition-colors">
+                        View Demo
+                    </button>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="floating">
+                    <div class="bg-white rounded-lg shadow-xl p-6">
+                        <div class="mb-4">
+                            <carousel-component
+                                slides='[
+                                    {
+                                        "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=400&fit=crop",
+                                        "title": "Mountain Landscape",
+                                        "description": "Beautiful mountain scenery with misty peaks"
+                                    },
+                                    {
+                                        "image": "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=800&h=400&fit=crop",
+                                        "title": "Desert Sunset",
+                                        "description": "Stunning sunset over desert rock formations"
+                                    },
+                                    {
+                                        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop",
+                                        "title": "Tropical Beach",
+                                        "description": "Crystal clear waters and white sandy beaches"
+                                    }
+                                ]'
+                                height="200"
+                                autoplay
+                                interval="5000"
+                                show-thumbnails="false"
+                                show-dots="true"
+                                show-arrows="true"
+                                show-controls="false"
+                            ></carousel-component>
+                        </div>
+                        <div class="mb-4">
+                            <dry-drawer position="right" drawer-class="bg-white w-80" button-class="bg-blue-500 text-white px-4 py-2 rounded">
+                                Interactive Drawer Demo
+                                <span slot="header">Example Drawer</span>
+                                <div slot="content">
+                                    <p class="mb-4">This is a live example of our drawer component!</p>
+                                </div>
+                            </dry-drawer>
+                        </div>
+                        <div class="mb-4">
+                            <avatar-component name="John Doe" size="lg" class="mr-2"></avatar-component>
+                            <avatar-component name="Jane Smith" size="lg" class="mr-2"></avatar-component>
+                            <badge-component variant="success" position="standalone">Live</badge-component>
+                        </div>
+                        <div>
+                            <stat-component value="98" label="Performance Score" trend="up" trend-value="+12%"></stat-component>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">Why Choose DRY2 Components?</h2>
+            <p class="mt-4 text-xl text-gray-600">Built with modern web standards for maximum compatibility</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Lightweight & Fast</h3>
+                <p class="text-gray-600">No framework overhead. Pure web components that work everywhere, optimized for performance.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-puzzle-piece text-purple-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Framework Agnostic</h3>
+                <p class="text-gray-600">Works with React, Vue, Angular, or vanilla JS. Drop them anywhere in your stack.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-paint-brush text-green-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Fully Customizable</h3>
+                <p class="text-gray-600">Tailwind CSS powered with extensive class props for complete styling control.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Components Showcase -->
+<section id="components" class="py-20 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">Component Library</h2>
+            <p class="mt-4 text-xl text-gray-600">A growing collection of production-ready components</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Drawer Component -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Drawer & Sidebars</h3>
+                <p class="text-gray-600 mb-4">Slide-in panels with AJAX support</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Left/Right positioning</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>AJAX content loading</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Custom animations</li>
+                </ul>
+            </div>
+
+            <!-- Form Components -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Form Elements</h3>
+                <p class="text-gray-600 mb-4">Advanced form controls</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Date picker</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Super select</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Toggle switches</li>
+                </ul>
+            </div>
+
+            <!-- UI Components -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">UI Elements</h3>
+                <p class="text-gray-600 mb-4">Essential interface components</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Avatars & groups</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Badges & stats</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Toast notifications</li>
+                </ul>
+            </div>
+
+            <!-- Advanced Components -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Advanced Components</h3>
+                <p class="text-gray-600 mb-4">Complex interactive elements</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Carousel</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Countdown timer</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Speed dial</li>
+                </ul>
+            </div>
+
+            <!-- Data Components -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Data & Content</h3>
+                <p class="text-gray-600 mb-4">Content presentation components</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Tabs & accordions</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>QR code generator</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>WYSIWYG editor</li>
+                </ul>
+            </div>
+
+            <!-- Dialog Components -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Dialogs & Modals</h3>
+                <p class="text-gray-600 mb-4">Overlay content windows</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>AJAX dialogs</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Custom triggers</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Responsive design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Code Example Section -->
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">Simple to Use</h2>
+            <p class="mt-4 text-xl text-gray-600">Just drop in the components and customize with attributes</p>
+        </div>
+
+        <div class="bg-gray-900 rounded-lg p-8 text-white">
+                <pre><code>&lt;!-- Include the library --&gt;
+&lt;script src="https://unpkg.com/dry2-components/dist/bundle.js"&gt;&lt;/script&gt;
+
+&lt;!-- Use components with simple attributes --&gt;
+&lt;dry-drawer position="right" drawer-class="bg-white w-80"&gt;
+    &lt;span slot="header"&gt;My Drawer&lt;/span&gt;
+    &lt;div slot="content"&gt;
+        &lt;p&gt;Drawer content goes here!&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-drawer&gt;
+
+&lt;avatar-component name="John Doe" size="lg"&gt;&lt;/avatar-component&gt;
+
+&lt;toast-component type="success" auto-show&gt;
+    Operation completed successfully!
+&lt;/toast-component&gt;</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-blue-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-8">Ready to Get Started?</h2>
+        <p class="text-xl text-blue-100 mb-8">Join thousands of developers building better UIs with DRY2 Components</p>
+        <div class="flex justify-center space-x-4">
+            <button class="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+                Read Documentation
+            </button>
+            <button class="border border-white text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                View on GitHub
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-white font-bold text-lg mb-4">DRY2 Components</h3>
+                <p class="text-sm">Modern web components library for building better user interfaces.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Resources</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white">Documentation</a></li>
+                    <li><a href="#" class="hover:text-white">Examples</a></li>
+                    <li><a href="#" class="hover:text-white">API Reference</a></li>
+                    <li><a href="#" class="hover:text-white">Changelog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Community</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white">GitHub</a></li>
+                    <li><a href="#" class="hover:text-white">Discord</a></li>
+                    <li><a href="#" class="hover:text-white">Twitter</a></li>
+                    <li><a href="#" class="hover:text-white">Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Legal</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white">License</a></li>
+                    <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-12 pt-8 text-sm text-center">
+            <p>&copy; 2025 DRY2 Components. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

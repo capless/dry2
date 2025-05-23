@@ -1,6 +1,4 @@
-// Stat Component for DRY2 Web Components
-
-class StatComponent extends BaseWebComponent {
+class Stat extends BaseWebComponent {
     constructor() {
         super();
     }
@@ -12,24 +10,24 @@ class StatComponent extends BaseWebComponent {
         const trend = this.trend;
         const comparison = this.comparison;
         const icon = this.icon;
-        
+
         // Get container classes based on layout
         const containerClasses = this.getContainerClasses(layout);
-        
+
         // Format the value
         const formattedValue = this.formatValue(value);
-        
+
         // Create trend indicator if provided
         const trendIndicator = trend ? this.createTrendIndicator(trend) : '';
-        
+
         // Create comparison text if provided
-        const comparisonText = comparison ? 
+        const comparisonText = comparison ?
             `<div class="stat-comparison text-sm text-gray-500">${comparison}</div>` : '';
-        
+
         // Create icon if provided
-        const iconElement = icon ? 
+        const iconElement = icon ?
             `<div class="stat-icon ${layout === 'horizontal' ? 'mr-4' : 'mb-2'}">${icon}</div>` : '';
-        
+
         // Create the stat component HTML
         const statHTML = `
             <div class="${containerClasses}">
@@ -44,36 +42,36 @@ class StatComponent extends BaseWebComponent {
                 </div>
             </div>
         `;
-        
+
         this.innerHTML = statHTML;
     }
 
     getContainerClasses(layout) {
         let classes = 'stat-container ';
-        
+
         // Layout classes
         if (layout === 'horizontal') {
             classes += 'flex items-center ';
         } else {
             classes += 'flex flex-col ';
         }
-        
+
         // Add additional classes
         if (this.class) {
             classes += this.class + ' ';
         }
-        
+
         return classes.trim();
     }
 
     formatValue(value) {
         if (!value) return '0';
-        
+
         let formattedValue = value;
-        
+
         // Apply formatting based on type
         const type = this.type.toLowerCase();
-        
+
         try {
             if (type === 'number') {
                 // Number formatting
@@ -82,13 +80,13 @@ class StatComponent extends BaseWebComponent {
                     minimumFractionDigits: parseInt(this.getAttribute('decimal-places') || '0', 10),
                     maximumFractionDigits: parseInt(this.getAttribute('decimal-places') || '2', 10)
                 };
-                
+
                 // Add thousand separators
                 formattedValue = parsedNumber.toLocaleString(undefined, options);
             } else if (type === 'percentage') {
                 // Percentage formatting
                 let parsedPercentage = parseFloat(value);
-                
+
                 // If value is already in percentage format (e.g., 75 instead of 0.75)
                 if (this.hasAttribute('percentage-value')) {
                     formattedValue = `${parsedPercentage.toFixed(parseInt(this.getAttribute('decimal-places') || '0', 10))}%`;
@@ -101,7 +99,7 @@ class StatComponent extends BaseWebComponent {
                 // Currency formatting
                 const parsedAmount = parseFloat(value);
                 const currencyCode = this.getAttribute('currency') || 'USD';
-                
+
                 formattedValue = parsedAmount.toLocaleString(undefined, {
                     style: 'currency',
                     currency: currencyCode,
@@ -113,14 +111,14 @@ class StatComponent extends BaseWebComponent {
             // If any error occurs, return the original value
             console.error('Error formatting stat value:', e);
         }
-        
+
         return formattedValue;
     }
 
     createTrendIndicator(trend) {
         const direction = trend.toLowerCase();
         let trendHTML = '';
-        
+
         if (direction === 'up' || direction === 'increase') {
             // Up/increase trend - green arrow up
             trendHTML = `
@@ -152,7 +150,7 @@ class StatComponent extends BaseWebComponent {
                 </div>
             `;
         }
-        
+
         return trendHTML;
     }
 
@@ -245,4 +243,4 @@ class StatComponent extends BaseWebComponent {
 }
 
 // Define the custom element
-customElements.define('stat-component', StatComponent);
+customElements.define('dry-stat', Stat);

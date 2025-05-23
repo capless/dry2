@@ -116,7 +116,7 @@ class DryDrawer extends HTMLElement {
         // Dispatch custom event
         this.dispatchEvent(new CustomEvent('drawer:opened', {
             bubbles: true,
-            detail: { drawer: this }
+            detail: {drawer: this}
         }));
     }
 
@@ -138,7 +138,7 @@ class DryDrawer extends HTMLElement {
         // Dispatch custom event
         this.dispatchEvent(new CustomEvent('drawer:closed', {
             bubbles: true,
-            detail: { drawer: this }
+            detail: {drawer: this}
         }));
     }
 
@@ -343,7 +343,7 @@ class AjaxDrawer extends HTMLElement {
         // Dispatch custom event
         this.dispatchEvent(new CustomEvent('drawer:opened', {
             bubbles: true,
-            detail: { drawer: this }
+            detail: {drawer: this}
         }));
     }
 
@@ -369,7 +369,7 @@ class AjaxDrawer extends HTMLElement {
         // Dispatch custom event
         this.dispatchEvent(new CustomEvent('drawer:closed', {
             bubbles: true,
-            detail: { drawer: this }
+            detail: {drawer: this}
         }));
     }
 
