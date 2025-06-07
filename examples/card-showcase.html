@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Component Showcase - DRY2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/card.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Card Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+    
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Card Component</h1>
+        <p class="text-gray-600 mb-8">Flexible container for displaying related content with consistent styling.</p>
+
+        <!-- Basic Cards -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Basic Cards</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <dry-card>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Simple Card</h3>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">This is a basic card with header and body content. Perfect for displaying simple information.</p>
+                    </div>
+                </dry-card>
+
+                <dry-card>
+                    <div slot="body">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Body Only</h3>
+                        <p class="text-gray-600">This card contains only body content without a separate header section.</p>
+                    </div>
+                    <div slot="footer">
+                        <div class="flex justify-end">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Action</button>
+                        </div>
+                    </div>
+                </dry-card>
+
+                <dry-card>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Complete Card</h3>
+                        <p class="text-sm text-gray-500">With all sections</p>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">This card demonstrates all available slots: header, body, and footer.</p>
+                    </div>
+                    <div slot="footer">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Last updated: Today</span>
+                            <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">More</button>
+                        </div>
+                    </div>
+                </dry-card>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Basic card structure --&gt;
+&lt;dry-card&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Simple Card&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;This is a basic card with header and body content.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;
+
+&lt;!-- Card with footer --&gt;
+&lt;dry-card&gt;
+    &lt;div slot="body"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900 mb-2"&gt;Body Only&lt;/h3&gt;
+        &lt;p class="text-gray-600"&gt;This card contains only body content.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="footer"&gt;
+        &lt;div class="flex justify-end"&gt;
+            &lt;button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"&gt;Action&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;</code></pre>
+        </section>
+
+        <!-- Variants -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Variants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <dry-card variant="filled">
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Filled (Default)</h3>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">Standard filled card with background and shadow.</p>
+                    </div>
+                </dry-card>
+
+                <dry-card variant="outlined" bordered>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Outlined</h3>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">Outlined card with border and no shadow.</p>
+                    </div>
+                </dry-card>
+
+                <dry-card variant="elevated" elevation="xl">
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Elevated</h3>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">Elevated card with enhanced shadow.</p>
+                    </div>
+                </dry-card>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Card variants --&gt;
+&lt;dry-card variant="filled"&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Filled (Default)&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;Standard filled card with background and shadow.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;
+
+&lt;dry-card variant="outlined" bordered&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Outlined&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;Outlined card with border and no shadow.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;
+
+&lt;dry-card variant="elevated" elevation="xl"&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Elevated&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;Elevated card with enhanced shadow.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;</code></pre>
+        </section>
+
+        <!-- Elevation Levels -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Elevation Levels</h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <dry-card elevation="none">
+                    <div slot="body" class="text-center">
+                        <h4 class="font-medium text-gray-900">None</h4>
+                        <p class="text-sm text-gray-600">No shadow</p>
+                    </div>
+                </dry-card>
+                <dry-card elevation="sm">
+                    <div slot="body" class="text-center">
+                        <h4 class="font-medium text-gray-900">Small</h4>
+                        <p class="text-sm text-gray-600">Light shadow</p>
+                    </div>
+                </dry-card>
+                <dry-card elevation="md">
+                    <div slot="body" class="text-center">
+                        <h4 class="font-medium text-gray-900">Medium</h4>
+                        <p class="text-sm text-gray-600">Default shadow</p>
+                    </div>
+                </dry-card>
+                <dry-card elevation="lg">
+                    <div slot="body" class="text-center">
+                        <h4 class="font-medium text-gray-900">Large</h4>
+                        <p class="text-sm text-gray-600">Strong shadow</p>
+                    </div>
+                </dry-card>
+                <dry-card elevation="xl">
+                    <div slot="body" class="text-center">
+                        <h4 class="font-medium text-gray-900">Extra Large</h4>
+                        <p class="text-sm text-gray-600">Maximum shadow</p>
+                    </div>
+                </dry-card>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Elevation levels --&gt;
+&lt;dry-card elevation="none"&gt;
+    &lt;div slot="body" class="text-center"&gt;
+        &lt;h4 class="font-medium text-gray-900"&gt;None&lt;/h4&gt;
+        &lt;p class="text-sm text-gray-600"&gt;No shadow&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;
+
+&lt;dry-card elevation="sm"&gt;
+    &lt;div slot="body" class="text-center"&gt;
+        &lt;h4 class="font-medium text-gray-900"&gt;Small&lt;/h4&gt;
+        &lt;p class="text-sm text-gray-600"&gt;Light shadow&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;
+
+&lt;dry-card elevation="lg"&gt;
+    &lt;div slot="body" class="text-center"&gt;
+        &lt;h4 class="font-medium text-gray-900"&gt;Large&lt;/h4&gt;
+        &lt;p class="text-sm text-gray-600"&gt;Strong shadow&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;</code></pre>
+        </section>
+
+        <!-- With Media -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Cards with Media</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <dry-card>
+                    <div slot="media">
+                        <img src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=400&h=200&fit=crop" alt="Food" class="w-full h-48 object-cover">
+                    </div>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Delicious Food</h3>
+                        <p class="text-sm text-gray-500">Recipe of the day</p>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">A mouth-watering dish that will satisfy your taste buds and leave you wanting more.</p>
+                    </div>
+                    <div slot="footer">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">5 min read</span>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">View Recipe</button>
+                        </div>
+                    </div>
+                </dry-card>
+
+                <dry-card>
+                    <div slot="media">
+                        <div class="w-full h-48 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Music Playlist</h3>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">Discover new music with our curated playlist featuring the latest hits and hidden gems.</p>
+                    </div>
+                    <div slot="footer">
+                        <button class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Play Now</button>
+                    </div>
+                </dry-card>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Card with media --&gt;
+&lt;dry-card&gt;
+    &lt;div slot="media"&gt;
+        &lt;img src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=400&h=200&fit=crop" alt="Food" class="w-full h-48 object-cover"&gt;
+    &lt;/div&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Delicious Food&lt;/h3&gt;
+        &lt;p class="text-sm text-gray-500"&gt;Recipe of the day&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;A mouth-watering dish that will satisfy your taste buds.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="footer"&gt;
+        &lt;div class="flex justify-between items-center"&gt;
+            &lt;span class="text-sm text-gray-500"&gt;5 min read&lt;/span&gt;
+            &lt;button class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"&gt;View Recipe&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;</code></pre>
+        </section>
+
+        <!-- Horizontal Layout -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Horizontal Layout</h2>
+            <div class="space-y-6">
+                <dry-card orientation="horizontal">
+                    <div slot="media">
+                        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=200&h=200&fit=crop" alt="Landscape" class="w-full h-full object-cover">
+                    </div>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Mountain Adventure</h3>
+                        <p class="text-sm text-gray-500">Travel & Nature</p>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">Experience breathtaking views and challenging trails in the heart of the mountains. Perfect for adventure seekers and nature lovers.</p>
+                    </div>
+                    <div slot="footer">
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700">Book Now</button>
+                            <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">Learn More</button>
+                        </div>
+                    </div>
+                </dry-card>
+
+                <dry-card orientation="horizontal">
+                    <div slot="media">
+                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div slot="body">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Start Guide</h3>
+                        <p class="text-gray-600">Get up and running in minutes with our comprehensive quick start guide and helpful resources.</p>
+                    </div>
+                </dry-card>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Horizontal card layout --&gt;
+&lt;dry-card orientation="horizontal"&gt;
+    &lt;div slot="media"&gt;
+        &lt;img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=200&h=200&fit=crop" alt="Landscape" class="w-full h-full object-cover"&gt;
+    &lt;/div&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Mountain Adventure&lt;/h3&gt;
+        &lt;p class="text-sm text-gray-500"&gt;Travel &amp; Nature&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;Experience breathtaking views and challenging trails in the heart of the mountains.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="footer"&gt;
+        &lt;div class="flex gap-2"&gt;
+            &lt;button class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"&gt;Book Now&lt;/button&gt;
+            &lt;button class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"&gt;Learn More&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;</code></pre>
+        </section>
+
+        <!-- Interactive Cards -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Interactive Cards</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <dry-card interactive>
+                    <div slot="header">
+                        <h3 class="text-lg font-semibold text-gray-900">Click Me!</h3>
+                    </div>
+                    <div slot="body">
+                        <p class="text-gray-600">This card has hover effects and can be clicked. Try hovering over it!</p>
+                    </div>
+                </dry-card>
+
+                <dry-card interactive>
+                    <div slot="body" class="text-center">
+                        <svg class="w-12 h-12 text-blue-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-gray-900">Documentation</h3>
+                        <p class="text-gray-600">Access comprehensive guides and API references.</p>
+                    </div>
+                </dry-card>
+
+                <dry-card interactive>
+                    <div slot="body" class="text-center">
+                        <svg class="w-12 h-12 text-green-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-gray-900">All Set!</h3>
+                        <p class="text-gray-600">Your setup is complete and ready to go.</p>
+                    </div>
+                </dry-card>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Interactive cards --&gt;
+&lt;dry-card interactive&gt;
+    &lt;div slot="header"&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Click Me!&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div slot="body"&gt;
+        &lt;p class="text-gray-600"&gt;This card has hover effects and can be clicked.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;
+
+&lt;dry-card interactive&gt;
+    &lt;div slot="body" class="text-center"&gt;
+        &lt;svg class="w-12 h-12 text-blue-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
+            &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253"&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        &lt;h3 class="text-lg font-semibold text-gray-900"&gt;Documentation&lt;/h3&gt;
+        &lt;p class="text-gray-600"&gt;Access comprehensive guides and API references.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-card&gt;</code></pre>
+        </section>
+
+        <!-- JavaScript API -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JavaScript API</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <div class="flex gap-4 mb-4">
+                    <dry-card id="api-demo-card" interactive>
+                        <div slot="header">
+                            <h3 class="text-lg font-semibold text-gray-900">API Demo Card</h3>
+                        </div>
+                        <div slot="body">
+                            <p class="text-gray-600">This card can be controlled via JavaScript API.</p>
+                        </div>
+                    </dry-card>
+                </div>
+                <div class="flex gap-2 mb-4">
+                    <button onclick="toggleInteractive()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Toggle Interactive</button>
+                    <button onclick="changeElevation()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Change Elevation</button>
+                    <button onclick="changeVariant()" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Change Variant</button>
+                </div>
+                <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><code>const card = document.getElementById('api-demo-card');
+
+// Toggle interactive state
+card.setInteractive(!card.interactive);
+
+// Change elevation
+card.setElevation('xl');
+
+// Change variant
+card.setVariant('outlined');</code></pre>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let elevationIndex = 0;
+        let variantIndex = 0;
+        const elevations = ['none', 'sm', 'md', 'lg', 'xl'];
+        const variants = ['filled', 'outlined', 'elevated'];
+
+        function toggleInteractive() {
+            const card = document.getElementById('api-demo-card');
+            card.setInteractive(!card.interactive);
+        }
+
+        function changeElevation() {
+            const card = document.getElementById('api-demo-card');
+            elevationIndex = (elevationIndex + 1) % elevations.length;
+            card.setElevation(elevations[elevationIndex]);
+        }
+
+        function changeVariant() {
+            const card = document.getElementById('api-demo-card');
+            variantIndex = (variantIndex + 1) % variants.length;
+            card.setVariant(variants[variantIndex]);
+        }
+
+        // Event listeners
+        document.addEventListener('card:click', (event) => {
+            console.log('Card clicked:', event.detail);
+            alert('Card clicked! Check console for details.');
+        });
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Switch Form Integration Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/toggle-switch.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-6">Toggle Switch Form Integration Test</h1>
+        
+        <form id="test-form" class="space-y-6">
+            <div>
+                <h3 class="text-lg font-semibold mb-4">User Preferences</h3>
+                
+                <div class="space-y-4">
+                    <toggle-switch name="notifications" label="Email Notifications" checked value="enabled"></toggle-switch>
+                    <toggle-switch name="dark_mode" label="Dark Mode" value="on"></toggle-switch>
+                    <toggle-switch name="analytics" label="Analytics Tracking" checked value="allow"></toggle-switch>
+                    <toggle-switch name="newsletter" label="Newsletter Subscription" value="subscribed"></toggle-switch>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Required Settings</h3>
+                <toggle-switch id="terms" name="terms" label="I agree to the Terms of Service" required value="accepted"></toggle-switch>
+                <div id="terms-error" class="text-red-500 text-sm mt-1 hidden">You must accept the terms to continue</div>
+            </div>
+            
+            <div class="flex gap-4">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Submit Form
+                </button>
+                <button type="button" id="reset-btn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Reset
+                </button>
+                <button type="button" id="get-data" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Get Form Data
+                </button>
+            </div>
+        </form>
+        
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-2">Form Data Output:</h3>
+            <pre id="form-output" class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"></pre>
+        </div>
+        
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-2">Event Log:</h3>
+            <div id="event-log" class="bg-gray-50 p-4 rounded text-sm max-h-40 overflow-y-auto"></div>
+            <button id="clear-log" class="mt-2 px-3 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600">
+                Clear Log
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('test-form');
+        const output = document.getElementById('form-output');
+        const eventLog = document.getElementById('event-log');
+        const termsToggle = document.getElementById('terms');
+        const termsError = document.getElementById('terms-error');
+
+        function logEvent(message) {
+            const entry = document.createElement('div');
+            entry.className = 'text-xs mb-1';
+            entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            eventLog.appendChild(entry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        function showFormData() {
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Convert FormData to regular object
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Show both FormData and toggle component properties
+            const toggles = form.querySelectorAll('toggle-switch');
+            const toggleInfo = {};
+            toggles.forEach(toggle => {
+                if (toggle.name) {
+                    toggleInfo[toggle.name] = {
+                        checked: toggle.checked,
+                        value: toggle.value,
+                        type: toggle.type,
+                        required: toggle.required
+                    };
+                }
+            });
+            
+            output.textContent = JSON.stringify({
+                formData: data,
+                toggleProperties: toggleInfo
+            }, null, 2);
+        }
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Custom validation for terms
+            if (!termsToggle.checked) {
+                termsError.classList.remove('hidden');
+                termsToggle.setCustomValidity('You must accept the terms');
+                termsToggle.reportValidity();
+                logEvent('Form submission blocked - terms not accepted');
+                return;
+            } else {
+                termsError.classList.add('hidden');
+                termsToggle.setCustomValidity('');
+            }
+            
+            logEvent('Form submitted successfully');
+            showFormData();
+        });
+
+        // Reset button
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            form.reset();
+            
+            // Manually reset toggle switches since they're custom elements
+            const toggles = form.querySelectorAll('toggle-switch');
+            toggles.forEach(toggle => {
+                toggle.checked = toggle.hasAttribute('checked');
+            });
+            
+            termsError.classList.add('hidden');
+            output.textContent = '';
+            logEvent('Form reset');
+        });
+
+        // Get data button
+        document.getElementById('get-data').addEventListener('click', showFormData);
+
+        // Clear log button
+        document.getElementById('clear-log').addEventListener('click', function() {
+            eventLog.innerHTML = '';
+        });
+
+        // Listen for toggle events
+        document.addEventListener('toggle:changed', function(event) {
+            const { name, checked, value } = event.detail;
+            logEvent(`${name}: ${checked ? value : 'unchecked'}`);
+            
+            // Hide terms error if terms is checked
+            if (name === 'terms' && checked) {
+                termsError.classList.add('hidden');
+                termsToggle.setCustomValidity('');
+            }
+        });
+
+        // Listen for form change events
+        form.addEventListener('change', function(event) {
+            if (event.target.type === 'hidden') {
+                logEvent(`Form change detected for ${event.target.name}`);
+            }
+        });
+
+        // Initial log
+        logEvent('Form integration test loaded');
+    </script>
+</body>
+</html>

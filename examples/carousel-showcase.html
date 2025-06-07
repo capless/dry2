@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carousel Component Showcase - DRY2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/carousel.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Carousel Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+
+<div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Carousel Component</h1>
+        <p class="text-gray-600 mb-8">Display a collection of items that can be browsed sequentially with navigation controls.</p>
+
+        <!-- Basic Carousel -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Basic Carousel</h2>
+            <dry-carousel show-arrows show-indicators>
+                <div class="carousel-slide bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold h-full">
+                    Slide 1
+                </div>
+                <div class="carousel-slide bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white text-2xl font-bold h-full">
+                    Slide 2
+                </div>
+                <div class="carousel-slide bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center text-white text-2xl font-bold h-full">
+                    Slide 3
+                </div>
+                <div class="carousel-slide bg-gradient-to-r from-yellow-400 to-orange-400 flex items-center justify-center text-white text-2xl font-bold h-full">
+                    Slide 4
+                </div>
+            </dry-carousel>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-carousel show-arrows show-indicators&gt;
+    &lt;div class="carousel-slide bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold h-full"&gt;
+        Slide 1
+    &lt;/div&gt;
+    &lt;div class="carousel-slide bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white text-2xl font-bold h-full"&gt;
+        Slide 2
+    &lt;/div&gt;
+    &lt;div class="carousel-slide bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center text-white text-2xl font-bold h-full"&gt;
+        Slide 3
+    &lt;/div&gt;
+&lt;/dry-carousel&gt;</code></pre>
+        </section>
+
+        <!-- Autoplay Carousel -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Autoplay Carousel</h2>
+            <p class="text-gray-600 mb-4">This carousel auto-advances every 2 seconds and pauses on hover.</p>
+            <dry-carousel autoplay interval="2000" pause-on-hover show-indicators loop>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop" alt="Nature 1" class="w-full h-full object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=400&fit=crop" alt="Nature 2" class="w-full h-full object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=400&fit=crop" alt="Nature 3" class="w-full h-full object-cover">
+                </div>
+            </dry-carousel>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-carousel autoplay interval="2000" pause-on-hover show-indicators loop&gt;
+    &lt;div class="carousel-slide"&gt;
+        &lt;img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop" alt="Nature 1" class="w-full h-full object-cover"&gt;
+    &lt;/div&gt;
+    &lt;div class="carousel-slide"&gt;
+        &lt;img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=400&fit=crop" alt="Nature 2" class="w-full h-full object-cover"&gt;
+    &lt;/div&gt;
+&lt;/dry-carousel&gt;</code></pre>
+        </section>
+
+        <!-- Content Carousel -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Content Carousel</h2>
+            <dry-carousel show-arrows show-indicators>
+                <div class="carousel-slide p-8 bg-white text-center">
+                    <svg class="w-16 h-16 text-blue-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Fast Performance</h3>
+                    <p class="text-gray-600">Lightning-fast loading times and smooth animations for the best user experience.</p>
+                </div>
+                <div class="carousel-slide p-8 bg-white text-center">
+                    <svg class="w-16 h-16 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Easy to Use</h3>
+                    <p class="text-gray-600">Simple API and intuitive controls make it easy to integrate into any project.</p>
+                </div>
+                <div class="carousel-slide p-8 bg-white text-center">
+                    <svg class="w-16 h-16 text-purple-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100-4m0 4v2m0-6V4"></path>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Customizable</h3>
+                    <p class="text-gray-600">Highly configurable with extensive theming options and flexible layouts.</p>
+                </div>
+            </dry-carousel>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-carousel show-arrows show-indicators&gt;
+    &lt;div class="carousel-slide p-8 bg-white text-center"&gt;
+        &lt;svg class="w-16 h-16 text-blue-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;
+            &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        &lt;h3 class="text-2xl font-bold text-gray-900 mb-2"&gt;Fast Performance&lt;/h3&gt;
+        &lt;p class="text-gray-600"&gt;Lightning-fast loading times and smooth animations.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-carousel&gt;</code></pre>
+        </section>
+
+        <!-- Minimal Carousel -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Minimal Carousel</h2>
+            <p class="text-gray-600 mb-4">No indicators or arrows - perfect for touch devices with swipe support.</p>
+            <dry-carousel>
+                <div class="carousel-slide bg-gradient-to-br from-indigo-500 to-purple-600 p-8 text-white">
+                    <h3 class="text-xl font-bold mb-2">Swipe to Navigate</h3>
+                    <p>Use touch gestures or keyboard arrows to navigate between slides.</p>
+                </div>
+                <div class="carousel-slide bg-gradient-to-br from-pink-500 to-red-600 p-8 text-white">
+                    <h3 class="text-xl font-bold mb-2">Touch Friendly</h3>
+                    <p>Optimized for mobile devices with smooth swipe gestures.</p>
+                </div>
+                <div class="carousel-slide bg-gradient-to-br from-green-500 to-teal-600 p-8 text-white">
+                    <h3 class="text-xl font-bold mb-2">Accessible</h3>
+                    <p>Full keyboard navigation and screen reader support included.</p>
+                </div>
+            </dry-carousel>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-carousel&gt;
+    &lt;div class="carousel-slide bg-gradient-to-br from-indigo-500 to-purple-600 p-8 text-white"&gt;
+        &lt;h3 class="text-xl font-bold mb-2"&gt;Swipe to Navigate&lt;/h3&gt;
+        &lt;p&gt;Use touch gestures or keyboard arrows to navigate between slides.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="carousel-slide bg-gradient-to-br from-pink-500 to-red-600 p-8 text-white"&gt;
+        &lt;h3 class="text-xl font-bold mb-2"&gt;Touch Friendly&lt;/h3&gt;
+        &lt;p&gt;Optimized for mobile devices with smooth swipe gestures.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-carousel&gt;</code></pre>
+        </section>
+
+        <!-- Product Showcase -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Product Showcase</h2>
+            <dry-carousel show-arrows show-indicators loop>
+                <div class="carousel-slide bg-white p-6">
+                    <div class="grid md:grid-cols-2 gap-6 items-center h-full">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop" alt="Product 1" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Premium Headphones</h3>
+                            <p class="text-gray-600 mb-4">Experience crystal-clear audio with our latest wireless headphones featuring active noise cancellation.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-green-600">$299</span>
+                                <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-slide bg-white p-6">
+                    <div class="grid md:grid-cols-2 gap-6 items-center h-full">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop" alt="Product 2" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Smart Watch</h3>
+                            <p class="text-gray-600 mb-4">Stay connected and track your fitness with our advanced smartwatch featuring health monitoring.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-green-600">$399</span>
+                                <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-slide bg-white p-6">
+                    <div class="grid md:grid-cols-2 gap-6 items-center h-full">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop" alt="Product 3" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Wireless Speaker</h3>
+                            <p class="text-gray-600 mb-4">Portable speaker with powerful bass and 360-degree sound for any occasion.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-green-600">$199</span>
+                                <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dry-carousel>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-carousel show-arrows show-indicators loop&gt;
+    &lt;div class="carousel-slide bg-white p-6"&gt;
+        &lt;div class="grid md:grid-cols-2 gap-6 items-center h-full"&gt;
+            &lt;div&gt;
+                &lt;img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop" alt="Product 1" class="w-full h-64 object-cover rounded-lg"&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;h3 class="text-2xl font-bold text-gray-900 mb-2"&gt;Premium Headphones&lt;/h3&gt;
+                &lt;p class="text-gray-600 mb-4"&gt;Experience crystal-clear audio with our latest wireless headphones.&lt;/p&gt;
+                &lt;div class="flex items-center justify-between"&gt;
+                    &lt;span class="text-2xl font-bold text-green-600"&gt;$299&lt;/span&gt;
+                    &lt;button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"&gt;Buy Now&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/dry-carousel&gt;</code></pre>
+        </section>
+
+        <!-- JavaScript API -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JavaScript API</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <dry-carousel id="api-demo-carousel" show-arrows show-indicators>
+                    <div class="carousel-slide bg-gradient-to-r from-red-400 to-pink-400 flex items-center justify-center text-white text-xl font-bold h-64">
+                        API Demo - Slide 1
+                    </div>
+                    <div class="carousel-slide bg-gradient-to-r from-blue-400 to-purple-400 flex items-center justify-center text-white text-xl font-bold h-64">
+                        API Demo - Slide 2
+                    </div>
+                    <div class="carousel-slide bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center text-white text-xl font-bold h-64">
+                        API Demo - Slide 3
+                    </div>
+                    <div class="carousel-slide bg-gradient-to-r from-yellow-400 to-red-400 flex items-center justify-center text-white text-xl font-bold h-64">
+                        API Demo - Slide 4
+                    </div>
+                </dry-carousel>
+                
+                <div class="flex gap-2 mt-4 flex-wrap">
+                    <button onclick="goToPrevious()" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Previous</button>
+                    <button onclick="goToNext()" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Next</button>
+                    <button onclick="goToSlide(0)" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Go to Slide 1</button>
+                    <button onclick="goToSlide(2)" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Go to Slide 3</button>
+                    <button onclick="toggleAutoplay()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Toggle Autoplay</button>
+                </div>
+
+                <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>const carousel = document.getElementById('api-demo-carousel');
+
+// Navigation
+carousel.next();
+carousel.prev();
+carousel.goToSlide(2);
+
+// Autoplay control
+carousel.play();
+carousel.pause();</code></pre>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const apiCarousel = document.getElementById('api-demo-carousel');
+        let isAutoplayEnabled = false;
+
+        function goToPrevious() {
+            apiCarousel.prev();
+        }
+
+        function goToNext() {
+            apiCarousel.next();
+        }
+
+        function goToSlide(index) {
+            apiCarousel.goToSlide(index);
+        }
+
+        function toggleAutoplay() {
+            if (isAutoplayEnabled) {
+                apiCarousel.pause();
+                isAutoplayEnabled = false;
+            } else {
+                apiCarousel.play();
+                isAutoplayEnabled = true;
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('carousel:change', (event) => {
+            console.log('Carousel changed:', event.detail);
+        });
+    </script>
+</div>
+</body>
+</html>

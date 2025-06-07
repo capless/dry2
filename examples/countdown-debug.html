@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Debug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/countdown.js"></script>
+</head>
+<body class="p-8">
+    <h1 class="text-2xl mb-8">Countdown Debug</h1>
+
+    <div class="space-y-4">
+        <div>
+            <h3>Simple 5 second countdown (no autostart):</h3>
+            <dry-countdown id="test1" duration="5" leading-zeros></dry-countdown>
+            <button onclick="document.getElementById('test1').startCountdown()" class="ml-2 bg-blue-500 text-white px-3 py-1 rounded">Start</button>
+        </div>
+
+        <div>
+            <h3>With autostart:</h3>
+            <dry-countdown id="test2" duration="10" autostart leading-zeros></dry-countdown>
+        </div>
+    </div>
+
+    <script>
+        console.log('Page loaded');
+        
+        // Check if component is defined
+        console.log('DryCountdown defined:', customElements.get('dry-countdown'));
+        
+        setTimeout(() => {
+            const test1 = document.getElementById('test1');
+            const test2 = document.getElementById('test2');
+            
+            console.log('Test1 element:', test1);
+            console.log('Test1 duration:', test1.duration);
+            console.log('Test1 innerHTML:', test1.innerHTML);
+            
+            console.log('Test2 element:', test2);
+            console.log('Test2 duration:', test2.duration);
+            console.log('Test2 innerHTML:', test2.innerHTML);
+        }, 1000);
+    </script>
+</body>
+</html>

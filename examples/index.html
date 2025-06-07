@@ -20,14 +20,42 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
+    <script src="../src/dry2/breadcrumbs.js"></script>
 </head>
 <body class="bg-gray-100">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item active>Examples</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+
 <header class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
             <h1 class="text-3xl font-bold text-gray-900">DRY2 Web Components Library</h1>
-            <a href="https://github.com/yourusername/dry-2" target="_blank" class="text-gray-500 hover:text-gray-700">
+            <a href="https://github.com/capless/dry2" target="_blank" class="text-gray-500 hover:text-gray-700">
                 <i class="fab fa-github text-2xl"></i>
             </a>
         </div>
@@ -224,6 +252,21 @@
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">content</span>
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">overlay</span>
+                </div>
+            </div>
+        </a>
+        <!-- Dialog Component Card -->
+        <a href="dialog-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Dialog Component</h3>
+                    <i class="fas fa-comments text-indigo-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying modal dialogs or popups for user interactions using Ajax via HTMX.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">modal</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">popup</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">ajax</span>
                 </div>
             </div>
         </a>

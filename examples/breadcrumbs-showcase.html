@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breadcrumbs Component Showcase</title>
+    <title>breadcrumbs Component Showcase - DRY2</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -50,46 +50,95 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 p-8">
-<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-    <header class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Breadcrumbs Component</h1>
-        <p class="text-lg text-gray-600">A clean, focused breadcrumbs component for navigational hierarchy with CSS class icon support and flexible separator options.</p>
-    </header>
+<body class="bg-gray-100">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Breadcrumbs Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
 
-    <main>
-        <!-- Basic Breadcrumbs Section -->
-        <section class="demo-section">
+<div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Breadcrumbs Component Showcase</h1>
+        <p class="text-gray-600 mb-8">Navigational breadcrumb component with customizable separators, icons, and styling options.</p>
+
+        <!-- Introduction -->
+        <div class="demo-section">
+            <div class="demo-container">
+                <p class="text-gray-700 mb-4">
+                    The <code class="bg-gray-200 px-2 py-1 rounded text-sm">dry-breadcrumbs</code> component provides a clean way to show navigational hierarchy. 
+                    It supports various separator styles, icons, and custom styling while maintaining accessibility.
+                </p>
+                <div class="bg-blue-50 border border-blue-200 rounded p-4">
+                    <h4 class="font-semibold text-blue-900 mb-2">Key Features:</h4>
+                    <ul class="text-blue-800 text-sm space-y-1">
+                        <li>" Multiple separator styles (chevron, slash, bullet, arrow, custom)</li>
+                        <li>" Font Awesome icon support</li>
+                        <li>" Customizable styling via attributes</li>
+                        <li>" JavaScript API for dynamic control</li>
+                        <li>" Automatic active state management</li>
+                        <li>" Responsive design</li>
+                        <li>" Accessible with proper ARIA attributes</li>
+                        <li>" Method chaining support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic Breadcrumbs -->
+        <div class="demo-section">
             <h2 class="demo-title">Basic Breadcrumbs</h2>
-            <p class="demo-description">A simple breadcrumbs navigation with default chevron separators.</p>
+            <div class="demo-description">
+                Simple breadcrumb navigation with default chevron separators.
+            </div>
 
             <div class="demo-container">
+                <h3 class="text-lg font-semibold mb-3">Default Breadcrumbs</h3>
+                <p class="text-gray-600 mb-4">Basic breadcrumb with automatic active state on the last item.</p>
+
                 <dry-breadcrumbs>
                     <breadcrumb-item href="/">Home</breadcrumb-item>
                     <breadcrumb-item href="/products">Products</breadcrumb-item>
                     <breadcrumb-item href="/products/electronics">Electronics</breadcrumb-item>
                     <breadcrumb-item>Smartphones</breadcrumb-item>
                 </dry-breadcrumbs>
-            </div>
 
-            <div class="code-block">
-                    <pre>&lt;dry-breadcrumbs&gt;
+                <div class="code-block mt-4">
+<pre><code>&lt;dry-breadcrumbs&gt;
     &lt;breadcrumb-item href="/"&gt;Home&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item href="/products"&gt;Products&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item href="/products/electronics"&gt;Electronics&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item&gt;Smartphones&lt;/breadcrumb-item&gt;
-&lt;/dry-breadcrumbs&gt;</pre>
+&lt;/dry-breadcrumbs&gt;</code></pre>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Separator Options Section -->
-        <section class="demo-section">
-            <h2 class="demo-title">Separator Options</h2>
-            <p class="demo-description">Choose from various built-in separators or use custom text.</p>
+        <!-- Separator Styles -->
+        <div class="demo-section">
+            <h2 class="demo-title">Separator Styles</h2>
+            <div class="demo-description">
+                Different separator options to match your design needs.
+            </div>
 
             <div class="demo-container space-y-6">
                 <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">Default (Chevron)</h3>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">Chevron (Default)</h3>
                     <dry-breadcrumbs separator="chevron">
                         <breadcrumb-item href="/">Home</breadcrumb-item>
                         <breadcrumb-item href="/products">Products</breadcrumb-item>
@@ -135,31 +184,33 @@
             </div>
 
             <div class="code-block">
-                    <pre>&lt;!-- Default Chevron --&gt;
+<pre><code>&lt;!-- Chevron (default) --&gt;
 &lt;dry-breadcrumbs separator="chevron"&gt;...&lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Slash Separator --&gt;
+&lt;!-- Slash --&gt;
 &lt;dry-breadcrumbs separator="slash"&gt;...&lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Bullet Separator --&gt;
+&lt;!-- Bullet --&gt;
 &lt;dry-breadcrumbs separator="bullet"&gt;...&lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Arrow Separator --&gt;
+&lt;!-- Arrow --&gt;
 &lt;dry-breadcrumbs separator="arrow"&gt;...&lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Custom Text Separator --&gt;
-&lt;dry-breadcrumbs separator=" | "&gt;...&lt;/dry-breadcrumbs&gt;</pre>
+&lt;!-- Custom text --&gt;
+&lt;dry-breadcrumbs separator=" | "&gt;...&lt;/dry-breadcrumbs&gt;</code></pre>
             </div>
-        </section>
+        </div>
 
-        <!-- Breadcrumbs with CSS Class Icons Section -->
-        <section class="demo-section">
-            <h2 class="demo-title">Breadcrumbs with CSS Class Icons</h2>
-            <p class="demo-description">Use Font Awesome or other CSS icon libraries for clean, scalable icons.</p>
+        <!-- Icon Examples -->
+        <div class="demo-section">
+            <h2 class="demo-title">Breadcrumbs with Icons</h2>
+            <div class="demo-description">
+                Use Font Awesome or other CSS icon libraries for enhanced navigation.
+            </div>
 
             <div class="demo-container space-y-6">
                 <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">Font Awesome Icons</h3>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">Basic Icons</h3>
                     <dry-breadcrumbs>
                         <breadcrumb-item href="/" icon='<i class="fas fa-home"></i>'>Home</breadcrumb-item>
                         <breadcrumb-item href="/users" icon='<i class="fas fa-users"></i>'>Users</breadcrumb-item>
@@ -169,44 +220,45 @@
                 </div>
 
                 <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">Different Icon Styles</h3>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">E-commerce Navigation</h3>
                     <dry-breadcrumbs separator="slash">
-                        <breadcrumb-item href="/" icon='<i class="fas fa-tachometer-alt"></i>'>Dashboard</breadcrumb-item>
-                        <breadcrumb-item href="/analytics" icon='<i class="fas fa-chart-line"></i>'>Analytics</breadcrumb-item>
-                        <breadcrumb-item href="/reports" icon='<i class="far fa-file-alt"></i>'>Reports</breadcrumb-item>
-                        <breadcrumb-item icon='<i class="fas fa-download"></i>'>Export</breadcrumb-item>
-                    </dry-breadcrumbs>
-                </div>
-
-                <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">E-commerce Example</h3>
-                    <dry-breadcrumbs separator="bullet">
                         <breadcrumb-item href="/" icon='<i class="fas fa-store"></i>'>Store</breadcrumb-item>
                         <breadcrumb-item href="/categories" icon='<i class="fas fa-th-large"></i>'>Categories</breadcrumb-item>
                         <breadcrumb-item href="/electronics" icon='<i class="fas fa-laptop"></i>'>Electronics</breadcrumb-item>
                         <breadcrumb-item icon='<i class="fas fa-mobile-alt"></i>'>Smartphones</breadcrumb-item>
                     </dry-breadcrumbs>
                 </div>
+
+                <div>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">Admin Dashboard</h3>
+                    <dry-breadcrumbs separator="bullet">
+                        <breadcrumb-item href="/" icon='<i class="fas fa-tachometer-alt"></i>'>Dashboard</breadcrumb-item>
+                        <breadcrumb-item href="/analytics" icon='<i class="fas fa-chart-line"></i>'>Analytics</breadcrumb-item>
+                        <breadcrumb-item href="/reports" icon='<i class="far fa-file-alt"></i>'>Reports</breadcrumb-item>
+                        <breadcrumb-item icon='<i class="fas fa-download"></i>'>Export</breadcrumb-item>
+                    </dry-breadcrumbs>
+                </div>
             </div>
 
             <div class="code-block">
-                    <pre>&lt;dry-breadcrumbs&gt;
+<pre><code>&lt;dry-breadcrumbs&gt;
     &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-home"&gt;&lt;/i&gt;'&gt;Home&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item href="/users" icon='&lt;i class="fas fa-users"&gt;&lt;/i&gt;'&gt;Users&lt;/breadcrumb-item&gt;
-    &lt;breadcrumb-item href="/users/profile" icon='&lt;i class="fas fa-user"&gt;&lt;/i&gt;'&gt;Profile&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item icon='&lt;i class="fas fa-cog"&gt;&lt;/i&gt;'&gt;Settings&lt;/breadcrumb-item&gt;
-&lt;/dry-breadcrumbs&gt;</pre>
+&lt;/dry-breadcrumbs&gt;</code></pre>
             </div>
-        </section>
+        </div>
 
-        <!-- Styled Breadcrumbs Section -->
-        <section class="demo-section">
+        <!-- Custom Styling -->
+        <div class="demo-section">
             <h2 class="demo-title">Custom Styling</h2>
-            <p class="demo-description">Apply custom styles to create unique breadcrumb designs.</p>
+            <div class="demo-description">
+                Apply custom styles using the breadcrumb_class attribute.
+            </div>
 
             <div class="demo-container space-y-8">
                 <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">Background Container Style</h3>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">Background Container</h3>
                     <dry-breadcrumbs breadcrumb_class="p-3 bg-blue-50 rounded-lg border border-blue-200">
                         <breadcrumb-item href="/" icon='<i class="fas fa-home text-blue-600"></i>'>Home</breadcrumb-item>
                         <breadcrumb-item href="/admin" icon='<i class="fas fa-shield-alt text-blue-600"></i>'>Admin</breadcrumb-item>
@@ -236,49 +288,56 @@
             </div>
 
             <div class="code-block">
-                    <pre>&lt;!-- Background Container --&gt;
-&lt;dry-breadcrumbs class="p-3 bg-blue-50 rounded-lg border border-blue-200"&gt;
+<pre><code>&lt;!-- Background container --&gt;
+&lt;dry-breadcrumbs breadcrumb_class="p-3 bg-blue-50 rounded-lg border border-blue-200"&gt;
     &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-home text-blue-600"&gt;&lt;/i&gt;'&gt;Home&lt;/breadcrumb-item&gt;
-    &lt;breadcrumb-item icon='&lt;i class="fas fa-lock text-blue-600"&gt;&lt;/i&gt;'&gt;Security&lt;/breadcrumb-item&gt;
 &lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Large Size --&gt;
-&lt;dry-breadcrumbs class="text-lg" separator="arrow"&gt;
-    &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-project-diagram text-green-600"&gt;&lt;/i&gt;'&gt;Projects&lt;/breadcrumb-item&gt;
+&lt;!-- Large size --&gt;
+&lt;dry-breadcrumbs breadcrumb_class="text-lg" separator="arrow"&gt;
+    &lt;breadcrumb-item href="/"&gt;Projects&lt;/breadcrumb-item&gt;
 &lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Dark Theme --&gt;
+&lt;!-- Dark theme --&gt;
 &lt;div class="p-4 bg-gray-800 rounded-lg"&gt;
-    &lt;dry-breadcrumbs class="text-gray-300" separator="slash"&gt;
-        &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-terminal text-gray-400"&gt;&lt;/i&gt;'&gt;Terminal&lt;/breadcrumb-item&gt;
+    &lt;dry-breadcrumbs breadcrumb_class="text-gray-300"&gt;
+        &lt;breadcrumb-item href="/"&gt;Terminal&lt;/breadcrumb-item&gt;
     &lt;/dry-breadcrumbs&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;</code></pre>
             </div>
-        </section>
+        </div>
 
-        <!-- JavaScript API Section -->
-        <section class="demo-section">
+        <!-- JavaScript API -->
+        <div class="demo-section">
             <h2 class="demo-title">JavaScript API</h2>
-            <p class="demo-description">Control breadcrumbs programmatically with the built-in API.</p>
+            <div class="demo-description">
+                Control breadcrumbs programmatically with the built-in API methods.
+            </div>
 
             <div class="demo-container">
+                <h3 class="text-lg font-semibold mb-3">Interactive Demo</h3>
+                <p class="text-gray-600 mb-4">Use the buttons below to test the JavaScript API methods.</p>
+
                 <dry-breadcrumbs id="api-demo-breadcrumbs">
                     <breadcrumb-item href="/">Home</breadcrumb-item>
                     <breadcrumb-item href="/products">Products</breadcrumb-item>
                 </dry-breadcrumbs>
 
-                <div class="mt-4 space-x-2 space-y-2">
-                    <button id="add-category-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <button id="add-category-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
                         Add Category
                     </button>
-                    <button id="set-first-active-btn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    <button id="set-first-active-btn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
                         Set First Active
                     </button>
-                    <button id="change-separator-btn" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                    <button id="change-separator-btn" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
                         Change Separator
                     </button>
-                    <button id="get-info-btn" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+                    <button id="get-info-btn" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
                         Get Info
+                    </button>
+                    <button id="method-chain-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                        Method Chain
                     </button>
                 </div>
 
@@ -286,10 +345,9 @@
                     <strong>Breadcrumb Info:</strong>
                     <div id="info-content"></div>
                 </div>
-            </div>
 
-            <div class="code-block">
-                    <pre>// Get breadcrumbs instance
+                <div class="code-block mt-4">
+<pre><code>// Get breadcrumbs instance
 const breadcrumbs = document.getElementById('my-breadcrumbs');
 
 // Add new item
@@ -310,18 +368,21 @@ console.log(breadcrumbs.separator);   // Current separator
 breadcrumbs
     .addItem('Electronics', '/electronics')
     .addItem('Phones', '/electronics/phones')
-    .setActive(1);</pre>
+    .setActive(1);</code></pre>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Responsive Example Section -->
-        <section class="demo-section">
+        <!-- Responsive Design -->
+        <div class="demo-section">
             <h2 class="demo-title">Responsive Design</h2>
-            <p class="demo-description">Breadcrumbs automatically wrap and can be customized for mobile layouts.</p>
+            <div class="demo-description">
+                Examples showing how breadcrumbs adapt to different screen sizes.
+            </div>
 
             <div class="demo-container space-y-6">
                 <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">Mobile-Friendly Layout</h3>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">Long Breadcrumb Path</h3>
                     <dry-breadcrumbs breadcrumb_class="text-sm">
                         <breadcrumb-item href="/" icon='<i class="fas fa-home"></i>'>Home</breadcrumb-item>
                         <breadcrumb-item href="/products">Products</breadcrumb-item>
@@ -333,7 +394,7 @@ breadcrumbs
                 </div>
 
                 <div>
-                    <h3 class="text-sm font-medium mb-2 text-gray-500">Compact Mobile Version</h3>
+                    <h3 class="text-sm font-medium mb-2 text-gray-500">Mobile-Optimized (Truncated)</h3>
                     <div class="md:hidden">
                         <dry-breadcrumbs separator="slash">
                             <breadcrumb-item href="/" icon='<i class="fas fa-home"></i>'>Home</breadcrumb-item>
@@ -355,13 +416,13 @@ breadcrumbs
             </div>
 
             <div class="code-block">
-                    <pre>&lt;!-- Mobile-friendly with smaller text --&gt;
-&lt;dry-breadcrumbs class="text-sm"&gt;
+<pre><code>&lt;!-- Mobile-friendly with smaller text --&gt;
+&lt;dry-breadcrumbs breadcrumb_class="text-sm"&gt;
     &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-home"&gt;&lt;/i&gt;'&gt;Home&lt;/breadcrumb-item&gt;
     &lt;!-- Multiple items... --&gt;
 &lt;/dry-breadcrumbs&gt;
 
-&lt;!-- Responsive: show truncated on mobile, full on desktop --&gt;
+&lt;!-- Responsive: truncated on mobile, full on desktop --&gt;
 &lt;div class="md:hidden"&gt;
     &lt;dry-breadcrumbs separator="slash"&gt;
         &lt;breadcrumb-item href="/"&gt;Home&lt;/breadcrumb-item&gt;
@@ -369,129 +430,168 @@ breadcrumbs
         &lt;breadcrumb-item href="/phones"&gt;Phones&lt;/breadcrumb-item&gt;
         &lt;breadcrumb-item&gt;Current Page&lt;/breadcrumb-item&gt;
     &lt;/dry-breadcrumbs&gt;
-&lt;/div&gt;
-&lt;div class="hidden md:block"&gt;
-    &lt;!-- Full breadcrumbs for desktop --&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;</code></pre>
             </div>
-        </section>
+        </div>
 
         <!-- API Reference -->
-        <section class="mt-12">
-            <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+        <div class="demo-section">
+            <h2 class="demo-title">API Reference</h2>
+            
+            <div class="demo-container">
+                <h3 class="text-lg font-semibold mb-4">Attributes</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="border border-gray-300 px-4 py-2 text-left">Attribute</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Component</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2"><code>separator</code></td>
+                                <td class="border border-gray-300 px-4 py-2">dry-breadcrumbs</td>
+                                <td class="border border-gray-300 px-4 py-2">Separator style: 'chevron', 'slash', 'bullet', 'arrow', or custom text</td>
+                                <td class="border border-gray-300 px-4 py-2">'chevron'</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2"><code>breadcrumb_class</code></td>
+                                <td class="border border-gray-300 px-4 py-2">dry-breadcrumbs</td>
+                                <td class="border border-gray-300 px-4 py-2">Additional CSS classes for the container</td>
+                                <td class="border border-gray-300 px-4 py-2">''</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2"><code>href</code></td>
+                                <td class="border border-gray-300 px-4 py-2">breadcrumb-item</td>
+                                <td class="border border-gray-300 px-4 py-2">URL for the breadcrumb link</td>
+                                <td class="border border-gray-300 px-4 py-2">undefined</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2"><code>icon</code></td>
+                                <td class="border border-gray-300 px-4 py-2">breadcrumb-item</td>
+                                <td class="border border-gray-300 px-4 py-2">HTML for CSS class icons (e.g., Font Awesome)</td>
+                                <td class="border border-gray-300 px-4 py-2">undefined</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2"><code>active</code></td>
+                                <td class="border border-gray-300 px-4 py-2">breadcrumb-item</td>
+                                <td class="border border-gray-300 px-4 py-2">Whether this item is active (last item auto-set)</td>
+                                <td class="border border-gray-300 px-4 py-2">false</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2"><code>class</code></td>
+                                <td class="border border-gray-300 px-4 py-2">breadcrumb-item</td>
+                                <td class="border border-gray-300 px-4 py-2">Additional CSS classes for the item</td>
+                                <td class="border border-gray-300 px-4 py-2">''</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-            <h3 class="text-xl font-semibold mt-6 mb-3">Breadcrumbs Component</h3>
-            <table class="min-w-full border border-gray-300 rounded">
-                <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 text-left">Property</th>
-                    <th class="px-4 py-2 text-left">Type</th>
-                    <th class="px-4 py-2 text-left">Default</th>
-                    <th class="px-4 py-2 text-left">Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">separator</td>
-                    <td class="px-4 py-2">string</td>
-                    <td class="px-4 py-2">'chevron'</td>
-                    <td class="px-4 py-2">Separator style: 'chevron', 'slash', 'bullet', 'arrow', or custom text</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">class</td>
-                    <td class="px-4 py-2">string</td>
-                    <td class="px-4 py-2">''</td>
-                    <td class="px-4 py-2">Additional CSS classes for the container</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">itemCount</td>
-                    <td class="px-4 py-2">number</td>
-                    <td class="px-4 py-2">-</td>
-                    <td class="px-4 py-2">Read-only: Number of breadcrumb items</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">activeIndex</td>
-                    <td class="px-4 py-2">number</td>
-                    <td class="px-4 py-2">-</td>
-                    <td class="px-4 py-2">Read-only: Index of the active item</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="demo-container">
+                <h3 class="text-lg font-semibold mb-4">Properties & Methods</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="border border-gray-300 px-4 py-2 text-left">Property/Method</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Type</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2"><code>separator</code></td>
+                                <td class="border border-gray-300 px-4 py-2">property</td>
+                                <td class="border border-gray-300 px-4 py-2">Get/set current separator style</td>
+                                <td class="border border-gray-300 px-4 py-2">string</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2"><code>itemCount</code></td>
+                                <td class="border border-gray-300 px-4 py-2">property (readonly)</td>
+                                <td class="border border-gray-300 px-4 py-2">Number of breadcrumb items</td>
+                                <td class="border border-gray-300 px-4 py-2">-</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2"><code>activeIndex</code></td>
+                                <td class="border border-gray-300 px-4 py-2">property (readonly)</td>
+                                <td class="border border-gray-300 px-4 py-2">Index of the active item</td>
+                                <td class="border border-gray-300 px-4 py-2">-</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2"><code>addItem()</code></td>
+                                <td class="border border-gray-300 px-4 py-2">method</td>
+                                <td class="border border-gray-300 px-4 py-2">Add a new breadcrumb item</td>
+                                <td class="border border-gray-300 px-4 py-2">text, href?, active?</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2"><code>setActive()</code></td>
+                                <td class="border border-gray-300 px-4 py-2">method</td>
+                                <td class="border border-gray-300 px-4 py-2">Set which item is active by index</td>
+                                <td class="border border-gray-300 px-4 py-2">index</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <h3 class="text-xl font-semibold mt-6 mb-3">Breadcrumb Item</h3>
-            <table class="min-w-full border border-gray-300 rounded">
-                <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 text-left">Property</th>
-                    <th class="px-4 py-2 text-left">Type</th>
-                    <th class="px-4 py-2 text-left">Default</th>
-                    <th class="px-4 py-2 text-left">Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">href</td>
-                    <td class="px-4 py-2">string</td>
-                    <td class="px-4 py-2">undefined</td>
-                    <td class="px-4 py-2">URL for the breadcrumb link</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">icon</td>
-                    <td class="px-4 py-2">string</td>
-                    <td class="px-4 py-2">undefined</td>
-                    <td class="px-4 py-2">HTML for CSS class icons (e.g., Font Awesome)</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">active</td>
-                    <td class="px-4 py-2">boolean</td>
-                    <td class="px-4 py-2">false</td>
-                    <td class="px-4 py-2">Whether this item is active (last item auto-set)</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">class</td>
-                    <td class="px-4 py-2">string</td>
-                    <td class="px-4 py-2">''</td>
-                    <td class="px-4 py-2">Additional CSS classes for the item</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <h3 class="text-xl font-semibold mt-6 mb-3">Methods</h3>
-            <table class="min-w-full border border-gray-300 rounded">
-                <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 text-left">Method</th>
-                    <th class="px-4 py-2 text-left">Parameters</th>
-                    <th class="px-4 py-2 text-left">Returns</th>
-                    <th class="px-4 py-2 text-left">Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">addItem()</td>
-                    <td class="px-4 py-2">text, href?, active?</td>
-                    <td class="px-4 py-2">this</td>
-                    <td class="px-4 py-2">Add a new breadcrumb item</td>
-                </tr>
-                <tr class="border-t">
-                    <td class="px-4 py-2 font-medium">setActive()</td>
-                    <td class="px-4 py-2">index</td>
-                    <td class="px-4 py-2">this</td>
-                    <td class="px-4 py-2">Set which item is active by index</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
-
-    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-        <p>DRY2 Web Components Library</p>
-        <p class="mt-2">
-            <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-        </p>
-    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const breadcrumbs = document.getElementById('api-demo-breadcrumbs');
+        const infoDisplay = document.getElementById('info-display');
+        const infoContent = document.getElementById('info-content');
+        
+        let separatorIndex = 0;
+        const separators = ['chevron', 'slash', 'bullet', 'arrow'];
+        
+        // Add Category button
+        document.getElementById('add-category-btn').addEventListener('click', function() {
+            const categories = ['Electronics', 'Smartphones', 'iPhone', 'iPad', 'MacBook', 'Accessories'];
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            breadcrumbs.addItem(randomCategory, `/products/${randomCategory.toLowerCase()}`);
+        });
+        
+        // Set First Active button
+        document.getElementById('set-first-active-btn').addEventListener('click', function() {
+            breadcrumbs.setActive(0);
+        });
+        
+        // Change Separator button
+        document.getElementById('change-separator-btn').addEventListener('click', function() {
+            separatorIndex = (separatorIndex + 1) % separators.length;
+            breadcrumbs.separator = separators[separatorIndex];
+        });
+        
+        // Get Info button
+        document.getElementById('get-info-btn').addEventListener('click', function() {
+            const info = `
+                <div><strong>Item Count:</strong> ${breadcrumbs.itemCount}</div>
+                <div><strong>Active Index:</strong> ${breadcrumbs.activeIndex}</div>
+                <div><strong>Current Separator:</strong> ${breadcrumbs.separator}</div>
+            `;
+            infoContent.innerHTML = info;
+            infoDisplay.classList.remove('hidden');
+        });
+        
+        // Method Chain button
+        document.getElementById('method-chain-btn').addEventListener('click', function() {
+            breadcrumbs
+                .addItem('Chained Item 1', '/chain1')
+                .addItem('Chained Item 2', '/chain2')
+                .setActive(1);
+            
+            infoContent.innerHTML = '<div><strong>Method chaining completed!</strong> Added 2 items and set active to index 1.</div>';
+            infoDisplay.classList.remove('hidden');
+        });
+    });
+    </script>
 </div>
-
-
 </body>
 </html>

@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toggle Switch Component Showcase</title>
+    <title>toggle switch Component Showcase - DRY2</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Component Scripts -->
     <script src="../src/dry2/dry2.js"></script>
@@ -46,8 +50,31 @@
             font-size: 0.875rem;
         }
     </style>
+    <script src="../src/dry2/breadcrumbs.js"></script>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="bg-gray-100">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Toggle Switch Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+
+<div class="p-8">
 <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
     <header class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-4">Toggle Switch Component</h1>
@@ -405,5 +432,6 @@ document.addEventListener('toggle:changed', (event) => {
         addLogEntry('Event logging started');
     });
 </script>
+</div>
 </body>
 </html>

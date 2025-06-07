@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avatar Component Showcase</title>
+    <title>Avatar Component Showcase - DRY2</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Component Scripts -->
     <script src="../src/dry2/dry2.js"></script>
     <script src="../src/dry2/avatar.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
 
     <style>
         .demo-section {
@@ -47,7 +52,29 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="bg-gray-100">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Avatar Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+
+<div class="p-8">
 <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
     <header class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-4">Avatar Component</h1>
@@ -166,6 +193,88 @@
         </section>
 
 
+        <!-- Interactive Demo Section -->
+        <section class="demo-section">
+            <h2 class="demo-title">Interactive Avatar Demo</h2>
+            <p class="demo-description">Try changing the avatar properties dynamically.</p>
+
+            <div class="demo-container">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
+                            <dry-avatar id="interactive-avatar" name="John Doe" size="xl"></dry-avatar>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                            <input type="text" id="avatar-src" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                   placeholder="https://example.com/image.jpg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                            <input type="text" id="avatar-name" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                   value="John Doe">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Custom Initials</label>
+                            <input type="text" id="avatar-initials" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                   placeholder="JD" maxlength="3">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                            <select id="avatar-size" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="xs">Extra Small</option>
+                                <option value="sm">Small</option>
+                                <option value="md">Medium</option>
+                                <option value="lg">Large</option>
+                                <option value="xl" selected>Extra Large</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Shape</label>
+                            <select id="avatar-shape" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="circle" selected>Circle</option>
+                                <option value="rounded">Rounded</option>
+                                <option value="square">Square</option>
+                            </select>
+                        </div>
+                        
+                        <button id="reset-avatar" class="w-full bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                            Reset to Defaults
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre id="interactive-code">&lt;dry-avatar name="John Doe" size="xl"&gt;&lt;/dry-avatar&gt;</pre>
+            </div>
+        </section>
+
+        <!-- Error Handling Demo -->
+        <section class="demo-section">
+            <h2 class="demo-title">Image Error Handling</h2>
+            <p class="demo-description">See how the avatar gracefully handles broken image URLs.</p>
+
+            <div class="demo-container flex items-center gap-4">
+                <dry-avatar name="Broken Image" src="https://invalid-url.com/broken.jpg" size="lg"></dry-avatar>
+                <dry-avatar name="Valid Image" src="https://i.pravatar.cc/150?img=3" size="lg"></dry-avatar>
+                <dry-avatar name="No Image" size="lg"></dry-avatar>
+            </div>
+
+            <div class="code-block">
+                <pre>&lt;dry-avatar name="Broken Image" src="https://invalid-url.com/broken.jpg"&gt;&lt;/dry-avatar&gt;
+&lt;dry-avatar name="Valid Image" src="https://i.pravatar.cc/150?img=3"&gt;&lt;/dry-avatar&gt;
+&lt;dry-avatar name="No Image"&gt;&lt;/dry-avatar&gt;</pre>
+            </div>
+        </section>
+
         <!-- API Reference -->
         <section class="mt-12">
             <h2 class="text-2xl font-bold mb-4">API Reference</h2>
@@ -261,5 +370,94 @@
         </p>
     </footer>
 </div>
+</div>
+
+<script>
+    // Interactive demo functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatar = document.getElementById('interactive-avatar');
+        const srcInput = document.getElementById('avatar-src');
+        const nameInput = document.getElementById('avatar-name');
+        const initialsInput = document.getElementById('avatar-initials');
+        const sizeSelect = document.getElementById('avatar-size');
+        const shapeSelect = document.getElementById('avatar-shape');
+        const resetBtn = document.getElementById('reset-avatar');
+        const codeDisplay = document.getElementById('interactive-code');
+
+        function updateCodeDisplay() {
+            let code = '<dry-avatar';
+            
+            if (nameInput.value) {
+                code += ` name="${nameInput.value}"`;
+            }
+            
+            if (srcInput.value) {
+                code += ` src="${srcInput.value}"`;
+            }
+            
+            if (initialsInput.value) {
+                code += ` initials="${initialsInput.value}"`;
+            }
+            
+            if (sizeSelect.value !== 'md') {
+                code += ` size="${sizeSelect.value}"`;
+            }
+            
+            if (shapeSelect.value !== 'circle') {
+                code += ` shape="${shapeSelect.value}"`;
+            }
+            
+            code += '></dry-avatar>';
+            codeDisplay.textContent = code;
+        }
+
+        // Event listeners for form inputs
+        srcInput.addEventListener('input', function() {
+            avatar.setImage(this.value);
+            updateCodeDisplay();
+        });
+
+        nameInput.addEventListener('input', function() {
+            avatar.setName(this.value);
+            updateCodeDisplay();
+        });
+
+        initialsInput.addEventListener('input', function() {
+            avatar.setInitials(this.value);
+            updateCodeDisplay();
+        });
+
+        sizeSelect.addEventListener('change', function() {
+            avatar.setSize(this.value);
+            updateCodeDisplay();
+        });
+
+        shapeSelect.addEventListener('change', function() {
+            avatar.setShape(this.value);
+            updateCodeDisplay();
+        });
+
+        resetBtn.addEventListener('click', function() {
+            // Reset form
+            srcInput.value = '';
+            nameInput.value = 'John Doe';
+            initialsInput.value = '';
+            sizeSelect.value = 'xl';
+            shapeSelect.value = 'circle';
+            
+            // Reset avatar
+            avatar.src = '';
+            avatar.name = 'John Doe';
+            avatar.initials = '';
+            avatar.size = 'xl';
+            avatar.shape = 'circle';
+            
+            updateCodeDisplay();
+        });
+
+        // Initial code display
+        updateCodeDisplay();
+    });
+</script>
 </body>
 </html>

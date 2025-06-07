@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Component Showcase - DRY2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/button.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Button Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+    
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Button Component</h1>
+        <p class="text-gray-600 mb-8">Customizable button component with different variants, sizes, and states.</p>
+
+        <!-- Variants -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Variants</h2>
+            <div class="flex flex-wrap gap-4">
+                <dry-button variant="secondary">Secondary</dry-button><dry-button variant="primary">Primary</dry-button>
+                
+                <dry-button variant="outline">Outline</dry-button>
+                <dry-button variant="text">Text</dry-button>
+                <dry-button variant="danger">Danger</dry-button>
+                <dry-button variant="success">Success</dry-button>
+                <dry-button variant="warning">Warning</dry-button>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button variant="primary"&gt;Primary&lt;/dry-button&gt;
+&lt;dry-button variant="secondary"&gt;Secondary&lt;/dry-button&gt;
+&lt;dry-button variant="outline"&gt;Outline&lt;/dry-button&gt;
+&lt;dry-button variant="text"&gt;Text&lt;/dry-button&gt;
+&lt;dry-button variant="danger"&gt;Danger&lt;/dry-button&gt;
+&lt;dry-button variant="success"&gt;Success&lt;/dry-button&gt;
+&lt;dry-button variant="warning"&gt;Warning&lt;/dry-button&gt;</code></pre>
+        </section>
+
+        <!-- Sizes -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sizes</h2>
+            <div class="flex items-center gap-4">
+                <dry-button size="sm">Small</dry-button>
+                <dry-button size="md">Medium</dry-button>
+                <dry-button size="lg">Large</dry-button>
+                <dry-button size="xl">Extra Large</dry-button>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button size="sm"&gt;Small&lt;/dry-button&gt;
+&lt;dry-button size="md"&gt;Medium&lt;/dry-button&gt;
+&lt;dry-button size="lg"&gt;Large&lt;/dry-button&gt;
+&lt;dry-button size="xl"&gt;Extra Large&lt;/dry-button&gt;</code></pre>
+        </section>
+
+        <!-- States -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">States</h2>
+            <div class="flex flex-wrap gap-4">
+                <dry-button>Normal</dry-button>
+                <dry-button disabled>Disabled</dry-button>
+                <dry-button loading>Loading</dry-button>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button&gt;Normal&lt;/dry-button&gt;
+&lt;dry-button disabled&gt;Disabled&lt;/dry-button&gt;
+&lt;dry-button loading&gt;Loading&lt;/dry-button&gt;</code></pre>
+        </section>
+
+        <!-- With Icons -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">With Icons</h2>
+            <div class="flex flex-wrap gap-4">
+                <dry-button 
+                    icon-start='<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>'>
+                    Add Item
+                </dry-button>
+                <dry-button 
+                    variant="outline"
+                    icon-end='<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>'>
+                    Continue
+                </dry-button>
+                <dry-button 
+                    variant="danger"
+                    icon-start='<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>'>
+                    Delete
+                </dry-button>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Icon at start --&gt;
+&lt;dry-button icon-start='&lt;svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"&gt;&lt;/path&gt;&lt;/svg&gt;'&gt;
+    Add Item
+&lt;/dry-button&gt;
+
+&lt;!-- Icon at end --&gt;
+&lt;dry-button variant="outline" icon-end='&lt;svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"&gt;&lt;/path&gt;&lt;/svg&gt;'&gt;
+    Continue
+&lt;/dry-button&gt;</code></pre>
+        </section>
+
+        <!-- As Links -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">As Links</h2>
+            <div class="flex flex-wrap gap-4">
+                <dry-button href="#" variant="primary">Link Button</dry-button>
+                <dry-button href="#" target="_blank" variant="outline">External Link</dry-button>
+            </div>
+            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button href="#" variant="primary"&gt;Link Button&lt;/dry-button&gt;
+&lt;dry-button href="#" target="_blank" variant="outline"&gt;External Link&lt;/dry-button&gt;</code></pre>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Interactive Demo</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <div x-data="{ 
+                    variant: 'primary', 
+                    size: 'md', 
+                    disabled: false, 
+                    loading: false,
+                    buttonText: 'Click me'
+                }">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Controls -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Variant</label>
+                                <select x-model="variant" class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="primary">Primary</option>
+                                    <option value="secondary">Secondary</option>
+                                    <option value="outline">Outline</option>
+                                    <option value="text">Text</option>
+                                    <option value="danger">Danger</option>
+                                    <option value="success">Success</option>
+                                    <option value="warning">Warning</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                                <select x-model="size" class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="sm">Small</option>
+                                    <option value="md">Medium</option>
+                                    <option value="lg">Large</option>
+                                    <option value="xl">Extra Large</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" x-model="disabled" class="mr-2">
+                                    Disabled
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" x-model="loading" class="mr-2">
+                                    Loading
+                                </label>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
+                                <input type="text" x-model="buttonText" class="w-full p-2 border border-gray-300 rounded">
+                            </div>
+                        </div>
+                        
+                        <!-- Preview -->
+                        <div class="flex items-center justify-center min-h-[200px] bg-gray-50 rounded-lg">
+                            <dry-button 
+                                :variant="variant"
+                                :size="size"
+                                :disabled="disabled"
+                                :loading="loading"
+                                x-text="buttonText"
+                                @click="alert('Button clicked!')">
+                            </dry-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Examples -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JavaScript API</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <div class="flex gap-4 mb-4">
+                    <dry-button id="api-demo-btn" variant="primary">Demo Button</dry-button>
+                    <button onclick="toggleLoading()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Toggle Loading</button>
+                    <button onclick="toggleDisabled()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Toggle Disabled</button>
+                    <button onclick="changeText()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Change Text</button>
+                </div>
+                <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><code>const button = document.getElementById('api-demo-btn');
+
+// Toggle loading state
+button.setLoading(!button.loading);
+
+// Toggle disabled state  
+button.setDisabled(!button.disabled);
+
+// Change text
+button.setText('New Text');
+
+// Programmatically click
+button.click();</code></pre>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let isLoading = false;
+        let isDisabled = false;
+        let textCounter = 0;
+
+        function toggleLoading() {
+            const button = document.getElementById('api-demo-btn');
+            isLoading = !isLoading;
+            button.setLoading(isLoading);
+        }
+
+        function toggleDisabled() {
+            const button = document.getElementById('api-demo-btn');
+            isDisabled = !isDisabled;
+            button.setDisabled(isDisabled);
+        }
+
+        function changeText() {
+            const button = document.getElementById('api-demo-btn');
+            const texts = ['Demo Button', 'Changed!', 'Hello World', 'Click Me'];
+            textCounter = (textCounter + 1) % texts.length;
+            button.setText(texts[textCounter]);
+        }
+    </script>
+</body>
+</html>

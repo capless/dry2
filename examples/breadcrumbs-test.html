@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breadcrumbs Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../src/dry2/dry2.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+</head>
+<body class="p-8">
+    <h1 class="text-2xl mb-8">Breadcrumbs Separator Test</h1>
+
+    <div class="space-y-4">
+        <div>
+            <h3>Default (chevron):</h3>
+            <dry-breadcrumbs>
+                <breadcrumb-item href="/">Home</breadcrumb-item>
+                <breadcrumb-item href="/products">Products</breadcrumb-item>
+                <breadcrumb-item>Category</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+
+        <div>
+            <h3>Slash:</h3>
+            <dry-breadcrumbs separator="slash">
+                <breadcrumb-item href="/">Home</breadcrumb-item>
+                <breadcrumb-item href="/products">Products</breadcrumb-item>
+                <breadcrumb-item>Category</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+
+        <div>
+            <h3>Bullet:</h3>
+            <dry-breadcrumbs separator="bullet">
+                <breadcrumb-item href="/">Home</breadcrumb-item>
+                <breadcrumb-item href="/products">Products</breadcrumb-item>
+                <breadcrumb-item>Category</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+
+        <div>
+            <h3>Arrow:</h3>
+            <dry-breadcrumbs separator="arrow">
+                <breadcrumb-item href="/">Home</breadcrumb-item>
+                <breadcrumb-item href="/products">Products</breadcrumb-item>
+                <breadcrumb-item>Category</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+
+        <div>
+            <h3>Custom:</h3>
+            <dry-breadcrumbs separator=" | ">
+                <breadcrumb-item href="/">Home</breadcrumb-item>
+                <breadcrumb-item href="/products">Products</breadcrumb-item>
+                <breadcrumb-item>Category</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+
+    <script>
+        // Test programmatic separator change
+        setTimeout(() => {
+            const breadcrumbs = document.querySelector('dry-breadcrumbs');
+            console.log('Current separator:', breadcrumbs.separator);
+            console.log('Setting separator to slash...');
+            breadcrumbs.separator = 'slash';
+            console.log('New separator:', breadcrumbs.separator);
+        }, 2000);
+    </script>
+</body>
+</html>

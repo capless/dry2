@@ -1,0 +1,40 @@
+<!-- Navigation -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center">
+                    <span class="text-2xl font-bold gradient-text">DRY2</span>
+                    <span class="ml-2 text-gray-600">Web Components</span>
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="../index.html#features" class="text-gray-600 hover:text-gray-900">Features</a>
+                <a href="../index.html#components" class="text-gray-600 hover:text-gray-900">Components</a>
+                <a href="../docs/" class="text-gray-600 hover:text-gray-900">Documentation</a>
+                <a href="./index.html" class="text-gray-600 hover:text-gray-900">Examples</a>
+                <a href="https://github.com/capless/dry2" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                </a>
+            </div>
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" x-data="{ open: false }" @click="open = !open">
+                    <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                        <path x-show="!open" fill-rule="evenodd" d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
+                        <path x-show="open" fill-rule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* Gradient text */
+    .gradient-text {
+        background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style> 
