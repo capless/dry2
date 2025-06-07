@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawer Components Examples</title>
+    <title>drawer Component Showcase - DRY2</title>
 
     <!-- Required Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -23,18 +23,144 @@
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
         }
-        .example-code {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #f3f4f6;
-            border-radius: 0.375rem;
-            overflow-x: auto;
-            font-family: monospace;
-            font-size: 0.875rem;
+        .code-block {
+            position: relative;
+            margin-top: 1.5rem;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+        .code-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
+            border-bottom: 1px solid #475569;
+        }
+        .code-language {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .copy-button {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.375rem;
+            color: #60a5fa;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #93c5fd;
+        }
+        .copy-button.copied {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        .code-content {
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+        .code-content pre {
+            margin: 0;
+            white-space: pre;
+        }
+        .code-content code {
+            color: inherit;
+            font-size: inherit;
+            font-family: inherit;
+        }
+        /* Syntax highlighting */
+        .code-content .tag { color: #f472b6; }
+        .code-content .attr { color: #60a5fa; }
+        .code-content .string { color: #34d399; }
+        .code-content .comment { color: #64748b; font-style: italic; }
     </style>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+    <script>
+        // Copy to clipboard functionality
+        function copyToClipboard(button, codeContent) {
+            const code = codeContent.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Initialize copy buttons when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.copy-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const codeBlock = button.closest('.code-block');
+                    const codeContent = codeBlock.querySelector('.code-content code');
+                    copyToClipboard(button, codeContent);
+                });
+            });
+        });
+    </script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100">
+    <!-- Include Navigation -->
+    <script>
+        fetch('nav.inc.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation').innerHTML = data;
+            });
+    </script>
+    <div id="navigation"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Drawer Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+
+<div class="p-8">
 <div class="max-w-4xl mx-auto">
     <h1 class="text-3xl font-bold mb-8">Drawer Components Examples</h1>
 
@@ -98,7 +224,17 @@
             </div>
         </div>
 
-        <div class="example-code">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-language">HTML</span>
+                <button class="copy-button">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
                 <pre><code>&lt;dry-drawer
     position="right"
     drawer-class="bg-white w-80"
@@ -110,6 +246,7 @@
         &lt;!-- More content here --&gt;
     &lt;/div&gt;
 &lt;/dry-drawer&gt;</code></pre>
+            </div>
         </div>
     </section>
 
@@ -154,7 +291,17 @@
             </div>
         </div>
 
-        <div class="example-code">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-language">HTML</span>
+                <button class="copy-button">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
                 <pre><code>&lt;ajax-drawer
     url="/api/drawer-content.html"
     position="right"
@@ -163,6 +310,7 @@
     trigger-content="Load AJAX Content"&gt;
     &lt;span slot="header"&gt;Dynamic Content Drawer&lt;/span&gt;
 &lt;/ajax-drawer&gt;</code></pre>
+            </div>
         </div>
     </section>
 
@@ -311,7 +459,17 @@
             <li class="mb-2">You can close the drawer programmatically by returning the <code>HX-CloseDrawer: close</code> header in your response</li>
         </ul>
 
-        <div class="example-code">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-language">JavaScript</span>
+                <button class="copy-button">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
                 <pre><code>// Server-side example (Node.js/Express)
 app.get('/api/drawer-content.html', (req, res) => {
   // Do some processing...
@@ -322,6 +480,7 @@ app.get('/api/drawer-content.html', (req, res) => {
   // Send the response
   res.send('&lt;div&gt;This content was loaded via AJAX&lt;/div&gt;');
 });</code></pre>
+            </div>
         </div>
     </section>
 
@@ -373,7 +532,17 @@ app.get('/api/drawer-content.html', (req, res) => {
                 </script>
             </div>
 
-            <div class="example-code">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">JavaScript</span>
+                    <button class="copy-button">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
                     <pre><code>// Get a reference to the drawer
 const drawer = document.getElementById('js-controlled-drawer');
 
@@ -391,6 +560,7 @@ drawer.addEventListener('drawer:opened', () => {
 drawer.addEventListener('drawer:closed', () => {
   console.log('Drawer was closed');
 });</code></pre>
+                </div>
             </div>
         </div>
     </section>
@@ -467,7 +637,17 @@ drawer.addEventListener('drawer:closed', () => {
             </div>
         </div>
 
-        <div class="example-code">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-language">HTML</span>
+                <button class="copy-button">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
                 <pre><code>&lt;dry-drawer
     position="right"
     drawer-class="bg-gradient-to-br from-indigo-500 to-purple-600 w-80 text-white"
@@ -481,8 +661,10 @@ drawer.addEventListener('drawer:closed', () => {
         &lt;!-- Additional content here --&gt;
     &lt;/div&gt;
 &lt;/dry-drawer&gt;</code></pre>
+            </div>
         </div>
     </section>
+</div>
 </div>
 </body>
 </html>
