@@ -1,0 +1,263 @@
+/* Base CSS file for DRY2 showcase pages */
+/* Contains common styles extracted from all *-showcase.html files */
+
+/* Body styles - used in drawer-showcase and timeline-showcase */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Demo section styles - used in dialog, stat, accordion, badge, swap, tabs, toast, qr */
+.demo-section {
+    margin-bottom: 2rem;
+}
+
+.demo-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.demo-description {
+    margin-bottom: 1.5rem;
+    color: #4b5563;
+}
+
+.demo-container {
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+}
+
+/* Additional demo styles - used in toast-showcase and qr-showcase */
+.showcase-relative {
+    min-height: 160px;
+}
+
+/* QR showcase specific styles */
+.demo-container.showcase-relative {
+    min-height: 240px;
+}
+
+/* Example section styles - used in drawer-showcase */
+.example-section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+}
+
+/* Test section styles - used in timeline-showcase */
+.test-section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: white;
+}
+
+.test-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #374151;
+}
+
+/* Code block styles - enhanced version used in drawer, dialog, stat, swap, badge, tabs, toast, qr */
+.code-block {
+    position: relative;
+    margin-top: 1.5rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Simple code block styles - used in accordion, avatar, breadcrumbs */
+.code-block.simple {
+    padding: 1rem;
+    border-radius: 0.375rem;
+    background-color: #1f2937;
+    color: #f9fafb;
+    font-family: monospace;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    box-shadow: none;
+    border: none;
+    background: #1f2937;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
+    border-bottom: 1px solid #475569;
+}
+
+.code-language {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.copy-button {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 0.375rem;
+    color: #60a5fa;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+}
+
+.copy-button.copied {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+}
+
+.code-content {
+    padding: 1.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+}
+
+.code-content pre {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.code-content code {
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Fix code blocks inside accordion content */
+.accordion-content {
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+}
+
+.accordion-content .code-block {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.accordion-content .code-content {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
+}
+
+.accordion-content .code-content pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre;
+    box-sizing: border-box;
+}
+
+/* Additional containment for dry-code elements inside accordions */
+.accordion-content dry-code {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Ensure content div inside accordion doesn't overflow */
+.accordion-content > div {
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+/* Accordion container and item containment */
+.accordion {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.accordion-item {
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Demo container should also contain overflowing content */
+.demo-container {
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+/* Syntax highlighting - used in drawer */
+.code-content .tag { 
+    color: #f472b6; 
+}
+
+.code-content .attr { 
+    color: #60a5fa; 
+}
+
+.code-content .string { 
+    color: #34d399; 
+}
+
+.code-content .comment { 
+    color: #64748b; 
+    font-style: italic; 
+}
+
+/* Custom dialog styles - used in dialog-showcase */
+dialog {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+/* Stat card styles - used in stat-showcase */
+.stat-card {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+} 

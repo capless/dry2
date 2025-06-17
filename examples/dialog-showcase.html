@@ -3,139 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dialog Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
+    <title>Dialog Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/dialog.js"></script>
-
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-
-        /* Custom dialog styles */
-        dialog {
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            max-width: 90vw;
-            max-height: 90vh;
-        }
-
-        dialog::backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-    </style>
     <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -144,152 +33,145 @@
         </div>
     </div>
 
-<div class="p-8">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Dialog Component Showcase</h1>
-        <p class="text-gray-600 mb-8">Interactive dialog component with AJAX content loading capabilities using HTMX integration.</p>
+    <div class="p-8">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Dialog Component Showcase</h1>
+            <p class="text-gray-600 mb-8">Interactive dialog component with AJAX content loading capabilities using HTMX integration.</p>
 
-        <!-- Introduction -->
-        <div class="demo-section">
-            <div class="demo-container">
-                <p class="text-gray-700 mb-4">
-                    The <code class="bg-gray-200 px-2 py-1 rounded text-sm">dry-dialog</code> component creates modal dialogs that can load content dynamically via AJAX. 
-                    It integrates seamlessly with HTMX for server-side content fetching and provides a clean, accessible dialog interface.
-                </p>
-                <div class="bg-blue-50 border border-blue-200 rounded p-4">
-                    <h4 class="font-semibold text-blue-900 mb-2">Key Features:</h4>
-                    <ul class="text-blue-800 text-sm space-y-1">
-                        <li>• HTMX integration for dynamic content loading</li>
-                        <li>• Customizable styling via attributes</li>
-                        <li>• Automatic dialog management (open/close)</li>
-                        <li>• Server-controlled closing via HX-CloseDialog header</li>
-                        <li>• Accessible with keyboard navigation and proper ARIA attributes</li>
-                        <li>• Built on standard Web Components for consistent behavior</li>
-                    </ul>
+            <!-- Introduction -->
+            <div class="demo-section">
+                <div class="demo-container">
+                    <p class="text-gray-700 mb-4">
+                        The <code class="bg-gray-200 px-2 py-1 rounded text-sm">dry-dialog</code> component creates modal dialogs that can load content dynamically via AJAX. 
+                        It integrates seamlessly with HTMX for server-side content fetching and provides a clean, accessible dialog interface.
+                    </p>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-4">
+                        <h4 class="font-semibold text-blue-900 mb-2">Key Features:</h4>
+                        <ul class="text-blue-800 text-sm space-y-1">
+                            <li>• HTMX integration for dynamic content loading</li>
+                            <li>• Customizable styling via attributes</li>
+                            <li>• Automatic dialog management (open/close)</li>
+                            <li>• Server-controlled closing via HX-CloseDialog header</li>
+                            <li>• Accessible with keyboard navigation and proper ARIA attributes</li>
+                            <li>• Built on standard Web Components for consistent behavior</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Basic Dialog Examples -->
-        <div class="demo-section">
-            <h2 class="demo-title">Basic Dialog Examples</h2>
-            <div class="demo-description">
-                Simple dialog examples showing different styling and content loading patterns.
-            </div>
+            <!-- Basic Dialog Examples -->
+            <div class="demo-section">
+                <h2 class="demo-title">Basic Dialog Examples</h2>
+                <div class="demo-description">
+                    Simple dialog examples showing different styling and content loading patterns.
+                </div>
 
-            <!-- Basic AJAX Dialog -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Basic AJAX Dialog</h3>
-                <p class="text-gray-600 mb-4">A simple dialog that loads content from an external file using HTMX.</p>
+                <!-- Basic AJAX Dialog -->
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-3">Basic AJAX Dialog</h3>
+                    <p class="text-gray-600 mb-4">A simple dialog that loads content from an external file using HTMX.</p>
 
+                    <dry-dialog
+                            url="dialog-content-example.html"
+                            button-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
+                            dialog-class="bg-white rounded-lg shadow-xl max-w-lg w-full"
+                            dialog-inner-id="basic-dialog-content"
+                            trigger-id="basic-dialog-trigger">
+                        Open Basic Dialog
+                    </dry-dialog>
 
-                <dry-dialog
-                        url="dialog-content-example.html"
-                        button-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
-                        dialog-class="bg-white rounded-lg shadow-xl max-w-lg w-full"
-                        dialog-inner-id="basic-dialog-content"
-                        trigger-id="basic-dialog-trigger">
-                    Open Basic Dialog
-                </dry-dialog>
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-dialog
+                    <dry-code language="HTML">&lt;dry-dialog
     url="dialog-content-example.html"
     button-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
     dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
     dialog-inner-id="basic-dialog-content"&gt;
     Open Basic Dialog
-&lt;/dry-dialog&gt;</code></pre>
+&lt;/dry-dialog&gt;</dry-code>
                 </div>
-            </div>
 
-            <!-- Form Dialog -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Form Dialog</h3>
-                <p class="text-gray-600 mb-4">Dialog containing a form loaded via AJAX.</p>
-                
-                <dry-dialog 
-                    url="dialog-form-example.html"
-                    button-class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
-                    dialog-class="bg-white rounded-lg shadow-xl max-w-lg w-full"
-                    dialog-inner-id="form-dialog-content"
-                    trigger-id="form-dialog-trigger">
-                    Open Contact Form
-                </dry-dialog>
+                <!-- Form Dialog -->
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-3">Form Dialog</h3>
+                    <p class="text-gray-600 mb-4">Dialog containing a form loaded via AJAX.</p>
+                    
+                    <dry-dialog 
+                        url="dialog-form-example.html"
+                        button-class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
+                        dialog-class="bg-white rounded-lg shadow-xl max-w-lg w-full"
+                        dialog-inner-id="form-dialog-content"
+                        trigger-id="form-dialog-trigger">
+                        Open Contact Form
+                    </dry-dialog>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-dialog 
+                    <dry-code language="HTML">&lt;dry-dialog 
     url="dialog-form-example.html"
     button-class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
     dialog-class="bg-white rounded-lg shadow-xl max-w-lg w-full"&gt;
     Open Contact Form
-&lt;/dry-dialog&gt;</code></pre>
+&lt;/dry-dialog&gt;</dry-code>
                 </div>
-            </div>
 
-            <!-- Styled Dialog -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Custom Styled Dialog</h3>
-                <p class="text-gray-600 mb-4">Dialog with custom styling and larger content area.</p>
-                
-                <dry-dialog 
-                    url="dialog-content-example.html"
-                    button-class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl"
-                    dialog-class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-2xl max-w-2xl w-full"
-                    dialog-inner-id="styled-dialog-content"
-                    trigger-id="styled-dialog-trigger">
-                    🎨 Open Styled Dialog
-                </dry-dialog>
+                <!-- Styled Dialog -->
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-3">Custom Styled Dialog</h3>
+                    <p class="text-gray-600 mb-4">Dialog with custom styling and larger content area.</p>
+                    
+                    <dry-dialog 
+                        url="dialog-content-example.html"
+                        button-class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl"
+                        dialog-class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-2xl max-w-2xl w-full"
+                        dialog-inner-id="styled-dialog-content"
+                        trigger-id="styled-dialog-trigger">
+                        🎨 Open Styled Dialog
+                    </dry-dialog>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-dialog 
+                    <dry-code language="HTML">&lt;dry-dialog 
     url="dialog-content-example.html"
     button-class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full"
     dialog-class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-2xl max-w-2xl w-full"&gt;
     🎨 Open Styled Dialog
-&lt;/dry-dialog&gt;</code></pre>
+&lt;/dry-dialog&gt;</dry-code>
                 </div>
             </div>
-        </div>
 
-        <!-- Static Content Examples -->
-        <div class="demo-section">
-            <h2 class="demo-title">Static Content Examples</h2>
-            <div class="demo-description">
-                Examples using local content or placeholder data that don't require a server.
-            </div>
+            <!-- Static Content Examples -->
+            <div class="demo-section">
+                <h2 class="demo-title">Static Content Examples</h2>
+                <div class="demo-description">
+                    Examples using local content or placeholder data that don't require a server.
+                </div>
 
-            <!-- Static Content Dialog -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Static Content Dialog</h3>
-                <p class="text-gray-600 mb-4">This example shows how the dialog works with static content (no server required).</p>
-                
-                <!-- Hidden content for static example -->
-                <div id="static-content" style="display: none;">
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold mb-3">Static Dialog Content</h3>
-                        <p class="mb-4">This content is loaded from a hidden div on the same page, simulating server content.</p>
-                        <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
-                            <p class="text-yellow-800 text-sm">
-                                <strong>Note:</strong> In a real application, this content would come from your server via the URL attribute.
-                            </p>
+                <!-- Static Content Dialog -->
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-3">Static Content Dialog</h3>
+                    <p class="text-gray-600 mb-4">This example shows how the dialog works with static content (no server required).</p>
+                    
+                    <!-- Hidden content for static example -->
+                    <div id="static-content" style="display: none;">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-3">Static Dialog Content</h3>
+                            <p class="mb-4">This content is loaded from a hidden div on the same page, simulating server content.</p>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
+                                <p class="text-yellow-800 text-sm">
+                                    <strong>Note:</strong> In a real application, this content would come from your server via the URL attribute.
+                                </p>
+                            </div>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                Example Action
+                            </button>
                         </div>
-                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                            Example Action
-                        </button>
                     </div>
-                </div>
 
-                <dry-dialog 
-                    url="#static-content"
-                    button-class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded transition-colors"
-                    dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
-                    dialog-inner-id="static-dialog-content"
-                    trigger-type="click">
-                    Open Static Content Dialog
-                </dry-dialog>
+                    <dry-dialog 
+                        url="#static-content"
+                        button-class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded transition-colors"
+                        dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
+                        dialog-inner-id="static-dialog-content"
+                        trigger-type="click">
+                        Open Static Content Dialog
+                    </dry-dialog>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;!-- Hidden content --&gt;
+                    <dry-code language="HTML">&lt;!-- Hidden content --&gt;
 &lt;div id="static-content" style="display: none;"&gt;
     &lt;div class="p-4"&gt;
         &lt;h3&gt;Static Dialog Content&lt;/h3&gt;
@@ -302,126 +184,38 @@
     button-class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
     dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"&gt;
     Open Static Content Dialog
-&lt;/dry-dialog&gt;</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- API Reference -->
-        <div class="demo-section">
-            <h2 class="demo-title">API Reference</h2>
-            
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">Attributes</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="border border-gray-300 px-4 py-2 text-left">Attribute</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>url</code></td>
-                                <td class="border border-gray-300 px-4 py-2">URL to fetch content from via HTMX</td>
-                                <td class="border border-gray-300 px-4 py-2">""</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>button-class</code></td>
-                                <td class="border border-gray-300 px-4 py-2">CSS classes for the trigger button</td>
-                                <td class="border border-gray-300 px-4 py-2">""</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>dialog-class</code></td>
-                                <td class="border border-gray-300 px-4 py-2">CSS classes for the dialog element</td>
-                                <td class="border border-gray-300 px-4 py-2">"bg-white"</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>dialog-inner-id</code></td>
-                                <td class="border border-gray-300 px-4 py-2">ID for the content container (should be unique)</td>
-                                <td class="border border-gray-300 px-4 py-2">"dialog-inner"</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>trigger-id</code></td>
-                                <td class="border border-gray-300 px-4 py-2">ID for the trigger button</td>
-                                <td class="border border-gray-300 px-4 py-2">"trigger"</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>trigger-type</code></td>
-                                <td class="border border-gray-300 px-4 py-2">HTMX trigger event type</td>
-                                <td class="border border-gray-300 px-4 py-2">"click"</td>
-                            </tr>
-                        </tbody>
-                    </table>
+&lt;/dry-dialog&gt;</dry-code>
                 </div>
             </div>
 
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">HTMX Integration</h3>
-                <div class="space-y-4">
-                    <div>
-                        <h4 class="font-medium mb-2">Server Response Headers</h4>
-                        <p class="text-gray-600 mb-2">Your server can control dialog behavior by setting response headers:</p>
-                        <div class="code-block">
-<pre><code>// Close the dialog after processing
-HX-CloseDialog: close</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="font-medium mb-2">HTMX Events</h4>
-                        <p class="text-gray-600 mb-2">The component listens for HTMX events to manage dialog state:</p>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li>• <code>htmx:afterOnLoad</code> - Automatically closes dialog if server responds with redirect or close header</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">Browser Support</h3>
-                <p class="text-gray-600 mb-2">This component uses the native HTML <code>&lt;dialog&gt;</code> element with the following browser support:</p>
-                <ul class="text-sm text-gray-600 space-y-1">
-                    <li>• Chrome 37+</li>
-                    <li>• Firefox 98+</li>
-                    <li>• Safari 15.4+</li>
-                    <li>• Edge 79+</li>
-                </ul>
-                <p class="text-xs text-gray-500 mt-2">For older browsers, consider including a dialog polyfill.</p>
-            </div>
-        </div>
-
-        <!-- Advanced Examples -->
-        <div class="demo-section">
-            <h2 class="demo-title">Advanced Usage</h2>
-            
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">JavaScript API</h3>
-                <p class="text-gray-600 mb-4">You can also control dialogs programmatically:</p>
+            <!-- Advanced Examples -->
+            <div class="demo-section">
+                <h2 class="demo-title">Advanced Usage</h2>
                 
-                <div class="flex gap-2 mb-4">
-                    <button id="open-programmatic" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">
-                        Open via JavaScript
-                    </button>
-                    <button id="close-programmatic" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                        Close via JavaScript
-                    </button>
-                </div>
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-4">JavaScript API</h3>
+                    <p class="text-gray-600 mb-4">You can also control dialogs programmatically:</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button id="open-programmatic" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">
+                            Open via JavaScript
+                        </button>
+                        <button id="close-programmatic" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                            Close via JavaScript
+                        </button>
+                    </div>
 
-                <!-- Hidden dialog for programmatic control -->
-                <dry-dialog 
-                    id="programmatic-dialog"
-                    url="dialog-content-example.html"
-                    button-class="hidden"
-                    dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
-                    dialog-inner-id="programmatic-dialog-content">
-                    Hidden Trigger
-                </dry-dialog>
+                    <!-- Hidden dialog for programmatic control -->
+                    <dry-dialog 
+                        id="programmatic-dialog"
+                        url="dialog-content-example.html"
+                        button-class="hidden"
+                        dialog-class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
+                        dialog-inner-id="programmatic-dialog-content">
+                        Hidden Trigger
+                    </dry-dialog>
 
-                <div class="code-block">
-<pre><code>// Get reference to dialog component
+                    <dry-code language="JavaScript">// Get reference to dialog component
 const dialog = document.getElementById('programmatic-dialog');
 
 // Open the dialog programmatically
@@ -434,55 +228,203 @@ document.getElementById('open-programmatic').addEventListener('click', () => {
 document.getElementById('close-programmatic').addEventListener('click', () => {
     const dialogElement = dialog.querySelector('dialog');
     dialogElement.close();
-});</code></pre>
+});</dry-code>
+                </div>
+            </div>
+
+            <!-- Component Builder Section -->
+            <div id="dialog-component-builder"></div>
+
+            <!-- API Reference -->
+            <div class="demo-section">
+                <h2 class="demo-title">API Reference</h2>
+                
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-4">Attributes</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Attribute</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>url</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">URL to fetch content from via HTMX</td>
+                                    <td class="border border-gray-300 px-4 py-2">""</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>button-class</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">CSS classes for the trigger button</td>
+                                    <td class="border border-gray-300 px-4 py-2">""</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>dialog-class</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">CSS classes for the dialog element</td>
+                                    <td class="border border-gray-300 px-4 py-2">"bg-white"</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>dialog-inner-id</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">ID for the content container (should be unique)</td>
+                                    <td class="border border-gray-300 px-4 py-2">"dialog-inner"</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>trigger-id</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">ID for the trigger button</td>
+                                    <td class="border border-gray-300 px-4 py-2">"trigger"</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>trigger-type</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">HTMX trigger event type</td>
+                                    <td class="border border-gray-300 px-4 py-2">"click"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-4">HTMX Integration</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium mb-2">Server Response Headers</h4>
+                            <p class="text-gray-600 mb-2">Your server can control dialog behavior by setting response headers:</p>
+                            <dry-code language="HTML">// Close the dialog after processing
+HX-CloseDialog: close</dry-code>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium mb-2">HTMX Events</h4>
+                            <p class="text-gray-600 mb-2">The component listens for HTMX events to manage dialog state:</p>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• <code>htmx:afterOnLoad</code> - Automatically closes dialog if server responds with redirect or close header</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-4">Browser Support</h3>
+                    <p class="text-gray-600 mb-2">This component uses the native HTML <code>&lt;dialog&gt;</code> element with the following browser support:</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Chrome 37+</li>
+                        <li>• Firefox 98+</li>
+                        <li>• Safari 15.4+</li>
+                        <li>• Edge 79+</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-2">For older browsers, consider including a dialog polyfill.</p>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="demo-section">
+                <h2 class="demo-title">Troubleshooting</h2>
+                
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-4">Common Issues</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium text-red-600 mb-1">Dialog content not loading</h4>
+                            <p class="text-sm text-gray-600">Ensure the URL is correct and the server is returning valid HTML. Check browser network tab for errors.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-red-600 mb-1">Dialog not closing after form submission</h4>
+                            <p class="text-sm text-gray-600">Add the <code>HX-CloseDialog: close</code> header to your server response to automatically close the dialog.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-red-600 mb-1">Styling issues</h4>
+                            <p class="text-sm text-gray-600">Use the <code>dialog-class</code> attribute to apply custom CSS classes. Remember that dialogs are rendered in the top layer.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Troubleshooting -->
-        <div class="demo-section">
-            <h2 class="demo-title">Troubleshooting</h2>
-            
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">Common Issues</h3>
-                <div class="space-y-4">
-                    <div>
-                        <h4 class="font-medium text-red-600 mb-1">Dialog content not loading</h4>
-                        <p class="text-sm text-gray-600">Ensure the URL is correct and the server is returning valid HTML. Check browser network tab for errors.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-red-600 mb-1">Dialog not closing after form submission</h4>
-                        <p class="text-sm text-gray-600">Add the <code>HX-CloseDialog: close</code> header to your server response to automatically close the dialog.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-red-600 mb-1">Styling issues</h4>
-                        <p class="text-sm text-gray-600">Use the <code>dialog-class</code> attribute to apply custom CSS classes. Remember that dialogs are rendered in the top layer.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- JavaScript for programmatic control example -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const dialog = document.getElementById('programmatic-dialog');
+                
+                document.getElementById('open-programmatic').addEventListener('click', () => {
+                    const dialogElement = dialog.querySelector('dialog');
+                    if (dialogElement) {
+                        dialogElement.showModal();
+                    }
+                });
+                
+                document.getElementById('close-programmatic').addEventListener('click', () => {
+                    const dialogElement = dialog.querySelector('dialog');
+                    if (dialogElement) {
+                        dialogElement.close();
+                    }
+                });
+
+                // Initialize Component Builder
+                new ComponentBuilder({
+                    elementId: 'dialog-component-builder',
+                    componentTag: 'dry-dialog',
+                    title: 'Dialog Component Builder',
+                    description: 'Try changing the dialog properties dynamically and see the results in real-time.',
+                    
+                    properties: {
+                        url: {
+                            type: 'text',
+                            label: 'Content URL',
+                            default: 'dialog-content-example.html'
+                        },
+                        'button-class': {
+                            type: 'text',
+                            label: 'Button CSS Classes',
+                            default: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded'
+                        },
+                        'dialog-class': {
+                            type: 'text',
+                            label: 'Dialog CSS Classes',
+                            default: 'bg-white p-6 rounded-lg shadow-xl max-w-md w-full'
+                        },
+                        'dialog-inner-id': {
+                            type: 'text',
+                            label: 'Dialog Inner ID',
+                            default: 'dialog-inner-generated'
+                        },
+                        'trigger-id': {
+                            type: 'text',
+                            label: 'Trigger ID',
+                            default: 'trigger-generated'
+                        },
+                        'trigger-type': {
+                            type: 'select',
+                            label: 'Trigger Type',
+                            options: [
+                                { value: 'click', label: 'Click' },
+                                { value: 'mouseenter', label: 'Mouse Enter' },
+                                { value: 'focus', label: 'Focus' }
+                            ],
+                            default: 'click'
+                        }
+                    },
+                    
+                    defaults: {
+                        url: 'dialog-content-example.html',
+                        'button-class': 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded',
+                        'dialog-class': 'bg-white p-6 rounded-lg shadow-xl max-w-md w-full',
+                        'dialog-inner-id': 'dialog-inner-generated',
+                        'trigger-id': 'trigger-generated',
+                        'trigger-type': 'click'
+                    },
+                    
+                    contentGenerator: function(values) {
+                        return 'Open Dialog';
+                    }
+                });
+            });
+        </script>
+        
+        
     </div>
-
-    <!-- JavaScript for programmatic control example -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dialog = document.getElementById('programmatic-dialog');
-            
-            document.getElementById('open-programmatic').addEventListener('click', () => {
-                const dialogElement = dialog.querySelector('dialog');
-                if (dialogElement) {
-                    dialogElement.showModal();
-                }
-            });
-            
-            document.getElementById('close-programmatic').addEventListener('click', () => {
-                const dialogElement = dialog.querySelector('dialog');
-                if (dialogElement) {
-                    dialogElement.close();
-                }
-            });
-        });
-    </script>
-</div>
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

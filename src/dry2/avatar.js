@@ -1,351 +1,320 @@
-class Avatar extends BaseWebComponent {
-    constructor() {
-        super();
+class DryAvatar extends BaseElement {
+  constructor() {
+    super();
+  }
 
-        // State initialization
-        this.setState({
-            imageLoaded: false,
-            imageError: false,
-            isLoading: false
-        });
+  static get observedAttributes() {
+    return ['src', 'name', 'initials', 'size', 'shape', 'alt'];
+  }
 
-        // Track current image loading
-        this._currentImageSrc = null;
-        this._imageLoader = null;
+  _initializeComponent() {
+    // Store original content (slot content like badges)
+    const originalContent = this._extractSlotContent();
 
-        // Bind methods
-        this._handleImageLoad = this._handleImageLoad.bind(this);
-        this._handleImageError = this._handleImageError.bind(this);
-    }
+    // Create the component structure with Alpine.js
+    this._render(originalContent);
+  }
 
-    static get observedAttributes() {
-        return ['src', 'name', 'initials', 'size', 'shape', 'alt', 'class'];
-    }
+  _extractSlotContent() {
+    // Simply get innerHTML before we render anything
+    return this.innerHTML || '';
+  }
 
-    connectedCallback() {
-        super.connectedCallback();
-        this.setAttribute('role', 'img');
-        this._updateAriaLabel();
-    }
+  _render(originalContent) {
+    const src = this.src;
+    const name = this.name;
+    const initials = this.initials || this._generateInitials(name);
+    const size = this.size;
+    const shape = this.shape;
+    const alt = this.alt || `Avatar for ${name || 'user'}`;
 
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        this._cleanupImageLoader();
-    }
-
-    render() {
-        const containerClasses = this._getContainerClasses();
-        const src = this.getAttribute('src');
-        const hasImage = src && !this.state.imageError;
-
-        return `
-            <div class="${containerClasses}">
-                ${hasImage ? this._renderImage() : ''}
-                ${!hasImage ? this._renderFallback() : ''}
-                ${this._renderSlotContent()}
-                ${this.state.isLoading ? this._renderLoadingState() : ''}
-            </div>
-        `;
-    }
-
-    _renderImage() {
-        const src = this.getAttribute('src');
-        const alt = this.getAttribute('alt') || this._getGeneratedAltText();
-
-        return `
-            <img 
-                class="avatar-image w-full h-full object-cover" 
-                src="${this.escapeHtml(src)}" 
-                alt="${this.escapeHtml(alt)}"
-                style="display: ${this.state.imageLoaded ? 'block' : 'none'}"
-            />
-        `;
-    }
-
-    _renderFallback() {
-        const initials = this._getInitials();
-        const fallbackClasses = this._getFallbackClasses();
-
-        if (initials) {
-            return `
-                <div class="${fallbackClasses}">
-                    <span class="avatar-initials font-medium select-none">
-                        ${this.escapeHtml(initials)}
-                    </span>
-                </div>
-            `;
-        }
-
-        // Default icon fallback
-        return `
-            <div class="${fallbackClasses}">
-                <svg class="avatar-icon" fill="currentColor" viewBox="0 0 24 24" width="60%" height="60%">
+    this.innerHTML = `
+            <div x-data="{
+                src: '${src}',
+                name: '${name}',
+                initials: '${initials}',
+                size: '${size}',
+                shape: '${shape}',
+                alt: '${alt}',
+                imageLoaded: false,
+                imageError: false,
+                
+                handleImageLoad() {
+                    this.imageLoaded = true;
+                    this.imageError = false;
+                },
+                
+                handleImageError() {
+                    this.imageLoaded = false;
+                    this.imageError = true;
+                },
+                
+                getAvatarClasses() {
+                    let classes = 'avatar relative inline-flex items-center justify-center overflow-hidden text-gray-700 select-none transition-all duration-200 ';
+                    
+                    // Size classes
+                    if (this.size === 'xs') {
+                        classes += 'w-6 h-6 text-xs ';
+                    } else if (this.size === 'sm') {
+                        classes += 'w-8 h-8 text-sm ';
+                    } else if (this.size === 'lg') {
+                        classes += 'w-16 h-16 text-lg ';
+                    } else if (this.size === 'xl') {
+                        classes += 'w-20 h-20 text-xl ';
+                    } else {
+                        // md or default
+                        classes += 'w-12 h-12 text-base ';
+                    }
+                    
+                    // Shape classes
+                    if (this.shape === 'square') {
+                        classes += 'rounded-none ';
+                    } else if (this.shape === 'rounded') {
+                        classes += 'rounded-lg ';
+                    } else {
+                        // circle or default
+                        classes += 'rounded-full ';
+                    }
+                    
+                    // Background color for initials
+                    if (!this.src || this.imageError) {
+                        classes += this.getInitialsBackground();
+                    }
+                    
+                    return classes;
+                },
+                
+                getInitialsBackground() {
+                    // Generate a consistent background color based on initials or name
+                    const text = this.initials || this.name || '';
+                    const colors = [
+                        'bg-red-500 text-white',
+                        'bg-blue-500 text-white',
+                        'bg-green-500 text-white',
+                        'bg-yellow-500 text-gray-800',
+                        'bg-purple-500 text-white',
+                        'bg-pink-500 text-white',
+                        'bg-indigo-500 text-white',
+                        'bg-teal-500 text-white',
+                        'bg-orange-500 text-white',
+                        'bg-cyan-500 text-white'
+                    ];
+                    
+                    let hash = 0;
+                    for (let i = 0; i < text.length; i++) {
+                        hash = text.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    
+                    return colors[Math.abs(hash) % colors.length];
+                },
+                
+                getImageClasses() {
+                    return 'w-full h-full object-cover transition-opacity duration-300';
+                },
+                
+                shouldShowImage() {
+                    return this.src && !this.imageError;
+                },
+                
+                shouldShowInitials() {
+                    return (!this.src || this.imageError) && this.initials;
+                },
+                
+                shouldShowIcon() {
+                    return (!this.src || this.imageError) && !this.initials;
+                }
+            }"
+            :class="getAvatarClasses()"
+            class="avatar-container">
+                
+                <!-- Image -->
+                <img 
+                    x-show="shouldShowImage()" 
+                    x-transition:enter="transition-opacity duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    :src="src" 
+                    :alt="alt"
+                    :class="getImageClasses()"
+                    @load="handleImageLoad()"
+                    @error="handleImageError()">
+                
+                <!-- Initials -->
+                <span 
+                    x-show="shouldShowInitials()" 
+                    x-text="initials"
+                    class="font-medium uppercase leading-none">
+                </span>
+                
+                <!-- Default Icon -->
+                <svg 
+                    x-show="shouldShowIcon()" 
+                    class="w-2/3 h-2/3 text-gray-400" 
+                    fill="currentColor" 
+                    viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
+                
+                <!-- Slot content (badges, etc.) -->
+                <div class="avatar-slot-content">
+                    ${originalContent}
+                </div>
             </div>
         `;
+  }
+
+  _generateInitials(name) {
+    if (!name) return '';
+
+    const names = name.trim().split(/\s+/);
+    if (names.length === 1) {
+      return names[0].charAt(0).toUpperCase();
     }
 
-    _renderSlotContent() {
-        const slotContent = this.getSlotContent('default');
-        if (!slotContent) return '';
+    return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+  }
 
-        return `
-            <div class="avatar-slot absolute inset-0 flex items-center justify-center">
-                ${slotContent}
-            </div>
-        `;
+  _getAlpineData() {
+    return this.querySelector('[x-data]')?.__x?.$data;
+  }
+
+  // Public API methods
+  setImage(src, alt) {
+    this.src = src;
+    if (alt) this.alt = alt;
+    
+    const alpineData = this._getAlpineData();
+    if (alpineData) {
+      alpineData.src = src;
+      if (alt) alpineData.alt = alt;
+      alpineData.imageError = false;
+      alpineData.imageLoaded = false;
     }
+  }
 
-    _renderLoadingState() {
-        return `
-            <div class="avatar-loading absolute inset-0 flex items-center justify-center bg-gray-100">
-                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-600"></div>
-            </div>
-        `;
+  setName(name) {
+    this.name = name;
+    
+    const alpineData = this._getAlpineData();
+    if (alpineData) {
+      alpineData.name = name;
+      // Auto-generate initials if not explicitly set
+      if (!this.hasAttribute('initials')) {
+        const newInitials = this._generateInitials(name);
+        alpineData.initials = newInitials;
+      }
     }
+  }
 
-    _getContainerClasses() {
-        const size = this.size;
-        const shape = this.shape;
-        const customClasses = this.getAttribute('class') || '';
-
-        const sizeClasses = {
-            'xs': 'h-6 w-6 text-xs',
-            'sm': 'h-8 w-8 text-sm',
-            'md': 'h-10 w-10 text-base',
-            'lg': 'h-12 w-12 text-lg',
-            'xl': 'h-16 w-16 text-xl'
-        };
-
-        const shapeClasses = {
-            'circle': 'rounded-full',
-            'square': 'rounded-none',
-            'rounded': 'rounded-lg'
-        };
-
-        const baseClasses = 'avatar-component relative inline-flex items-center justify-center overflow-hidden bg-gray-100 text-gray-600';
-        const dimensionClass = sizeClasses[size] || sizeClasses['md'];
-        const shapeClass = shapeClasses[shape] || shapeClasses['circle'];
-
-        return `${baseClasses} ${dimensionClass} ${shapeClass} ${customClasses}`.trim();
+  setInitials(initials) {
+    this.initials = initials;
+    
+    const alpineData = this._getAlpineData();
+    if (alpineData) {
+      alpineData.initials = initials;
     }
+  }
 
-    _getFallbackClasses() {
-        return 'w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white';
+  setSize(size) {
+    this.size = size;
+    
+    const alpineData = this._getAlpineData();
+    if (alpineData) {
+      alpineData.size = size;
     }
+  }
 
-    _getInitials() {
-        // Priority: explicit initials > generated from name
-        const explicitInitials = this.getAttribute('initials');
-        if (explicitInitials) {
-            return explicitInitials.toUpperCase().substring(0, 2);
-        }
-
-        const name = this.getAttribute('name');
-        if (name) {
-            return this._generateInitialsFromName(name);
-        }
-
-        return null;
+  setShape(shape) {
+    this.shape = shape;
+    
+    const alpineData = this._getAlpineData();
+    if (alpineData) {
+      alpineData.shape = shape;
     }
+  }
 
-    _generateInitialsFromName(name) {
-        const parts = name.trim().split(/\s+/);
-        if (parts.length === 1) {
-            // Single name - take first two characters
-            return parts[0].substring(0, 2).toUpperCase();
-        } else {
-            // Multiple names - take first letter of first and last name
-            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
-        }
+  // Attribute getters and setters
+  get src() {
+    return this.getAttribute('src') || '';
+  }
+
+  set src(value) {
+    this._setAttribute('src', value);
+  }
+
+  get name() {
+    return this.getAttribute('name') || '';
+  }
+
+  set name(value) {
+    this._setAttribute('name', value);
+  }
+
+  get initials() {
+    return this.getAttribute('initials') || '';
+  }
+
+  set initials(value) {
+    this._setAttribute('initials', value);
+  }
+
+  get size() {
+    return this._getAttributeWithDefault('size', 'md');
+  }
+
+  set size(value) {
+    this._setAttribute('size', value);
+  }
+
+  get shape() {
+    return this._getAttributeWithDefault('shape', 'circle');
+  }
+
+  set shape(value) {
+    this._setAttribute('shape', value);
+  }
+
+  get alt() {
+    return this.getAttribute('alt') || '';
+  }
+
+  set alt(value) {
+    this._setAttribute('alt', value);
+  }
+
+  _handleAttributeChange(name, oldValue, newValue) {
+    if (oldValue !== newValue && this._isInitialized) {
+      if (name === 'src') {
+        this.src = newValue;
+        this._render(this._extractSlotContent());
+      } else if (name === 'name') {
+        this.name = newValue;
+        this._render(this._extractSlotContent());
+      } else if (name === 'initials') {
+        this.initials = newValue;
+        this._render(this._extractSlotContent());
+      } else if (name === 'size') {
+        this.size = newValue;
+        this._render(this._extractSlotContent());
+      } else if (name === 'shape') {
+        this.shape = newValue;
+        this._render(this._extractSlotContent());
+      } else if (name === 'alt') {
+        this.alt = newValue;
+        this._render(this._extractSlotContent());
+      }
     }
+  }
 
-    _getGeneratedAltText() {
-        const name = this.getAttribute('name');
-        if (name) {
-            return `Avatar for ${name}`;
-        }
+  _preserveSlotContent() {
+    const slotContainer = this.querySelector('.avatar-slot-content');
+    return slotContainer ? slotContainer.innerHTML : '';
+  }
 
-        const initials = this.getAttribute('initials');
-        if (initials) {
-            return `Avatar with initials ${initials}`;
-        }
-
-        return 'User avatar';
-    }
-
-    _updateAriaLabel() {
-        if (!this.getAttribute('aria-label')) {
-            this.setAttribute('aria-label', this._getGeneratedAltText());
-        }
-    }
-
-    // Event handlers
-    _handleImageLoad() {
-        // Only process if this is for the current image
-        if (this._imageLoader && this._imageLoader.src === this._currentImageSrc) {
-            this.setState({
-                imageLoaded: true,
-                imageError: false,
-                isLoading: false
-            });
-            this._emitEvent('image-loaded');
-            this._cleanupImageLoader();
-        }
-    }
-
-    _handleImageError() {
-        // Only process if this is for the current image
-        if (this._imageLoader && this._imageLoader.src === this._currentImageSrc) {
-            this.setState({
-                imageLoaded: false,
-                imageError: true,
-                isLoading: false
-            });
-            this._emitEvent('image-error');
-            this._cleanupImageLoader();
-        }
-    }
-
-    // Attribute change handlers
-    _handleSrcChange(oldValue, newValue) {
-        // Clean up any existing image loader
-        this._cleanupImageLoader();
-
-        if (newValue && newValue !== this._currentImageSrc) {
-            this._currentImageSrc = newValue;
-            this.setState({
-                imageLoaded: false,
-                imageError: false,
-                isLoading: true
-            });
-            this._loadImage(newValue);
-        } else if (!newValue) {
-            this._currentImageSrc = null;
-            this.setState({
-                imageLoaded: false,
-                imageError: false,
-                isLoading: false
-            });
-        }
-    }
-
-    _handleNameChange(oldValue, newValue) {
-        this._updateAriaLabel();
-    }
-
-    _handleInitialsChange(oldValue, newValue) {
-        this._updateAriaLabel();
-    }
-
-    _handleAltChange(oldValue, newValue) {
-        const imageElement = this.$('.avatar-image');
-        if (imageElement) {
-            imageElement.alt = newValue || this._getGeneratedAltText();
-        }
-    }
-
-    // Private methods
-    _loadImage(src) {
-        // Don't load the same image twice
-        if (this._currentImageSrc !== src) {
-            return;
-        }
-
-        this._imageLoader = new Image();
-        this._imageLoader.onload = this._handleImageLoad;
-        this._imageLoader.onerror = this._handleImageError;
-        this._imageLoader.src = src;
-    }
-
-    _cleanupImageLoader() {
-        if (this._imageLoader) {
-            this._imageLoader.onload = null;
-            this._imageLoader.onerror = null;
-            this._imageLoader = null;
-        }
-    }
-
-    _afterRender() {
-        super._afterRender();
-
-        // Handle initial image load if src is present and we haven't started loading
-        const src = this.getAttribute('src');
-        if (src && !this.state.imageLoaded && !this.state.imageError && !this.state.isLoading && !this._imageLoader) {
-            this._currentImageSrc = src;
-            this.setState({ isLoading: true });
-            this._loadImage(src);
-        }
-    }
-
-    // Getters for common properties
-    get size() {
-        return this.getAttribute('size') || 'md';
-    }
-
-    get shape() {
-        return this.getAttribute('shape') || 'circle';
-    }
-
-    get src() {
-        return this.getAttribute('src');
-    }
-
-    get name() {
-        return this.getAttribute('name');
-    }
-
-    get initials() {
-        return this.getAttribute('initials');
-    }
-
-    // Public API methods
-    setImage(src, alt = null) {
-        this.setAttribute('src', src);
-        if (alt) {
-            this.setAttribute('alt', alt);
-        }
-        return this;
-    }
-
-    setName(name) {
-        this.setAttribute('name', name);
-        return this;
-    }
-
-    setInitials(initials) {
-        this.setAttribute('initials', initials);
-        return this;
-    }
-
-    setSize(size) {
-        this.setAttribute('size', size);
-        return this;
-    }
-
-    setShape(shape) {
-        this.setAttribute('shape', shape);
-        return this;
-    }
-
-    // Add validation mixin for common validations
-    _onFirstConnect() {
-        super._onFirstConnect();
-
-        // Use validation mixin
-        this.useMixin('validation');
-
-        // Add common validators
-        this.addValidator('size', (value) => {
-            return ['xs', 'sm', 'md', 'lg', 'xl'].includes(value);
-        }, 'Size must be one of: xs, sm, md, lg, xl');
-
-        this.addValidator('shape', (value) => {
-            return ['circle', 'square', 'rounded'].includes(value);
-        }, 'Shape must be one of: circle, square, rounded');
-    }
+  _reRenderWithSlotContent() {
+    const slotContent = this._preserveSlotContent();
+    this._render(slotContent);
+  }
 }
 
-// Register the component
-customElements.define('dry-avatar', Avatar);
+customElements.define('dry-avatar', DryAvatar);

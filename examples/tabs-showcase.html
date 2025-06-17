@@ -5,165 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabs Component Showcase - DRY2</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/tabs.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code, .code-content pre');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
-
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-        
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-        
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-        
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-    </style>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -173,7 +35,7 @@
     </div>
 
 <div class="p-8">
-    <div class="max-w-4xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    <div class="max-w-6xl mx-auto bg-white p-8 shadow-md rounded-lg">
         <header class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Tabs Component</h1>
             <p class="text-lg text-gray-600">A flexible tabs component for organizing content into separate views with smooth transitions and multiple styling variants.</p>
@@ -453,74 +315,8 @@
                 </div>
             </section>
             
-            <!-- Interactive Demo Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Interactive Demo</h2>
-                <p class="demo-description">Control tabs programmatically and test different features.</p>
-
-                <div class="demo-container">
-                    <div class="mb-4 flex flex-wrap gap-2">
-                        <button id="switch-tab1" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                            Switch to Tab 1
-                        </button>
-                        <button id="switch-tab2" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
-                            Switch to Tab 2
-                        </button>
-                        <button id="next-tab" class="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600">
-                            Next Tab
-                        </button>
-                        <button id="prev-tab" class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">
-                            Previous Tab
-                        </button>
-                        <button id="toggle-disabled" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
-                            Toggle Disabled
-                        </button>
-                    </div>
-                    
-                    <dry-tabs id="interactive-tabs">
-                        <tab-item id="tab1" title="Tab 1" badge="New">
-                            <h3 class="text-lg font-semibold mb-3">Interactive Tab 1</h3>
-                            <p>This tab can be controlled programmatically using the buttons above. Try switching between tabs and see the smooth animations.</p>
-                        </tab-item>
-                        <tab-item id="tab2" title="Tab 2" badge="5">
-                            <h3 class="text-lg font-semibold mb-3">Interactive Tab 2</h3>
-                            <p>This tab shows how badges work. The badge displays "5" indicating some count or status.</p>
-                        </tab-item>
-                        <tab-item id="tab3" title="Tab 3" disabled>
-                            <h3 class="text-lg font-semibold mb-3">Disabled Tab</h3>
-                            <p>This tab is disabled by default but can be enabled using the toggle button.</p>
-                        </tab-item>
-                        <tab-item id="tab4" title="Tab 4">
-                            <h3 class="text-lg font-semibold mb-3">Interactive Tab 4</h3>
-                            <p>Use the Next/Previous buttons to navigate through tabs programmatically.</p>
-                        </tab-item>
-                    </dry-tabs>
-                    
-                    <div id="event-log" class="mt-4 p-3 bg-gray-50 rounded text-sm">
-                        <strong>Event Log:</strong>
-                        <div id="log-content" class="mt-2 space-y-1 max-h-32 overflow-y-auto"></div>
-                        <button id="clear-log" class="mt-2 text-xs bg-gray-400 text-white px-2 py-1 rounded">Clear</button>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">JavaScript</span>
-                        <button class="copy-button"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>Copy</button>
-                    </div>
-                    <div class="code-content">
-                        <pre>// Control tabs programmatically
-tabs.switchTab('tab2');     // Switch to specific tab
-tabs.nextTab();             // Switch to next enabled tab
-tabs.previousTab();         // Switch to previous enabled tab
-
-// Listen for tab change events
-tabs.addEventListener('tabs:change', (event) => {
-    console.log('Tab changed:', event.detail);
-});</pre>
-                    </div>
-                </div>
-            </section>
+            <!-- Component Builder Section -->
+            <div id="tabs-component-builder"></div>
             
             <!-- API Reference -->
             <section class="mt-12">
@@ -650,68 +446,143 @@ tabs.addEventListener('tabs:change', (event) => {
             </section>
         </main>
         
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            <p>DRY2 Web Components Library</p>
-            <p class="mt-2">
-                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-            </p>
-        </footer>
+        
     </div>
 
+
+</div>
+<div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
+
 <script>
-    // Interactive demo functionality
+    // Initialize the Component Builder when the page loads
     document.addEventListener('DOMContentLoaded', function() {
-        const tabs = document.getElementById('interactive-tabs');
-        const logContent = document.getElementById('log-content');
-        
-        function addLogEntry(message) {
-            const entry = document.createElement('div');
-            entry.className = 'text-xs text-gray-600';
-            entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
-            logContent.appendChild(entry);
-            logContent.scrollTop = logContent.scrollHeight;
-        }
-        
-        // Event listeners for control buttons
-        document.getElementById('switch-tab1').addEventListener('click', () => {
-            tabs.switchTab('tab1');
-            addLogEntry('Switched to Tab 1');
+        new ComponentBuilder({
+            elementId: 'tabs-component-builder',
+            componentTag: 'dry-tabs',
+            title: 'Tabs Component Builder',
+            description: 'Try changing the tabs properties dynamically and see the results in real-time.',
+            
+            properties: {
+                variant: {
+                    type: 'select',
+                    label: 'Variant',
+                    options: [
+                        { value: 'boxed', label: 'Boxed' },
+                        { value: 'pills', label: 'Pills' },
+                        { value: 'underline', label: 'Underline' }
+                    ],
+                    default: 'boxed'
+                },
+                orientation: {
+                    type: 'select',
+                    label: 'Orientation',
+                    options: [
+                        { value: 'horizontal', label: 'Horizontal' },
+                        { value: 'vertical', label: 'Vertical' }
+                    ],
+                    default: 'horizontal'
+                },
+                'active-tab': {
+                    type: 'select',
+                    label: 'Active Tab',
+                    options: [
+                        { value: 'demo1', label: 'Overview' },
+                        { value: 'demo2', label: 'Features' },
+                        { value: 'demo3', label: 'Settings' }
+                    ],
+                    default: 'demo1'
+                },
+                disabled: {
+                    type: 'checkbox',
+                    label: 'Disabled State',
+                    default: false
+                }
+            },
+            
+            defaults: {
+                variant: 'boxed',
+                orientation: 'horizontal',
+                'active-tab': 'demo1',
+                disabled: false
+            },
+            
+            contentGenerator: function(values) {
+                return `
+    <tab-item id="demo1" title="Overview" 
+              icon='<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'>
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">Overview</h3>
+            <p class="text-gray-600">This is the overview tab with general information about the component.</p>
+            <div class="mt-3 space-y-1 text-sm text-gray-500">
+                <div>Current variant: <strong>${values.variant}</strong></div>
+                <div>Orientation: <strong>${values.orientation}</strong></div>
+                <div>Status: <strong>${values.disabled ? 'Disabled' : 'Enabled'}</strong></div>
+            </div>
+        </div>
+    </tab-item>
+    <tab-item id="demo2" title="Features" 
+              icon='<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>'
+              badge="New">
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">Features</h3>
+            <p class="text-gray-600">Explore the powerful features of the tabs component.</p>
+            <ul class="mt-3 space-y-1 text-sm">
+                <li>✓ Multiple variants (boxed, pills, underline)</li>
+                <li>✓ Horizontal and vertical orientation</li>
+                <li>✓ Icon and badge support</li>
+                <li>✓ Accessible keyboard navigation</li>
+                <li>✓ Smooth animations</li>
+            </ul>
+        </div>
+    </tab-item>
+    <tab-item id="demo3" title="Settings" 
+              icon='<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>'>
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">Settings</h3>
+            <p class="text-gray-600">Configure your component preferences and advanced options.</p>
+            <div class="mt-3 p-3 bg-blue-50 rounded">
+                <strong>Current Configuration:</strong><br>
+                <code class="text-sm">variant="${values.variant}"</code><br>
+                <code class="text-sm">orientation="${values.orientation}"</code><br>
+                <code class="text-sm">active-tab="${values['active-tab']}"</code><br>
+                <code class="text-sm">disabled="${values.disabled}"</code>
+            </div>
+        </div>
+    </tab-item>`;
+            },
+            
+            codeGenerator: function(values, config) {
+                const attributes = Object.entries(values)
+                    .filter(([key, value]) => {
+                        const propConfig = config.properties[key];
+                        return value !== propConfig.default && value !== false && value !== '';
+                    })
+                    .map(([key, value]) => `${key}="${value}"`)
+                    .join(' ');
+                
+                return `<dry-tabs${attributes ? ' ' + attributes : ''}>
+    <tab-item id="overview" title="Overview" icon="...">
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">Overview</h3>
+            <p class="text-gray-600">Tab content goes here...</p>
+        </div>
+    </tab-item>
+    <tab-item id="features" title="Features" icon="..." badge="New">
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">Features</h3>
+            <p class="text-gray-600">More tab content...</p>
+        </div>
+    </tab-item>
+    <tab-item id="settings" title="Settings" icon="...">
+        <div class="p-4">
+            <h3 class="text-lg font-semibold mb-2">Settings</h3>
+            <p class="text-gray-600">Additional content...</p>
+        </div>
+    </tab-item>
+</dry-tabs>`;
+            }
         });
-        
-        document.getElementById('switch-tab2').addEventListener('click', () => {
-            tabs.switchTab('tab2');
-            addLogEntry('Switched to Tab 2');
-        });
-        
-        document.getElementById('next-tab').addEventListener('click', () => {
-            tabs.nextTab();
-            addLogEntry('Switched to next tab');
-        });
-        
-        document.getElementById('prev-tab').addEventListener('click', () => {
-            tabs.previousTab();
-            addLogEntry('Switched to previous tab');
-        });
-        
-        document.getElementById('toggle-disabled').addEventListener('click', () => {
-            tabs.disabled = !tabs.disabled;
-            addLogEntry(`Tabs: ${tabs.disabled ? 'disabled' : 'enabled'}`);
-        });
-        
-        document.getElementById('clear-log').addEventListener('click', () => {
-            logContent.innerHTML = '';
-        });
-        
-        // Listen for tab events
-        tabs.addEventListener('tabs:change', (event) => {
-            const { activeTab, previousTab } = event.detail;
-            addLogEntry(`Changed from ${previousTab} to ${activeTab}`);
-        });
-        
-        // Initial log entry
-        addLogEntry('Interactive demo loaded');
     });
 </script>
-</div>
 </body>
 </html>

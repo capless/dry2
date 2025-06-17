@@ -3,47 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>timeline Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
+    <title>Timeline Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="../src/dry2/dry2.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/timeline.js"></script>
-
-    <style>
-        body {
-            padding: 2rem;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        .test-section {
-            margin-bottom: 3rem;
-            padding: 1.5rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            background: white;
-        }
-
-        .test-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #374151;
-        }
-    </style>
     <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
@@ -56,95 +34,187 @@
         </div>
     </div>
 
-<div class="p-8">
-    <!-- Web Components foundation (inline for testing) -->
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Timeline Component</h1>
+        <p class="text-gray-600 mb-8">A flexible timeline component for displaying chronological events with various styles and customization options.</p>
 
+    <main>
+        <!-- Basic Timeline -->
+        <section class="demo-section">
+            <h2 class="demo-title">Basic Vertical Timeline</h2>
+            <p class="demo-description">A simple timeline showing chronological events in vertical layout.</p>
+            
+            <div class="demo-container">
+                <timeline-component>
+                    <timeline-item date="Jan 15, 2023" title="Project Started">
+                        <p>Initial project planning and team formation.</p>
+                    </timeline-item>
+                    <timeline-item date="Feb 10, 2023" title="Requirements Gathering">
+                        <p>Collected and analyzed project requirements from stakeholders.</p>
+                    </timeline-item>
+                    <timeline-item date="Mar 5, 2023" title="Design Phase">
+                        <p>Created wireframes and design mockups for the application.</p>
+                    </timeline-item>
+                    <timeline-item date="Apr 20, 2023" title="Development Begins">
+                        <p>Started coding the core functionality of the application.</p>
+                    </timeline-item>
+                </timeline-component>
+            </div>
 
-<div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold mb-8 text-gray-900">Timeline Component Test</h1>
+            <dry-code language="HTML">&lt;timeline-component&gt;
+    &lt;timeline-item date="Jan 15, 2023" title="Project Started"&gt;
+        &lt;p&gt;Initial project planning and team formation.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item date="Feb 10, 2023" title="Requirements Gathering"&gt;
+        &lt;p&gt;Collected and analyzed project requirements from stakeholders.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item date="Mar 5, 2023" title="Design Phase"&gt;
+        &lt;p&gt;Created wireframes and design mockups for the application.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item date="Apr 20, 2023" title="Development Begins"&gt;
+        &lt;p&gt;Started coding the core functionality of the application.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+&lt;/timeline-component&gt;</dry-code>
+        </section>
 
-    <!-- Basic Timeline Test -->
-    <div class="test-section">
-        <h2 class="test-title">Basic Vertical Timeline</h2>
-        <timeline-component>
-            <timeline-item date="Jan 15, 2023" title="Project Started">
-                <p>Initial project planning and team formation.</p>
-            </timeline-item>
-            <timeline-item date="Feb 10, 2023" title="Requirements Gathering">
-                <p>Collected and analyzed project requirements from stakeholders.</p>
-            </timeline-item>
-            <timeline-item date="Mar 5, 2023" title="Design Phase">
-                <p>Created wireframes and design mockups for the application.</p>
-            </timeline-item>
-            <timeline-item date="Apr 20, 2023" title="Development Begins">
-                <p>Started coding the core functionality of the application.</p>
-            </timeline-item>
-        </timeline-component>
+        <!-- Timeline with Variants -->
+        <section class="demo-section">
+            <h2 class="demo-title">Timeline with Variants</h2>
+            <p class="demo-description">Timeline items can have different variants to indicate status or importance.</p>
+            
+            <div class="demo-container">
+                <timeline-component>
+                    <timeline-item variant="success" date="May 5, 2023" title="Feature Completed">
+                        <p>User authentication system completed ahead of schedule.</p>
+                    </timeline-item>
+                    <timeline-item variant="error" date="May 12, 2023" title="Bug Identified">
+                        <p>Critical security vulnerability found in payment processing.</p>
+                    </timeline-item>
+                    <timeline-item variant="warning" date="May 15, 2023" title="Deadline Approaching">
+                        <p>Project timeline needs to be adjusted to meet delivery date.</p>
+                    </timeline-item>
+                    <timeline-item variant="info" date="May 20, 2023" title="Team Update">
+                        <p>New developer joined the team to help with frontend components.</p>
+                    </timeline-item>
+                </timeline-component>
+            </div>
+
+            <dry-code language="HTML">&lt;timeline-component&gt;
+    &lt;timeline-item variant="success" date="May 5, 2023" title="Feature Completed"&gt;
+        &lt;p&gt;User authentication system completed ahead of schedule.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item variant="error" date="May 12, 2023" title="Bug Identified"&gt;
+        &lt;p&gt;Critical security vulnerability found in payment processing.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item variant="warning" date="May 15, 2023" title="Deadline Approaching"&gt;
+        &lt;p&gt;Project timeline needs to be adjusted to meet delivery date.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item variant="info" date="May 20, 2023" title="Team Update"&gt;
+        &lt;p&gt;New developer joined the team to help with frontend components.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+&lt;/timeline-component&gt;</dry-code>
+        </section>
+
+        <!-- Timeline with Custom Icons -->
+        <section class="demo-section">
+            <h2 class="demo-title">Timeline with Custom Icons</h2>
+            <p class="demo-description">Customize timeline items with custom SVG icons for better visual representation.</p>
+            
+            <div class="demo-container">
+                <timeline-component>
+                    <timeline-item
+                            date="Jun 1, 2023"
+                            title="Planning Meeting"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>'>
+                        <p>Conducted project planning meeting with stakeholders.</p>
+                    </timeline-item>
+                    <timeline-item
+                            date="Jun 15, 2023"
+                            title="Design Review"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>'>
+                        <p>Reviewed and approved design mockups for implementation.</p>
+                    </timeline-item>
+                    <timeline-item
+                            date="Jun 30, 2023"
+                            title="Code Review"
+                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>'>
+                        <p>Completed first major code review milestone.</p>
+                    </timeline-item>
+                </timeline-component>
+            </div>
+
+            <dry-code language="HTML">&lt;timeline-component&gt;
+    &lt;timeline-item
+        date="Jun 1, 2023"
+        title="Planning Meeting"
+        icon='&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /&gt;&lt;/svg&gt;'&gt;
+        &lt;p&gt;Conducted project planning meeting with stakeholders.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+    &lt;timeline-item
+        date="Jun 15, 2023"
+        title="Design Review"
+        icon='&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /&gt;&lt;/svg&gt;'&gt;
+        &lt;p&gt;Reviewed and approved design mockups for implementation.&lt;/p&gt;
+    &lt;/timeline-item&gt;
+&lt;/timeline-component&gt;</dry-code>
+        </section>
+        <!-- Component Builder Section -->
+        <div id="timeline-component-builder"></div>
+
+    </main>
+    </div>
     </div>
 
-    <!-- Variant Timeline Test -->
-    <div class="test-section">
-        <h2 class="test-title">Timeline with Variants</h2>
-        <timeline-component>
-            <timeline-item variant="success" date="May 5, 2023" title="Feature Completed">
-                <p>User authentication system completed ahead of schedule.</p>
-            </timeline-item>
-            <timeline-item variant="error" date="May 12, 2023" title="Bug Identified">
-                <p>Critical security vulnerability found in payment processing.</p>
-            </timeline-item>
-            <timeline-item variant="warning" date="May 15, 2023" title="Deadline Approaching">
-                <p>Project timeline needs to be adjusted to meet delivery date.</p>
-            </timeline-item>
-            <timeline-item variant="info" date="May 20, 2023" title="Team Update">
-                <p>New developer joined the team to help with frontend components.</p>
-            </timeline-item>
-        </timeline-component>
-    </div>
-
-    <!-- Horizontal Timeline Test -->
-    <div class="test-section">
-        <h2 class="test-title">Horizontal Timeline</h2>
-        <timeline-component layout="horizontal">
-            <timeline-item date="Q1 2023" title="Planning">
-                <p>Project planning and roadmap development.</p>
-            </timeline-item>
-            <timeline-item date="Q2 2023" title="Development">
-                <p>Core development phase of the product.</p>
-            </timeline-item>
-            <timeline-item date="Q3 2023" title="Testing">
-                <p>QA testing and bug fixing phase.</p>
-            </timeline-item>
-            <timeline-item date="Q4 2023" title="Launch">
-                <p>Product launch and market release.</p>
-            </timeline-item>
-        </timeline-component>
-    </div>
-
-    <!-- Timeline with Custom Icons -->
-    <div class="test-section">
-        <h2 class="test-title">Timeline with Custom Icons</h2>
-        <timeline-component>
-            <timeline-item
-                    date="Jun 1, 2023"
-                    title="Planning Meeting"
-                    icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>'>
-                <p>Conducted project planning meeting with stakeholders.</p>
-            </timeline-item>
-            <timeline-item
-                    date="Jun 15, 2023"
-                    title="Design Review"
-                    icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>'>
-                <p>Reviewed and approved design mockups for implementation.</p>
-            </timeline-item>
-            <timeline-item
-                    date="Jun 30, 2023"
-                    title="Code Review"
-                    icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>'>
-                <p>Completed first major code review milestone.</p>
-            </timeline-item>
-        </timeline-component>
-    </div>
-</div>
-</div>
+    <script>
+        // Initialize Component Builder
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComponentBuilder({
+                elementId: 'timeline-component-builder',
+                componentTag: 'timeline-component',
+                title: 'Timeline Component Builder',
+                description: 'Try changing the timeline properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    'class': {
+                        type: 'text',
+                        label: 'Custom Class',
+                        default: ''
+                    }
+                },
+                
+                defaults: {
+                    'class': ''
+                },
+                
+                previewWrapper: function(componentHTML) {
+                    return `
+                        <div class="w-full max-w-lg">
+                            ${componentHTML}
+                                <timeline-item variant="success" date="2024-01-15" title="Project Started">
+                                    The project was initiated with initial planning and setup.
+                                </timeline-item>
+                                <timeline-item variant="info" date="2024-01-20" title="Development Phase">
+                                    Core development work began with the team.
+                                </timeline-item>
+                                <timeline-item variant="warning" date="2024-01-25" title="Testing Phase">
+                                    Quality assurance and testing phase started.
+                                </timeline-item>
+                                <timeline-item variant="success" date="2024-01-30" title="Launch">
+                                    Project successfully launched to production.
+                                </timeline-item>
+                            </timeline-component>
+                        </div>
+                    `;
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
+        });
+    </script>
+    
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

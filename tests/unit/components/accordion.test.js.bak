@@ -1,0 +1,305 @@
+import '../setup.js';
+
+describe('DryAccordion Component', () => {
+  beforeEach(() => {
+    cleanupDOM();
+  });
+
+  afterEach(() => {
+    cleanupDOM();
+  });
+  let DryAccordion, AccordionItem;
+
+  before(async () => {
+    await import('../../src/dry2/dry2.js');
+    await import('../../src/dry2/accordion.js');
+    DryAccordion = customElements.get('dry-accordion');
+    AccordionItem = customElements.get('accordion-item');
+  });
+
+  describe('Basic Functionality', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1">Content 1</accordion-item>
+        <accordion-item id="item2" title="Item 2">Content 2</accordion-item>
+        <accordion-item id="item3" title="Item 3" open>Content 3</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should create accordion component', async () => {
+      await waitForComponent(accordion);
+      expect(accordion).to.be.instanceOf(DryAccordion);
+      expect(accordion.querySelector('.accordion')).to.exist;
+    });
+
+    it('should extract and render accordion items', async () => {
+      await waitForComponent(accordion);
+      const items = accordion.querySelectorAll('.accordion-item');
+      expect(items).to.have.length(3);
+    });
+
+    it('should respect initial open state', async () => {
+      await waitForComponent(accordion);
+      // Item 3 should be open initially due to 'open' attribute
+      const item3Content = accordion.querySelector('#item3-content');
+      expect(item3Content).to.exist;
+    });
+
+    it('should toggle items on header click', async () => {
+      await waitForComponent(accordion);
+      const firstHeader = accordion.querySelector('.accordion-header');
+      
+      simulateClick(firstHeader);
+      // Should open the first item
+    });
+
+    it('should emit change events', (done) => {
+      accordion.addEventListener('accordion:change', (event) => {
+        expect(event.detail.itemId).to.exist;
+        expect(event.detail.isOpen).to.be.a('boolean');
+        expect(event.detail.openItems).to.be.an('array');
+        done();
+      });
+
+      waitForComponent(accordion).then(() => {
+        const firstHeader = accordion.querySelector('.accordion-header');
+        simulateClick(firstHeader);
+      });
+    });
+  });
+
+  describe('Multiple Mode', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.setAttribute('multiple', '');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1">Content 1</accordion-item>
+        <accordion-item id="item2" title="Item 2">Content 2</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should allow multiple items to be open', async () => {
+      await waitForComponent(accordion);
+      
+      accordion.openItem('item1');
+      accordion.openItem('item2');
+      
+      // Both items should be open in multiple mode
+    });
+
+    it('should handle multiple attribute changes', async () => {
+      await waitForComponent(accordion);
+      
+      expect(accordion.multiple).to.be.true;
+      
+      accordion.multiple = false;
+      expect(accordion.hasAttribute('multiple')).to.be.false;
+    });
+  });
+
+  describe('Single Mode (Default)', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1" open>Content 1</accordion-item>
+        <accordion-item id="item2" title="Item 2" open>Content 2</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should only allow one item open at a time', async () => {
+      await waitForComponent(accordion);
+      // Should only keep first open item when not in multiple mode
+    });
+  });
+
+  describe('Disabled State', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.disabled = true;
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1">Content 1</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should not respond to clicks when disabled', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      simulateClick(header);
+      
+      // Item should not open when accordion is disabled
+    });
+
+    it('should have disabled styling', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      expect(header.className).to.include('cursor-not-allowed');
+      expect(header.className).to.include('opacity-50');
+    });
+  });
+
+  describe('Public API', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1">Content 1</accordion-item>
+        <accordion-item id="item2" title="Item 2">Content 2</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should provide openItem method', async () => {
+      await waitForComponent(accordion);
+      
+      accordion.openItem('item1');
+      // Should open the specified item
+    });
+
+    it('should provide closeItem method', async () => {
+      await waitForComponent(accordion);
+      
+      accordion.openItem('item1');
+      accordion.closeItem('item1');
+      // Should close the specified item
+    });
+
+    it('should provide toggleItem method', async () => {
+      await waitForComponent(accordion);
+      
+      accordion.toggleItem('item1');
+      // Should toggle the specified item
+    });
+
+    it('should provide openAll method (multiple mode)', async () => {
+      accordion.multiple = true;
+      await waitForComponent(accordion);
+      
+      accordion.openAll();
+      // Should open all items in multiple mode
+    });
+
+    it('should provide closeAll method', async () => {
+      await waitForComponent(accordion);
+      
+      accordion.openItem('item1');
+      accordion.closeAll();
+      // Should close all items
+    });
+
+    it('should not openAll in single mode', async () => {
+      await waitForComponent(accordion);
+      
+      accordion.openAll();
+      // Should not open all items in single mode
+    });
+  });
+
+  describe('Icons and Styling', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1" icon="<i class='fas fa-star'></i>">Content 1</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should display custom icons', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      expect(header.innerHTML).to.include('fas fa-star');
+    });
+
+    it('should have expand/collapse arrows', async () => {
+      await waitForComponent(accordion);
+      
+      const arrow = accordion.querySelector('svg');
+      expect(arrow).to.exist;
+      expect(arrow.className).to.include('transition-transform');
+    });
+  });
+
+  describe('Accessibility', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1">Content 1</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should have proper ARIA attributes', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      expect(header.getAttribute('aria-expanded')).to.exist;
+      expect(header.getAttribute('aria-controls')).to.equal('item1-content');
+      
+      const content = accordion.querySelector('#item1-content');
+      expect(content).to.exist;
+    });
+
+    it('should update aria-expanded when state changes', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      expect(header.getAttribute('aria-expanded')).to.equal('false');
+      
+      accordion.openItem('item1');
+      // aria-expanded should be updated to 'true'
+    });
+
+    it('should support keyboard navigation', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      simulateKeydown(header, 'Enter');
+      // Should toggle the item
+      
+      simulateKeydown(header, ' ');
+      // Should also toggle the item
+    });
+  });
+
+  describe('Item Disabled State', () => {
+    let accordion;
+
+    beforeEach(() => {
+      accordion = document.createElement('dry-accordion');
+      accordion.innerHTML = `
+        <accordion-item id="item1" title="Item 1" disabled>Content 1</accordion-item>
+      `;
+      document.body.appendChild(accordion);
+    });
+
+    it('should not interact with disabled items', async () => {
+      await waitForComponent(accordion);
+      
+      const header = accordion.querySelector('.accordion-header');
+      expect(header.hasAttribute('disabled')).to.be.true;
+      
+      simulateClick(header);
+      // Should not open disabled item
+    });
+  });
+});

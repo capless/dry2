@@ -2,202 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>qr Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <!-- QRious library (peer dependency) -->
     <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
-
-    <!-- DRY2 core and QR component -->
-    <script src="../src/dry2/dry2.js"></script>
+    
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/qr.js"></script>
-
-    <style>
-        .demo-section      { margin-bottom: 2rem; }
-        .demo-title        { font-size: 1.25rem; font-weight: 600; margin-bottom: .5rem; }
-        .demo-description  { margin-bottom: 1rem; color: #4b5563; }
-        .demo-container    { background: white; border: 1px solid #e5e7eb; border-radius: .375rem;
-            padding: 1.5rem; position: relative; }
-        .showcase-relative { min-height: 240px; }
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-    </style>
     <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code, .code-content pre');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
-                <breadcrumb-item active>Qr Component</breadcrumb-item>
+                <breadcrumb-item active>QR Component</breadcrumb-item>
             </dry-breadcrumbs>
         </div>
     </div>
 
-<div class="p-8">
-<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-    <header class="mb-8">
-        <h1 class="text-3xl font-bold mb-2 text-gray-900">QR Code Component</h1>
-        <p class="text-gray-600">
-            A simple custom element for generating QR codes via the QRious library.
-            Configure via attributes or JS API.
-        </p>
-    </header>
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">QR Code Component</h1>
+        <p class="text-gray-600 mb-8">A simple custom element for generating QR codes via the QRious library. Configure via attributes or JS API.</p>
 
     <main>
-        <!-- Basic -->
+        <!-- Basic QR Code -->
         <section class="demo-section">
             <h2 class="demo-title">Basic QR Code</h2>
-            <p class="demo-description">Provide a <code>value</code> to generate a code (default size: 200×200).</p>
+            <p class="demo-description">Provide a value to generate a code (default size: 200×200).</p>
 
             <div class="demo-container showcase-relative flex items-center justify-center">
-                <dry-qr-code value="https://example.com"></dry-qr-code>
+                <dry-qr-code value="https://www.qwigo.com"></dry-qr-code>
             </div>
 
-            <div class="code-block">
-                <div class="code-header">
-                    <span class="code-language">HTML</span>
-                    <button class="copy-button">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                        </svg>
-                        Copy
-                    </button>
-                </div>
-                <div class="code-content">
-                    <pre>&lt;dry-qr-code value="https://example.com"&gt;&lt;/dry-qr-code&gt;</pre>
-                </div>
-            </div>
+            <dry-code language="HTML">&lt;dry-qr-code value="https://www.qwigo.com"&gt;&lt;/dry-qr-code&gt;</dry-code>
         </section>
 
-        <!-- Size variants -->
+        <!-- Size Variants -->
         <section class="demo-section">
             <h2 class="demo-title">Size Variants</h2>
-            <p class="demo-description">
-                Adjust the <code>size</code> attribute (pixels).
-            </p>
+            <p class="demo-description">Adjust the size attribute (pixels) to control QR code dimensions.</p>
 
             <div class="demo-container showcase-relative flex items-center space-x-8">
                 <dry-qr-code value="small" size="100"></dry-qr-code>
@@ -205,17 +67,15 @@
                 <dry-qr-code value="large" size="300"></dry-qr-code>
             </div>
 
-            <div class="code-block"><pre>&lt;dry-qr-code value="small" size="100"&gt;&lt;/dry-qr-code&gt;
+            <dry-code language="HTML">&lt;dry-qr-code value="small" size="100"&gt;&lt;/dry-qr-code&gt;
 &lt;dry-qr-code value="medium" size="200"&gt;&lt;/dry-qr-code&gt;
-&lt;dry-qr-code value="large" size="300"&gt;&lt;/dry-qr-code&gt;</pre></div>
+&lt;dry-qr-code value="large" size="300"&gt;&lt;/dry-qr-code&gt;</dry-code>
         </section>
 
-        <!-- Colour customization -->
+        <!-- Custom Colors -->
         <section class="demo-section">
-            <h2 class="demo-title">Custom Colours</h2>
-            <p class="demo-description">
-                Use <code>foreground</code> and <code>background</code> for color overrides.
-            </p>
+            <h2 class="demo-title">Custom Colors</h2>
+            <p class="demo-description">Use foreground and background attributes for color customization.</p>
 
             <div class="demo-container showcase-relative flex items-center space-x-8">
                 <dry-qr-code value="Red FG" foreground="#e11d48"></dry-qr-code>
@@ -223,17 +83,15 @@
                 <dry-qr-code value="Custom" foreground="#10b981" background="#1f2937"></dry-qr-code>
             </div>
 
-            <div class="code-block"><pre>&lt;dry-qr-code value="Red FG" foreground="#e11d48"&gt;&lt;/dry-qr-code&gt;
+            <dry-code language="HTML">&lt;dry-qr-code value="Red FG" foreground="#e11d48"&gt;&lt;/dry-qr-code&gt;
 &lt;dry-qr-code value="Yellow BG" background="#fde047"&gt;&lt;/dry-qr-code&gt;
-&lt;dry-qr-code value="Custom" foreground="#10b981" background="#1f2937"&gt;&lt;/dry-qr-code&gt;</pre></div>
+&lt;dry-qr-code value="Custom" foreground="#10b981" background="#1f2937"&gt;&lt;/dry-qr-code&gt;</dry-code>
         </section>
 
-        <!-- Error correction levels -->
+        <!-- Error Correction Levels -->
         <section class="demo-section">
             <h2 class="demo-title">Error Correction Levels</h2>
-            <p class="demo-description">
-                Set <code>error-correction</code> to <code>L</code>, <code>M</code> (default), <code>Q</code> or <code>H</code>.
-            </p>
+            <p class="demo-description">Set error-correction to L, M (default), Q or H for different error correction levels.</p>
 
             <div class="demo-container showcase-relative flex items-center space-x-8">
                 <dry-qr-code value="L-level" error-correction="L"></dry-qr-code>
@@ -242,47 +100,21 @@
                 <dry-qr-code value="H-level" error-correction="H"></dry-qr-code>
             </div>
 
-            <div class="code-block"><pre>&lt;dry-qr-code value="L-level" error-correction="L"&gt;&lt;/dry-qr-code&gt;
+            <dry-code language="HTML">&lt;dry-qr-code value="L-level" error-correction="L"&gt;&lt;/dry-qr-code&gt;
 &lt;dry-qr-code value="M-level" error-correction="M"&gt;&lt;/dry-qr-code&gt;
 &lt;dry-qr-code value="Q-level" error-correction="Q"&gt;&lt;/dry-qr-code&gt;
-&lt;dry-qr-code value="H-level" error-correction="H"&gt;&lt;/dry-qr-code&gt;</pre></div>
+&lt;dry-qr-code value="H-level" error-correction="H"&gt;&lt;/dry-qr-code&gt;</dry-code>
         </section>
 
-        <!-- JS API -->
-        <section class="demo-section">
-            <h2 class="demo-title">JavaScript API</h2>
-            <p class="demo-description">
-                Change properties at runtime—set <code>value</code>, <code>size</code>, etc., and it auto-re-renders.
-            </p>
+        <!-- Component Builder Section -->
+        <div id="qr-component-builder"></div>
 
-            <div class="demo-container showcase-relative">
-                <dry-qr-code id="api-qr" value="initial"></dry-qr-code>
-
-                <div class="mt-4 space-x-2">
-                    <input id="qr-input" type="text" placeholder="New value…" class="border px-2 py-1 rounded">
-                    <button id="update-btn" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
-                        Update
-                    </button>
-                </div>
-            </div>
-
-            <div class="code-block"><pre>
-// Grab the element and input
-const qr = document.getElementById('api-qr');
-const input = document.getElementById('qr-input');
-
-// Update on button click
-document.getElementById('update-btn').addEventListener('click', () => {
-  qr.value = input.value;
-});</pre></div>
-        </section>
-
-        <!-- API reference -->
+        <!-- API Reference -->
         <section class="mt-12">
             <h2 class="text-2xl font-bold mb-4">API Reference</h2>
 
-            <h3 class="text-xl font-semibold mb-2">Attributes</h3>
-            <table class="w-full border border-gray-300 rounded mb-6">
+            <h3 class="text-xl font-semibold mt-6 mb-3">QR Code Component</h3>
+            <table class="min-w-full border border-gray-300 rounded">
                 <thead class="bg-gray-100">
                 <tr>
                     <th class="px-4 py-2 text-left">Attribute</th>
@@ -296,66 +128,100 @@ document.getElementById('update-btn').addEventListener('click', () => {
                     <td class="px-4 py-2 font-medium">value</td>
                     <td class="px-4 py-2">string</td>
                     <td class="px-4 py-2">''</td>
-                    <td class="px-4 py-2">Data/content for QR encoding.</td>
+                    <td class="px-4 py-2">Data/content for QR encoding</td>
                 </tr>
                 <tr class="border-t">
                     <td class="px-4 py-2 font-medium">size</td>
                     <td class="px-4 py-2">number</td>
                     <td class="px-4 py-2">200</td>
-                    <td class="px-4 py-2">Width &amp; height in pixels.</td>
+                    <td class="px-4 py-2">Width & height in pixels</td>
                 </tr>
                 <tr class="border-t">
                     <td class="px-4 py-2 font-medium">foreground</td>
                     <td class="px-4 py-2">string</td>
                     <td class="px-4 py-2">#000000</td>
-                    <td class="px-4 py-2">QR code color.</td>
+                    <td class="px-4 py-2">QR code color</td>
                 </tr>
                 <tr class="border-t">
                     <td class="px-4 py-2 font-medium">background</td>
                     <td class="px-4 py-2">string</td>
                     <td class="px-4 py-2">#ffffff</td>
-                    <td class="px-4 py-2">Canvas background color.</td>
+                    <td class="px-4 py-2">Canvas background color</td>
                 </tr>
                 <tr class="border-t">
                     <td class="px-4 py-2 font-medium">error-correction</td>
                     <td class="px-4 py-2">string</td>
                     <td class="px-4 py-2">M</td>
-                    <td class="px-4 py-2">One of L, M, Q, H.</td>
+                    <td class="px-4 py-2">One of L, M, Q, H</td>
                 </tr>
                 </tbody>
             </table>
         </section>
     </main>
+    </div>
+    </div>
 
-    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-        <p>DRY2 Web Components Library</p>
-        <p class="mt-2">
-            <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-        </p>
-    </footer>
-</div>
-
-<script>
-// JavaScript API demo
-document.addEventListener('DOMContentLoaded', function() {
-    const qr = document.getElementById('api-qr');
-    const input = document.getElementById('qr-input');
-    const updateBtn = document.getElementById('update-btn');
+    <script>
+        // Initialize Component Builder
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComponentBuilder({
+                elementId: 'qr-component-builder',
+                componentTag: 'dry-qr-code',
+                title: 'QR Code Component Builder',
+                description: 'Try changing the QR code properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    value: {
+                        type: 'text',
+                        label: 'Value',
+                        default: 'https://example.com'
+                    },
+                    size: {
+                        type: 'range',
+                        label: 'Size (px)',
+                        min: 100,
+                        max: 400,
+                        default: 200,
+                        displayFormat: (value) => `${value}px`
+                    },
+                    foreground: {
+                        type: 'color',
+                        label: 'Foreground Color',
+                        default: '#000000'
+                    },
+                    background: {
+                        type: 'color',
+                        label: 'Background Color',
+                        default: '#ffffff'
+                    },
+                    'error-correction': {
+                        type: 'select',
+                        label: 'Error Correction',
+                        options: [
+                            { value: 'L', label: 'L (Low)' },
+                            { value: 'M', label: 'M (Medium)' },
+                            { value: 'Q', label: 'Q (Quartile)' },
+                            { value: 'H', label: 'H (High)' }
+                        ],
+                        default: 'M'
+                    }
+                },
+                
+                defaults: {
+                    value: 'https://example.com',
+                    size: 200,
+                    foreground: '#000000',
+                    background: '#ffffff',
+                    'error-correction': 'M'
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
+        });
+    </script>
     
-    updateBtn.addEventListener('click', () => {
-        if (input.value.trim()) {
-            qr.value = input.value.trim();
-        }
-    });
-    
-    // Allow Enter key to update
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            updateBtn.click();
-        }
-    });
-});
-</script>
-</div>
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

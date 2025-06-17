@@ -1,118 +1,134 @@
-class QRCode extends BaseWebComponent {
-    constructor() {
-        super();
-        this._value = '';
-        this._size = 200;
-        this._foreground = '#000000';
-        this._background = '#ffffff';
-        this._errorCorrection = 'M';
+class DryQRCode extends BaseElement {
+  constructor() {
+    super();
+    this.qr = null;
+    this.canvas = null;
+  }
+
+  _initializeComponent() {
+    this.initializeCanvas();
+    this.render();
+  }
+
+  static get observedAttributes() {
+    return ['value', 'size', 'foreground', 'background', 'error-correction'];
+  }
+
+  _handleAttributeChange(name, oldValue, newValue) {
+    if (this.isConnected && oldValue !== newValue) {
+      this.render();
+    }
+  }
+
+  // Getters and setters for JavaScript API
+  get value() {
+    return this._getAttributeWithDefault('value', '');
+  }
+
+  set value(val) {
+    this._setAttribute('value', val);
+  }
+
+  get size() {
+    return this._getNumericAttribute('size', 200);
+  }
+
+  set size(val) {
+    this._setNumericAttribute('size', val);
+  }
+
+  get foreground() {
+    return this._getAttributeWithDefault('foreground', '#000000');
+  }
+
+  set foreground(val) {
+    this._setAttribute('foreground', val);
+  }
+
+  get background() {
+    return this._getAttributeWithDefault('background', '#ffffff');
+  }
+
+  set background(val) {
+    this._setAttribute('background', val);
+  }
+
+  get errorCorrection() {
+    return this._getAttributeWithDefault('error-correction', 'M');
+  }
+
+  set errorCorrection(val) {
+    this._setAttribute('error-correction', val);
+  }
+
+  initializeCanvas() {
+    // Create canvas element if it doesn't exist
+    if (!this.canvas) {
+      this.canvas = document.createElement('canvas');
+      this.appendChild(this.canvas);
+    }
+  }
+
+  render() {
+    // Check if QRious library is available
+    if (typeof QRious === 'undefined') {
+      console.error('QRious library not found. Please include QRious before using dry-qr-code.');
+      this.innerHTML = '<div style="border: 1px solid #ccc; padding: 10px; color: #666;">QRious library not loaded</div>';
+      return;
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    // Ensure canvas exists
+    this.initializeCanvas();
+
+    // Set canvas size
+    const size = this.size;
+    this.canvas.width = size;
+    this.canvas.height = size;
+
+    // Initialize or update QRious instance
+    try {
+      if (!this.qr) {
+        this.qr = new QRious({
+          element: this.canvas,
+          value: this.value,
+          size: size,
+          foreground: this.foreground,
+          background: this.background,
+          level: this.errorCorrection
+        });
+      } else {
+        // Update existing QR code
+        this.qr.value = this.value;
+        this.qr.size = size;
+        this.qr.foreground = this.foreground;
+        this.qr.background = this.background;
+        this.qr.level = this.errorCorrection;
+      }
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      this.innerHTML = '<div style="border: 1px solid #f00; padding: 10px; color: #f00;">Error generating QR code</div>';
     }
+  }
 
-    static get observedAttributes() {
-        return ['value', 'size', 'foreground', 'background', 'error-correction'];
+  // Method to get the QR code as data URL
+  toDataURL(type = 'image/png') {
+    if (this.canvas) {
+      return this.canvas.toDataURL(type);
     }
+    return null;
+  }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue) {
-            switch (name) {
-                case 'value':
-                    this._value = newValue;
-                    break;
-                case 'size':
-                    this._size = parseInt(newValue) || 200;
-                    break;
-                case 'foreground':
-                    this._foreground = newValue || '#000000';
-                    break;
-                case 'background':
-                    this._background = newValue || '#ffffff';
-                    break;
-                case 'error-correction':
-                    const validLevels = ['L', 'M', 'Q', 'H'];
-                    this._errorCorrection = validLevels.includes(newValue) ? newValue : 'M';
-                    break;
-            }
-            this.render();
-        }
+  // Method to download the QR code as an image
+  download(filename = 'qrcode.png') {
+    const dataURL = this.toDataURL();
+    if (dataURL) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = dataURL;
+      link.click();
     }
-
-    render() {
-        if (!this._value) {
-            this.innerHTML = `<div class="qr-error">Please provide a value for the QR code</div>`;
-            return;
-        }
-
-        try {
-            // Create QR Code using the QRious library
-            const qr = new QRious({
-                value: this._value,
-                size: this._size,
-                foreground: this._foreground,
-                background: this._background,
-                level: this._errorCorrection
-            });
-
-            // Set the innerHTML to the generated QR code
-            this.innerHTML = `<img src="${qr.toDataURL()}" alt="QR Code: ${this.escapeHTML(this._value)}" width="${this._size}" height="${this._size}">`;
-        } catch (error) {
-            this.innerHTML = `<div class="qr-error">Error generating QR code: ${this.escapeHTML(error.message)}</div>`;
-        }
-    }
-
-    // Helper method to escape HTML to prevent XSS
-    escapeHTML(str) {
-        return str.replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
-    // Getters and setters for properties
-    get value() {
-        return this._value;
-    }
-
-    set value(newValue) {
-        this.setAttribute('value', newValue);
-    }
-
-    get size() {
-        return this._size;
-    }
-
-    set size(newValue) {
-        this.setAttribute('size', newValue);
-    }
-
-    get foreground() {
-        return this._foreground;
-    }
-
-    set foreground(newValue) {
-        this.setAttribute('foreground', newValue);
-    }
-
-    get background() {
-        return this._background;
-    }
-
-    set background(newValue) {
-        this.setAttribute('background', newValue);
-    }
-
-    get errorCorrection() {
-        return this._errorCorrection;
-    }
-
-    set errorCorrection(newValue) {
-        this.setAttribute('error-correction', newValue);
-    }
+  }
 }
 
 // Register the custom element
-customElements.define('dry-qr-code', QRCode);
+customElements.define('dry-qr-code', DryQRCode);

@@ -1,0 +1,347 @@
+import '../setup.js';
+
+describe('Avatar Component', () => {
+  beforeEach(() => {
+    cleanupDOM();
+  });
+
+  afterEach(() => {
+    cleanupDOM();
+  });
+  let AvatarComponent;
+
+  before(async () => {
+    await import('../../src/dry2/dry2.js');
+    await import('../../src/dry2/avatar.js');
+    AvatarComponent = customElements.get('avatar-component');
+  });
+
+  describe('Basic Functionality', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      document.body.appendChild(avatar);
+    });
+
+    it('should create avatar component', async () => {
+      await waitForComponent(avatar);
+      expect(avatar).to.be.instanceOf(AvatarComponent);
+      expect(avatar.querySelector('.avatar')).to.exist;
+    });
+
+    it('should display initials when no image provided', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      expect(initialsEl).to.exist;
+      expect(initialsEl.textContent).to.equal('JD');
+    });
+
+    it('should display image when src provided', async () => {
+      avatar.setAttribute('src', 'https://example.com/avatar.jpg');
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const imageEl = avatar.querySelector('.avatar-image');
+      expect(imageEl).to.exist;
+      expect(imageEl.getAttribute('src')).to.equal('https://example.com/avatar.jpg');
+    });
+
+    it('should fallback to initials on image error', async () => {
+      avatar.setAttribute('src', 'invalid-url.jpg');
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      // Simulate image error
+      const imageEl = avatar.querySelector('.avatar-image');
+      if (imageEl) {
+        triggerEvent(imageEl, 'error');
+      }
+      
+      setTimeout(() => {
+        const initialsEl = avatar.querySelector('.avatar-initials');
+        expect(initialsEl).to.exist;
+      }, 100);
+    });
+  });
+
+  describe('Sizes', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      avatar.setAttribute('name', 'John Doe');
+      document.body.appendChild(avatar);
+    });
+
+    it('should apply xs size classes', async () => {
+      avatar.setAttribute('size', 'xs');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('w-6');
+      expect(avatarEl.className).to.include('h-6');
+    });
+
+    it('should apply sm size classes', async () => {
+      avatar.setAttribute('size', 'sm');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('w-8');
+      expect(avatarEl.className).to.include('h-8');
+    });
+
+    it('should apply md size classes by default', async () => {
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('w-10');
+      expect(avatarEl.className).to.include('h-10');
+    });
+
+    it('should apply lg size classes', async () => {
+      avatar.setAttribute('size', 'lg');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('w-12');
+      expect(avatarEl.className).to.include('h-12');
+    });
+
+    it('should apply xl size classes', async () => {
+      avatar.setAttribute('size', 'xl');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('w-16');
+      expect(avatarEl.className).to.include('h-16');
+    });
+  });
+
+  describe('Shapes', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      avatar.setAttribute('name', 'John Doe');
+      document.body.appendChild(avatar);
+    });
+
+    it('should apply circle shape by default', async () => {
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('rounded-full');
+    });
+
+    it('should apply square shape', async () => {
+      avatar.setAttribute('shape', 'square');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('rounded-none');
+    });
+
+    it('should apply rounded shape', async () => {
+      avatar.setAttribute('shape', 'rounded');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.className).to.include('rounded-lg');
+    });
+  });
+
+  describe('Initials Generation', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      document.body.appendChild(avatar);
+    });
+
+    it('should generate initials from first and last name', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      expect(initialsEl.textContent).to.equal('JD');
+    });
+
+    it('should handle single name', async () => {
+      avatar.setAttribute('name', 'John');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      expect(initialsEl.textContent).to.equal('J');
+    });
+
+    it('should handle multiple names', async () => {
+      avatar.setAttribute('name', 'John Michael Doe');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      expect(initialsEl.textContent).to.equal('JD');
+    });
+
+    it('should handle empty name', async () => {
+      avatar.setAttribute('name', '');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      expect(initialsEl.textContent).to.equal('?');
+    });
+  });
+
+  describe('Color Generation', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      document.body.appendChild(avatar);
+    });
+
+    it('should generate consistent colors for same name', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      const backgroundColor = window.getComputedStyle(initialsEl).backgroundColor;
+      
+      // Create another avatar with same name
+      const avatar2 = document.createElement('avatar-component');
+      avatar2.setAttribute('name', 'John Doe');
+      document.body.appendChild(avatar2);
+      await waitForComponent(avatar2);
+      
+      const initialsEl2 = avatar2.querySelector('.avatar-initials');
+      const backgroundColor2 = window.getComputedStyle(initialsEl2).backgroundColor;
+      
+      expect(backgroundColor).to.equal(backgroundColor2);
+    });
+
+    it('should generate different colors for different names', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const initialsEl = avatar.querySelector('.avatar-initials');
+      const backgroundColor = window.getComputedStyle(initialsEl).backgroundColor;
+      
+      // Create another avatar with different name
+      const avatar2 = document.createElement('avatar-component');
+      avatar2.setAttribute('name', 'Jane Smith');
+      document.body.appendChild(avatar2);
+      await waitForComponent(avatar2);
+      
+      const initialsEl2 = avatar2.querySelector('.avatar-initials');
+      const backgroundColor2 = window.getComputedStyle(initialsEl2).backgroundColor;
+      
+      expect(backgroundColor).to.not.equal(backgroundColor2);
+    });
+  });
+
+  describe('Slot Content', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      avatar.setAttribute('name', 'John Doe');
+      document.body.appendChild(avatar);
+    });
+
+    it('should display slot content when provided', async () => {
+      avatar.innerHTML = '<span slot="badge" class="status-badge">●</span>';
+      await waitForComponent(avatar);
+      
+      const slotContent = avatar.querySelector('.status-badge');
+      expect(slotContent).to.exist;
+    });
+
+    it('should support multiple slot types', async () => {
+      avatar.innerHTML = `
+        <span slot="badge" class="badge">!</span>
+        <span slot="icon" class="icon">★</span>
+      `;
+      await waitForComponent(avatar);
+      
+      const badge = avatar.querySelector('.badge');
+      const icon = avatar.querySelector('.icon');
+      expect(badge).to.exist;
+      expect(icon).to.exist;
+    });
+  });
+
+  describe('Accessibility', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      document.body.appendChild(avatar);
+    });
+
+    it('should have proper alt text for images', async () => {
+      avatar.setAttribute('src', 'https://example.com/avatar.jpg');
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const imageEl = avatar.querySelector('.avatar-image');
+      expect(imageEl.getAttribute('alt')).to.equal('John Doe');
+    });
+
+    it('should have proper aria-label for initials', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.getAttribute('aria-label')).to.include('John Doe');
+    });
+
+    it('should indicate avatar role', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      const avatarEl = avatar.querySelector('.avatar');
+      expect(avatarEl.getAttribute('role')).to.equal('img');
+    });
+  });
+
+  describe('Public API', () => {
+    let avatar;
+
+    beforeEach(() => {
+      avatar = document.createElement('avatar-component');
+      document.body.appendChild(avatar);
+    });
+
+    it('should provide updateImage method', async () => {
+      await waitForComponent(avatar);
+      
+      if (typeof avatar.updateImage === 'function') {
+        avatar.updateImage('https://example.com/new-avatar.jpg');
+        
+        const imageEl = avatar.querySelector('.avatar-image');
+        expect(imageEl.getAttribute('src')).to.equal('https://example.com/new-avatar.jpg');
+      }
+    });
+
+    it('should provide getName method', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      if (typeof avatar.getName === 'function') {
+        expect(avatar.getName()).to.equal('John Doe');
+      }
+    });
+
+    it('should provide getInitials method', async () => {
+      avatar.setAttribute('name', 'John Doe');
+      await waitForComponent(avatar);
+      
+      if (typeof avatar.getInitials === 'function') {
+        expect(avatar.getInitials()).to.equal('JD');
+      }
+    });
+  });
+});

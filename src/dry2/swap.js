@@ -1,211 +1,209 @@
-class Swap extends BaseWebComponent {
-    constructor() {
-        super();
-        this._active = false;
-    }
+class SwapComponent extends BaseElement {
+  constructor() {
+    super();
+    this._active = false;
+    this._boundHandleClick = null;
+    this._boundHandleKeydown = null;
+  }
 
-    render() {
-        // Get container classes based on attributes
-        const containerClasses = this.getContainerClasses(this.size, this.disabled);
+  static get observedAttributes() {
+    return ['icon-on', 'icon-off', 'active', 'disabled', 'size', 'transition', 'class'];
+  }
 
-        // Create the swap component HTML structure without Alpine.js
-        const swapHTML = `
-            <div 
-                class="${containerClasses}" 
-                role="button" 
-                tabindex="${this.disabled ? -1 : 0}"
-                data-swap-container
-            >
-                <div class="swap-icon-container transition-all duration-300 ease-in-out">
-                    <div class="swap-icon ${this._active ? 'hidden' : ''}">${this.iconOff}</div>
-                    <div class="swap-icon ${this._active ? '' : 'hidden'}">${this.iconOn}</div>
+  _initializeComponent() {
+    // Set initial active state from attribute
+    this._active = this.hasAttribute('active');
+
+    // Create the component structure
+    this._render();
+
+    // Add event listeners
+    this._addEventListeners();
+    
+    // Mark as initialized
+    this._isInitialized = true;
+  }
+
+  _render() {
+    const classes = this._getComponentClasses();
+    const currentIcon = this._active ? this.iconOn : this.iconOff;
+    const transitionClass = this.transition === 'none' ? '' : 'transition-all duration-200 ease-in-out';
+
+    this.innerHTML = `
+            <div class="${classes}" role="button" tabindex="${this.disabled ? '-1' : '0'}" aria-pressed="${this._active}" aria-label="Toggle" data-swap-button>
+                <div class="swap-icon ${transitionClass} flex items-center justify-center">
+                    ${currentIcon}
                 </div>
             </div>
         `;
+        
+    // Re-attach event listeners to the button after rendering
+    if (this._isInitialized) {
+      this._addEventListeners();
+    }
+  }
 
-        this.innerHTML = swapHTML;
-        this.setupEventListeners();
+  _getComponentClasses() {
+    let classes = 'swap-component inline-flex items-center justify-center cursor-pointer select-none ';
+
+    // Size classes
+    if (this.size === 'small') {
+      classes += 'text-sm p-1 min-w-[24px] min-h-[24px] ';
+    } else if (this.size === 'large') {
+      classes += 'text-xl p-3 min-w-[48px] min-h-[48px] ';
+    } else {
+      // medium or default
+      classes += 'text-base p-2 min-w-[32px] min-h-[32px] ';
     }
 
-    setupEventListeners() {
-        const container = this.querySelector('[data-swap-container]');
-        if (container) {
-            container.addEventListener('click', this.handleClick.bind(this));
-            container.addEventListener('keydown', this.handleKeydown.bind(this));
-        }
+    // State classes
+    if (this.disabled) {
+      classes += 'opacity-50 cursor-not-allowed pointer-events-none ';
+    } else {
+      classes += 'hover:opacity-75 active:scale-95 ';
     }
 
-    handleClick(event) {
-        if (!this.disabled) {
-            this.toggle();
-        }
+    // Focus styles
+    classes += 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded transition-transform duration-150 ';
+
+    // Custom classes
+    const customClass = this.getAttribute('class');
+    if (customClass) {
+      classes += customClass + ' ';
     }
 
-    handleKeydown(event) {
-        if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
-            event.preventDefault();
-            this.toggle();
-        }
+    return classes.trim();
+  }
+
+  _addEventListeners() {
+    const button = this.querySelector('[data-swap-button]');
+    if (!button) return;
+    
+    // Remove existing listeners first to avoid duplicates
+    if (this._boundHandleClick) {
+      button.removeEventListener('click', this._boundHandleClick);
+      this._boundHandleClick = null;
+    }
+    if (this._boundHandleKeydown) {
+      button.removeEventListener('keydown', this._boundHandleKeydown);
+      this._boundHandleKeydown = null;
     }
 
-    toggle() {
-        this.active = !this._active;
+    if (!this.disabled) {
+      this._boundHandleClick = this._handleClick.bind(this);
+      this._boundHandleKeydown = this._handleKeydown.bind(this);
+      button.addEventListener('click', this._boundHandleClick);
+      button.addEventListener('keydown', this._boundHandleKeydown);
     }
+  }
 
-    getContainerClasses(size, disabled) {
-        let classes = 'inline-flex items-center justify-center ';
-
-        // Add disabled styling
-        if (disabled) {
-            classes += 'opacity-50 cursor-not-allowed ';
-        } else {
-            classes += 'cursor-pointer hover:scale-110 transition-transform duration-200 ';
-        }
-
-        // Add size classes
-        switch (size) {
-            case 'small':
-                classes += 'h-4 w-4 ';
-                break;
-            case 'large':
-                classes += 'h-8 w-8 ';
-                break;
-            default:
-                // Default to medium size
-                classes += 'h-6 w-6 ';
-        }
-
-        // Add custom classes
-        if (this.class) {
-            classes += this.class + ' ';
-        }
-
-        return classes.trim();
+  _handleClick(event) {
+    event.preventDefault();
+    if (!this.disabled) {
+      this.toggle();
     }
+  }
 
-    static get observedAttributes() {
-        return ['icon-on', 'icon-off', 'active', 'disabled', 'size', 'class', 'transition'];
+  _handleKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (!this.disabled) {
+        this.toggle();
+      }
     }
+  }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue) {
-            if (name === 'active') {
-                this._active = newValue !== null;
-            }
-            if (name === 'disabled') {
-                this._disabled = newValue !== null;
-            }
+  // Public API
+  toggle() {
+    if (this.disabled) return;
 
-            // Re-render to update the DOM
-            if (this.isConnected) {
-                this.render();
-            }
-        }
+    this.active = !this._active;
+  }
+
+  // Getters
+  get iconOn() {
+    return this.getAttribute('icon-on') || '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>';
+  }
+
+  get iconOff() {
+    return this.getAttribute('icon-off') || '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>';
+  }
+
+  get active() {
+    return this._active;
+  }
+
+  set active(value) {
+    const newValue = Boolean(value);
+    if (this._active !== newValue) {
+      this._active = newValue;
+
+      if (newValue) {
+        this.setAttribute('active', '');
+      } else {
+        this.removeAttribute('active');
+      }
+
+      if (this._isInitialized) {
+        this._render();
+        this._dispatchChangeEvent();
+      }
     }
+  }
 
-    // Getters and setters for attributes
-    get iconOn() {
-        return this.getAttribute('icon-on') ||
-            '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>';
+  get disabled() {
+    return this._getBooleanAttribute('disabled');
+  }
+
+  set disabled(value) {
+    this._setBooleanAttribute('disabled', value);
+  }
+
+  get size() {
+    return this._getAttributeWithDefault('size', 'medium');
+  }
+
+  set size(value) {
+    this._setAttribute('size', value);
+  }
+
+  get transition() {
+    return this.getAttribute('transition') || 'fade';
+  }
+
+  _dispatchChangeEvent() {
+    this._dispatchEvent('swap:change', {
+      active: this._active,
+      component: this
+    });
+  }
+
+  _handleAttributeChange(name, oldValue, newValue) {
+    if (oldValue !== newValue && this._isInitialized) {
+      if (name === 'active') {
+        this._active = this.hasAttribute('active');
+        this._render();
+      } else if (name === 'disabled') {
+        this._addEventListeners(); // Re-setup listeners based on disabled state
+        this._render();
+      } else if (name === 'icon-on' || name === 'icon-off' || name === 'size' || name === 'class') {
+        this._render();
+      }
     }
+  }
 
-    set iconOn(value) {
-        this.setAttribute('icon-on', value);
+  disconnectedCallback() {
+    // Clean up event listeners
+    const button = this.querySelector('[data-swap-button]');
+    if (button) {
+      if (this._boundHandleClick) {
+        button.removeEventListener('click', this._boundHandleClick);
+      }
+      if (this._boundHandleKeydown) {
+        button.removeEventListener('keydown', this._boundHandleKeydown);
+      }
     }
-
-    get iconOff() {
-        return this.getAttribute('icon-off') ||
-            '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
-    }
-
-    set iconOff(value) {
-        this.setAttribute('icon-off', value);
-    }
-
-    get active() {
-        return this._active;
-    }
-
-    set active(value) {
-        const shouldActivate = Boolean(value);
-        if (this._active !== shouldActivate) {
-            this._active = shouldActivate;
-
-            // Update attribute
-            if (this._active) {
-                this.setAttribute('active', '');
-            } else {
-                this.removeAttribute('active');
-            }
-
-            // Update DOM if connected
-            if (this.isConnected) {
-                const iconOff = this.querySelector('.swap-icon:first-child');
-                const iconOn = this.querySelector('.swap-icon:last-child');
-
-                if (iconOff && iconOn) {
-                    if (this._active) {
-                        iconOff.classList.add('hidden');
-                        iconOn.classList.remove('hidden');
-                    } else {
-                        iconOff.classList.remove('hidden');
-                        iconOn.classList.add('hidden');
-                    }
-                }
-
-                // Dispatch event for state change
-                this.dispatchEvent(new CustomEvent('swap:change', {
-                    bubbles: true,
-                    detail: {active: this._active}
-                }));
-            }
-        }
-    }
-
-    get disabled() {
-        return this.hasAttribute('disabled');
-    }
-
-    set disabled(value) {
-        if (value) {
-            this.setAttribute('disabled', '');
-        } else {
-            this.removeAttribute('disabled');
-        }
-
-        // Update tabindex if connected
-        if (this.isConnected) {
-            const container = this.querySelector('[data-swap-container]');
-            if (container) {
-                container.setAttribute('tabindex', value ? '-1' : '0');
-            }
-        }
-    }
-
-    get size() {
-        return this.getAttribute('size') || 'medium';
-    }
-
-    set size(value) {
-        this.setAttribute('size', value);
-    }
-
-    get class() {
-        return this.getAttribute('class') || '';
-    }
-
-    set class(value) {
-        value ? this.setAttribute('class', value) : this.removeAttribute('class');
-    }
-
-    get transition() {
-        return this.getAttribute('transition') || 'fade';
-    }
-
-    set transition(value) {
-        this.setAttribute('transition', value);
-    }
+  }
 }
 
-// Define the custom element
-customElements.define('swap-component', Swap);
+customElements.define('swap-component', SwapComponent);

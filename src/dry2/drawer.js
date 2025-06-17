@@ -1,31 +1,31 @@
 // drawer-components.js
 
-class DryDrawer extends HTMLElement {
-    // Web component for creating a basic drawer interface
-    constructor() {
-        super();
-        this._isOpen = false;
+class DryDrawer extends BaseElement {
+  // Web component for creating a basic drawer interface
+  constructor() {
+    super();
+    this._isOpen = false;
+  }
+
+  _initializeComponent() {
+    if (!this.hasAttribute('data-rendered')) {
+      this.render();
+      this.attachEventListeners();
+      this.setAttribute('data-rendered', '');
+    } else {
+      this.attachEventListeners();
     }
+  }
 
-    connectedCallback() {
-        if (!this.hasAttribute('data-rendered')) {
-            this.render();
-            this.attachEventListeners();
-            this.setAttribute('data-rendered', '');
-        } else {
-            this.attachEventListeners();
-        }
-    }
+  disconnectedCallback() {
+    this.removeEventListeners();
+  }
 
-    disconnectedCallback() {
-        this.removeEventListeners();
-    }
+  render() {
+    const headerContent = this.querySelector('[slot="header"]')?.innerHTML || this.headerContent;
+    const contentSlot = this.querySelector('[slot="content"]')?.outerHTML || '<slot name="content"></slot>';
 
-    render() {
-        const headerContent = this.querySelector('[slot="header"]')?.innerHTML || this.headerContent;
-        const contentSlot = this.querySelector('[slot="content"]')?.outerHTML || '<slot name="content"></slot>';
-
-        this.innerHTML = `
+    this.innerHTML = `
         <div class="drawer-container">
             <button type="button" class="trigger-button ${this.buttonClass}">
                 ${this.triggerContent}
@@ -46,159 +46,153 @@ class DryDrawer extends HTMLElement {
             </div>
         </div>
         `;
+  }
+
+  attachEventListeners() {
+    this.triggerButton = this.querySelector('.trigger-button');
+    this.drawerElement = this.querySelector('.drawer');
+    this.backdrop = this.querySelector('.drawer-backdrop');
+    this.closeButton = this.querySelector('.drawer-close');
+    this.drawerWrapper = this.querySelector('.drawer-wrapper');
+
+    // Store bound methods as properties
+    this.boundOpen = this.open.bind(this);
+    this.boundClose = this.close.bind(this);
+    this._handleKeyDown = this._handleKeyDown.bind(this);
+
+    if (this.triggerButton) {
+      this.triggerButton.addEventListener('click', this.boundOpen);
     }
 
-    attachEventListeners() {
-        this.triggerButton = this.querySelector('.trigger-button');
-        this.drawerElement = this.querySelector('.drawer');
-        this.backdrop = this.querySelector('.drawer-backdrop');
-        this.closeButton = this.querySelector('.drawer-close');
-        this.drawerWrapper = this.querySelector('.drawer-wrapper');
-
-        // Store bound methods as properties
-        this.boundOpen = this.open.bind(this);
-        this.boundClose = this.close.bind(this);
-        this._handleKeyDown = this._handleKeyDown.bind(this);
-
-        if (this.triggerButton) {
-            this.triggerButton.addEventListener('click', this.boundOpen);
-        }
-
-        if (this.backdrop) {
-            this.backdrop.addEventListener('click', this.boundClose);
-        }
-
-        if (this.closeButton) {
-            this.closeButton.addEventListener('click', this.boundClose);
-        }
-
-        // Add keyboard listener for ESC key
-        document.addEventListener('keydown', this._handleKeyDown);
+    if (this.backdrop) {
+      this.backdrop.addEventListener('click', this.boundClose);
     }
 
-    removeEventListeners() {
-        if (this.triggerButton) {
-            this.triggerButton.removeEventListener('click', this.boundOpen);
-        }
-
-        if (this.backdrop) {
-            this.backdrop.removeEventListener('click', this.boundClose);
-        }
-
-        if (this.closeButton) {
-            this.closeButton.removeEventListener('click', this.boundClose);
-        }
-
-        document.removeEventListener('keydown', this._handleKeyDown);
+    if (this.closeButton) {
+      this.closeButton.addEventListener('click', this.boundClose);
     }
 
-    _handleKeyDown(event) {
-        if (event.key === 'Escape' && this._isOpen) {
-            this.close();
-        }
+    // Add keyboard listener for ESC key
+    document.addEventListener('keydown', this._handleKeyDown);
+  }
+
+  removeEventListeners() {
+    if (this.triggerButton) {
+      this.triggerButton.removeEventListener('click', this.boundOpen);
     }
 
-    open() {
-        this._isOpen = true;
-        this.drawerWrapper.classList.remove('pointer-events-none');
-        this.drawerWrapper.classList.add('pointer-events-auto');
-        this.backdrop.classList.remove('pointer-events-none', 'opacity-0');
-        this.backdrop.classList.add('pointer-events-auto', 'opacity-100');
-
-        if (this.position === 'left') {
-            this.drawerElement.classList.remove('-translate-x-full');
-            this.drawerElement.classList.add('translate-x-0');
-        } else {
-            this.drawerElement.classList.remove('translate-x-full');
-            this.drawerElement.classList.add('translate-x-0');
-        }
-
-        // Dispatch custom event
-        this.dispatchEvent(new CustomEvent('drawer:opened', {
-            bubbles: true,
-            detail: {drawer: this}
-        }));
+    if (this.backdrop) {
+      this.backdrop.removeEventListener('click', this.boundClose);
     }
 
-    close() {
-        this._isOpen = false;
-        this.drawerWrapper.classList.remove('pointer-events-auto');
-        this.drawerWrapper.classList.add('pointer-events-none');
-        this.backdrop.classList.remove('opacity-100', 'pointer-events-auto');
-        this.backdrop.classList.add('opacity-0', 'pointer-events-none');
-
-        if (this.position === 'left') {
-            this.drawerElement.classList.remove('translate-x-0');
-            this.drawerElement.classList.add('-translate-x-full');
-        } else {
-            this.drawerElement.classList.remove('translate-x-0');
-            this.drawerElement.classList.add('translate-x-full');
-        }
-
-        // Dispatch custom event
-        this.dispatchEvent(new CustomEvent('drawer:closed', {
-            bubbles: true,
-            detail: {drawer: this}
-        }));
+    if (this.closeButton) {
+      this.closeButton.removeEventListener('click', this.boundClose);
     }
 
-    // Getters for attributes with defaults
-    get position() {
-        return this.getAttribute('position') || 'right';
+    document.removeEventListener('keydown', this._handleKeyDown);
+  }
+
+  _handleKeyDown(event) {
+    if (event.key === 'Escape' && this._isOpen) {
+      this.close();
+    }
+  }
+
+  open() {
+    this._isOpen = true;
+    this.drawerWrapper.classList.remove('pointer-events-none');
+    this.drawerWrapper.classList.add('pointer-events-auto');
+    this.backdrop.classList.remove('pointer-events-none', 'opacity-0');
+    this.backdrop.classList.add('pointer-events-auto', 'opacity-100');
+
+    if (this.position === 'left') {
+      this.drawerElement.classList.remove('-translate-x-full');
+      this.drawerElement.classList.add('translate-x-0');
+    } else {
+      this.drawerElement.classList.remove('translate-x-full');
+      this.drawerElement.classList.add('translate-x-0');
     }
 
-    get drawerClass() {
-        return this.getAttribute('drawer-class') || 'bg-white w-80';
+    // Dispatch custom event
+    this._dispatchEvent('drawer:opened', { drawer: this });
+  }
+
+  close() {
+    this._isOpen = false;
+    this.drawerWrapper.classList.remove('pointer-events-auto');
+    this.drawerWrapper.classList.add('pointer-events-none');
+    this.backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    this.backdrop.classList.add('opacity-0', 'pointer-events-none');
+
+    if (this.position === 'left') {
+      this.drawerElement.classList.remove('translate-x-0');
+      this.drawerElement.classList.add('-translate-x-full');
+    } else {
+      this.drawerElement.classList.remove('translate-x-0');
+      this.drawerElement.classList.add('translate-x-full');
     }
 
-    get headerClass() {
-        return this.getAttribute('header-class') || '';
-    }
+    // Dispatch custom event
+    this._dispatchEvent('drawer:closed', { drawer: this });
+  }
 
-    get backdropClass() {
-        return this.getAttribute('backdrop-class') || '';
-    }
+  // Getters for attributes with defaults
+  get position() {
+    return this._getAttributeWithDefault('position', 'right');
+  }
 
-    get buttonClass() {
-        return this.getAttribute('button-class') || 'bg-blue-500 text-white px-4 py-2 rounded';
-    }
+  get drawerClass() {
+    return this._getAttributeWithDefault('drawer-class', 'bg-white w-80');
+  }
 
-    get triggerContent() {
-        return this.getAttribute('trigger-content') || 'Open Drawer';
-    }
+  get headerClass() {
+    return this._getAttributeWithDefault('header-class', '');
+  }
 
-    get headerContent() {
-        return this.getAttribute('header-content') || 'Drawer';
-    }
+  get backdropClass() {
+    return this._getAttributeWithDefault('backdrop-class', '');
+  }
+
+  get buttonClass() {
+    return this._getAttributeWithDefault('button-class', 'bg-blue-500 text-white px-4 py-2 rounded');
+  }
+
+  get triggerContent() {
+    return this._getAttributeWithDefault('trigger-content', 'Open Drawer');
+  }
+
+  get headerContent() {
+    return this._getAttributeWithDefault('header-content', 'Drawer');
+  }
 }
 
 customElements.define('dry-drawer', DryDrawer);
 
-class AjaxDrawer extends HTMLElement {
-    // Web component for creating a drawer that fetches content via AJAX
-    constructor() {
-        super();
-        this._isOpen = false;
+class AjaxDrawer extends BaseElement {
+  // Web component for creating a drawer that fetches content via AJAX
+  constructor() {
+    super();
+    this._isOpen = false;
+  }
+
+  _initializeComponent() {
+    if (!this.hasAttribute('data-rendered')) {
+      this.render();
+      this.attachEventListeners();
+      this.setAttribute('data-rendered', '');
+    } else {
+      this.attachEventListeners();
     }
+  }
 
-    connectedCallback() {
-        if (!this.hasAttribute('data-rendered')) {
-            this.render();
-            this.attachEventListeners();
-            this.setAttribute('data-rendered', '');
-        } else {
-            this.attachEventListeners();
-        }
-    }
+  disconnectedCallback() {
+    this.removeEventListeners();
+  }
 
-    disconnectedCallback() {
-        this.removeEventListeners();
-    }
+  render() {
+    const headerContent = this.querySelector('[slot="header"]')?.innerHTML || this.headerContent;
 
-    render() {
-        const headerContent = this.querySelector('[slot="header"]')?.innerHTML || this.headerContent;
-
-        this.innerHTML = `
+    this.innerHTML = `
         <div class="drawer-container">
             <button type="button" class="trigger-button ${this.buttonClass}" hx-get="${this.url}" hx-trigger="${this.triggerType}" hx-target="#${this.contentId}">
                 ${this.triggerContent}
@@ -229,190 +223,184 @@ class AjaxDrawer extends HTMLElement {
             </div>
         </div>
         `;
+  }
+
+  attachEventListeners() {
+    this.triggerButton = this.querySelector('.trigger-button');
+    this.drawerElement = this.querySelector('.drawer');
+    this.backdrop = this.querySelector('.drawer-backdrop');
+    this.closeButton = this.querySelector('.drawer-close');
+    this.drawerWrapper = this.querySelector('.drawer-wrapper');
+    this.loadingElement = this.querySelector('.drawer-loading');
+    this.errorElement = this.querySelector('.drawer-error');
+    this.contentElement = this.querySelector(`#${this.contentId}`);
+
+    // Store bound methods
+    this.boundClose = this.close.bind(this);
+    this.boundHandleBeforeRequest = this.handleBeforeRequest.bind(this);
+    this.boundHandleAfterRequest = this.handleAfterRequest.bind(this);
+    this.boundHandleResponseError = this.handleResponseError.bind(this);
+    this.boundHandleAfterOnLoad = this.handleAfterOnLoad.bind(this);
+    this._handleKeyDown = this._handleKeyDown.bind(this);
+
+    if (this.closeButton) {
+      this.closeButton.addEventListener('click', this.boundClose);
     }
 
-    attachEventListeners() {
-        this.triggerButton = this.querySelector('.trigger-button');
-        this.drawerElement = this.querySelector('.drawer');
-        this.backdrop = this.querySelector('.drawer-backdrop');
-        this.closeButton = this.querySelector('.drawer-close');
-        this.drawerWrapper = this.querySelector('.drawer-wrapper');
-        this.loadingElement = this.querySelector('.drawer-loading');
-        this.errorElement = this.querySelector('.drawer-error');
-        this.contentElement = this.querySelector(`#${this.contentId}`);
-
-        // Store bound methods
-        this.boundClose = this.close.bind(this);
-        this.boundHandleBeforeRequest = this.handleBeforeRequest.bind(this);
-        this.boundHandleAfterRequest = this.handleAfterRequest.bind(this);
-        this.boundHandleResponseError = this.handleResponseError.bind(this);
-        this.boundHandleAfterOnLoad = this.handleAfterOnLoad.bind(this);
-        this._handleKeyDown = this._handleKeyDown.bind(this);
-
-        if (this.closeButton) {
-            this.closeButton.addEventListener('click', this.boundClose);
-        }
-
-        if (this.backdrop) {
-            this.backdrop.addEventListener('click', this.boundClose);
-        }
-
-        // HTMX event listeners
-        document.body.addEventListener('htmx:beforeRequest', this.boundHandleBeforeRequest);
-        document.body.addEventListener('htmx:afterRequest', this.boundHandleAfterRequest);
-        document.body.addEventListener('htmx:responseError', this.boundHandleResponseError);
-        document.body.addEventListener('htmx:afterOnLoad', this.boundHandleAfterOnLoad);
-
-        // Add keyboard listener for ESC key
-        document.addEventListener('keydown', this._handleKeyDown);
+    if (this.backdrop) {
+      this.backdrop.addEventListener('click', this.boundClose);
     }
 
-    removeEventListeners() {
-        if (this.closeButton) {
-            this.closeButton.removeEventListener('click', this.boundClose);
-        }
+    // HTMX event listeners
+    document.body.addEventListener('htmx:beforeRequest', this.boundHandleBeforeRequest);
+    document.body.addEventListener('htmx:afterRequest', this.boundHandleAfterRequest);
+    document.body.addEventListener('htmx:responseError', this.boundHandleResponseError);
+    document.body.addEventListener('htmx:afterOnLoad', this.boundHandleAfterOnLoad);
 
-        if (this.backdrop) {
-            this.backdrop.removeEventListener('click', this.boundClose);
-        }
+    // Add keyboard listener for ESC key
+    document.addEventListener('keydown', this._handleKeyDown);
+  }
 
-        document.body.removeEventListener('htmx:beforeRequest', this.boundHandleBeforeRequest);
-        document.body.removeEventListener('htmx:afterRequest', this.boundHandleAfterRequest);
-        document.body.removeEventListener('htmx:responseError', this.boundHandleResponseError);
-        document.body.removeEventListener('htmx:afterOnLoad', this.boundHandleAfterOnLoad);
-
-        document.removeEventListener('keydown', this._handleKeyDown);
+  removeEventListeners() {
+    if (this.closeButton) {
+      this.closeButton.removeEventListener('click', this.boundClose);
     }
 
-    _handleKeyDown(event) {
-        if (event.key === 'Escape' && this._isOpen) {
-            this.close();
-        }
+    if (this.backdrop) {
+      this.backdrop.removeEventListener('click', this.boundClose);
     }
 
-    handleBeforeRequest(event) {
-        // Only handle events for our content element
-        if (event.detail.target && event.detail.target.id === this.contentId) {
-            this.open();
-            this.contentElement.classList.add('hidden');
-            this.loadingElement.classList.remove('hidden');
-            this.errorElement.classList.add('hidden');
-        }
+    document.body.removeEventListener('htmx:beforeRequest', this.boundHandleBeforeRequest);
+    document.body.removeEventListener('htmx:afterRequest', this.boundHandleAfterRequest);
+    document.body.removeEventListener('htmx:responseError', this.boundHandleResponseError);
+    document.body.removeEventListener('htmx:afterOnLoad', this.boundHandleAfterOnLoad);
+
+    document.removeEventListener('keydown', this._handleKeyDown);
+  }
+
+  _handleKeyDown(event) {
+    if (event.key === 'Escape' && this._isOpen) {
+      this.close();
+    }
+  }
+
+  handleBeforeRequest(event) {
+    // Only handle events for our content element
+    if (event.detail.target && event.detail.target.id === this.contentId) {
+      this.open();
+      this.contentElement.classList.add('hidden');
+      this.loadingElement.classList.remove('hidden');
+      this.errorElement.classList.add('hidden');
+    }
+  }
+
+  handleAfterRequest(event) {
+    // Only handle events for our content element
+    if (event.detail.target && event.detail.target.id === this.contentId) {
+      this.loadingElement.classList.add('hidden');
+      this.contentElement.classList.remove('hidden');
+    }
+  }
+
+  handleResponseError(event) {
+    // Only handle events for our content element
+    if (event.detail.target && event.detail.target.id === this.contentId) {
+      this.loadingElement.classList.add('hidden');
+      this.errorElement.classList.remove('hidden');
+    }
+  }
+
+  handleAfterOnLoad(event) {
+    // Check if we should close the drawer based on headers
+    if (event.detail.target && event.detail.target.id === this.contentId) {
+      if (event.detail.xhr.getResponseHeader('HX-CloseDrawer') === 'close') {
+        this.close();
+      }
+    }
+  }
+
+  open() {
+    this._isOpen = true;
+    this.drawerWrapper.classList.remove('pointer-events-none');
+    this.drawerWrapper.classList.add('pointer-events-auto');
+    this.backdrop.classList.remove('pointer-events-none', 'opacity-0');
+    this.backdrop.classList.add('pointer-events-auto', 'opacity-100');
+
+    if (this.position === 'left') {
+      this.drawerElement.classList.remove('-translate-x-full');
+      this.drawerElement.classList.add('translate-x-0');
+    } else {
+      this.drawerElement.classList.remove('translate-x-full');
+      this.drawerElement.classList.add('translate-x-0');
     }
 
-    handleAfterRequest(event) {
-        // Only handle events for our content element
-        if (event.detail.target && event.detail.target.id === this.contentId) {
-            this.loadingElement.classList.add('hidden');
-            this.contentElement.classList.remove('hidden');
-        }
+    // Dispatch custom event
+    this._dispatchEvent('drawer:opened', { drawer: this });
+  }
+
+  close() {
+    this._isOpen = false;
+    this.drawerWrapper.classList.remove('pointer-events-auto');
+    this.drawerWrapper.classList.add('pointer-events-none');
+    this.backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    this.backdrop.classList.add('opacity-0', 'pointer-events-none');
+
+    if (this.position === 'left') {
+      this.drawerElement.classList.remove('translate-x-0');
+      this.drawerElement.classList.add('-translate-x-full');
+    } else {
+      this.drawerElement.classList.remove('translate-x-0');
+      this.drawerElement.classList.add('translate-x-full');
     }
 
-    handleResponseError(event) {
-        // Only handle events for our content element
-        if (event.detail.target && event.detail.target.id === this.contentId) {
-            this.loadingElement.classList.add('hidden');
-            this.errorElement.classList.remove('hidden');
-        }
-    }
+    // Reset content
+    this.errorElement.classList.add('hidden');
+    this.loadingElement.classList.add('hidden');
 
-    handleAfterOnLoad(event) {
-        // Check if we should close the drawer based on headers
-        if (event.detail.target && event.detail.target.id === this.contentId) {
-            if (event.detail.xhr.getResponseHeader('HX-CloseDrawer') === 'close') {
-                this.close();
-            }
-        }
-    }
+    // Dispatch custom event
+    this._dispatchEvent('drawer:closed', { drawer: this });
+  }
 
-    open() {
-        this._isOpen = true;
-        this.drawerWrapper.classList.remove('pointer-events-none');
-        this.drawerWrapper.classList.add('pointer-events-auto');
-        this.backdrop.classList.remove('pointer-events-none', 'opacity-0');
-        this.backdrop.classList.add('pointer-events-auto', 'opacity-100');
+  // Getters for attributes with defaults
+  get position() {
+    return this._getAttributeWithDefault('position', 'right');
+  }
 
-        if (this.position === 'left') {
-            this.drawerElement.classList.remove('-translate-x-full');
-            this.drawerElement.classList.add('translate-x-0');
-        } else {
-            this.drawerElement.classList.remove('translate-x-full');
-            this.drawerElement.classList.add('translate-x-0');
-        }
+  get drawerClass() {
+    return this._getAttributeWithDefault('drawer-class', 'bg-white w-80');
+  }
 
-        // Dispatch custom event
-        this.dispatchEvent(new CustomEvent('drawer:opened', {
-            bubbles: true,
-            detail: {drawer: this}
-        }));
-    }
+  get headerClass() {
+    return this._getAttributeWithDefault('header-class', '');
+  }
 
-    close() {
-        this._isOpen = false;
-        this.drawerWrapper.classList.remove('pointer-events-auto');
-        this.drawerWrapper.classList.add('pointer-events-none');
-        this.backdrop.classList.remove('opacity-100', 'pointer-events-auto');
-        this.backdrop.classList.add('opacity-0', 'pointer-events-none');
+  get backdropClass() {
+    return this._getAttributeWithDefault('backdrop-class', '');
+  }
 
-        if (this.position === 'left') {
-            this.drawerElement.classList.remove('translate-x-0');
-            this.drawerElement.classList.add('-translate-x-full');
-        } else {
-            this.drawerElement.classList.remove('translate-x-0');
-            this.drawerElement.classList.add('translate-x-full');
-        }
+  get buttonClass() {
+    return this._getAttributeWithDefault('button-class', 'bg-blue-500 text-white px-4 py-2 rounded');
+  }
 
-        // Reset content
-        this.errorElement.classList.add('hidden');
-        this.loadingElement.classList.add('hidden');
+  get triggerContent() {
+    return this._getAttributeWithDefault('trigger-content', 'Load Content');
+  }
 
-        // Dispatch custom event
-        this.dispatchEvent(new CustomEvent('drawer:closed', {
-            bubbles: true,
-            detail: {drawer: this}
-        }));
-    }
+  get headerContent() {
+    return this._getAttributeWithDefault('header-content', 'Drawer');
+  }
 
-    // Getters for attributes with defaults
-    get position() {
-        return this.getAttribute('position') || 'right';
-    }
+  get url() {
+    return this._getAttributeWithDefault('url', '');
+  }
 
-    get drawerClass() {
-        return this.getAttribute('drawer-class') || 'bg-white w-80';
-    }
+  get triggerType() {
+    return this._getAttributeWithDefault('trigger-type', 'click');
+  }
 
-    get headerClass() {
-        return this.getAttribute('header-class') || '';
-    }
-
-    get backdropClass() {
-        return this.getAttribute('backdrop-class') || '';
-    }
-
-    get buttonClass() {
-        return this.getAttribute('button-class') || 'bg-blue-500 text-white px-4 py-2 rounded';
-    }
-
-    get triggerContent() {
-        return this.getAttribute('trigger-content') || 'Load Content';
-    }
-
-    get headerContent() {
-        return this.getAttribute('header-content') || 'Drawer';
-    }
-
-    get url() {
-        return this.getAttribute('url') || '';
-    }
-
-    get triggerType() {
-        return this.getAttribute('trigger-type') || 'click';
-    }
-
-    get contentId() {
-        return this.getAttribute('content-id') || `drawer-content-${Math.floor(Math.random() * 10000)}`;
-    }
+  get contentId() {
+    return this._getAttributeWithDefault('content-id', `drawer-content-${Math.floor(Math.random() * 10000)}`);
+  }
 }
 
 customElements.define('ajax-drawer', AjaxDrawer);

@@ -1,378 +1,380 @@
-class ToggleSwitch extends BaseWebComponent {
-    constructor() {
-        super();
+class ToggleSwitch extends BaseElement {
+  constructor() {
+    super();
+    this._hiddenInput = null;
+  }
 
-        // Initialize state
-        this.setState({
-            checked: false,
-            disabled: false
-        });
+  static get observedAttributes() {
+    return ['name', 'checked', 'disabled', 'size', 'label', 'value', 'active-bg', 'inactive-bg', 'switch-color', 'required'];
+  }
 
-        // Bind event handlers
-        this._handleInputChange = this._handleInputChange.bind(this);
-        this._handleKeydown = this._handleKeydown.bind(this);
-    }
+  _initializeComponent() {
+    // Store original content
+    const originalContent = this.innerHTML;
 
-    static get observedAttributes() {
-        return [
-            'checked',
-            'disabled',
-            'name',
-            'value',
-            'size',
-            'label',
-            'active-color',
-            'inactive-color',
-            'active-bg',
-            'inactive-bg',
-            'switch-color',
-            'class'
-        ];
-    }
+    // Create the component structure with Alpine.js
+    this._render(originalContent);
 
-    connectedCallback() {
-        super.connectedCallback();
-        this._initializeState();
-        this._setupAccessibility();
-    }
+    // Create hidden input for form integration
+    this._createHiddenInput();
+  }
 
-    render() {
-        const containerClasses = this._getContainerClasses();
-        const switchClasses = this._getSwitchClasses();
-        const trackClasses = this._getTrackClasses();
-        const thumbClasses = this._getThumbClasses();
+  _render(originalContent) {
+    const labelText = this.label;
+    const isChecked = this.hasAttribute('checked');
+    const isDisabled = this.disabled;
+    const size = this.size;
+    const activeBg = this.activeBg;
+    const inactiveBg = this.inactiveBg;
+    const switchColor = this.switchColor;
 
-        const inputId = this._generateInputId();
-        const name = this.getAttribute('name') || '';
-        const value = this.getAttribute('value') || 'true';
-        const label = this.getAttribute('label');
-
-        return `
-            <div class="${containerClasses}">
-                ${label ? `<label for="${inputId}" class="toggle-label text-sm font-medium text-gray-700 mr-3">${this.escapeHtml(label)}</label>` : ''}
-                <div class="${switchClasses}">
-                    <input 
-                        type="checkbox" 
-                        id="${inputId}"
-                        name="${this.escapeHtml(name)}"
-                        value="${this.escapeHtml(value)}"
-                        ${this.state.checked ? 'checked' : ''}
-                        ${this.state.disabled ? 'disabled' : ''}
-                        class="toggle-input sr-only"
-                    />
-                    <div class="${trackClasses}">
-                        <div class="${thumbClasses}"></div>
+    this.innerHTML = `
+            <div x-data="{
+                checked: ${isChecked},
+                disabled: ${isDisabled},
+                size: '${size}',
+                activeBg: '${activeBg}',
+                inactiveBg: '${inactiveBg}',
+                switchColor: '${switchColor}',
+                toggle() {
+                    if (!this.disabled) {
+                        this.checked = !this.checked;
+                        this.$dispatch('toggle:changed', {
+                            checked: this.checked,
+                            value: this.checked ? '${this.value}' : '',
+                            name: '${this.name}',
+                            component: this.$el.closest('toggle-switch')
+                        });
+                        this.$el.closest('toggle-switch')._updateHiddenInput();
+                    }
+                },
+                getSwitchClasses() {
+                    let classes = 'relative inline-flex items-center rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ';
+                    
+                    // Size classes
+                    if (this.size === 'sm') {
+                        classes += 'h-4 w-7 ';
+                    } else if (this.size === 'lg') {
+                        classes += 'h-8 w-14 ';
+                    } else {
+                        classes += 'h-6 w-11 ';
+                    }
+                    
+                    // Background color based on state
+                    classes += this.checked ? this.activeBg : this.inactiveBg;
+                    
+                    return classes;
+                },
+                getThumbClasses() {
+                    let classes = 'absolute rounded-full shadow-md transition-all duration-300 ease-in-out ';
+                    classes += this.switchColor + ' ';
+                    
+                    // Size and position classes
+                    if (this.size === 'sm') {
+                        classes += 'h-3 w-3 ';
+                        classes += this.checked ? 'translate-x-3.5' : 'translate-x-0.5';
+                    } else if (this.size === 'lg') {
+                        classes += 'h-6 w-6 ';
+                        classes += this.checked ? 'translate-x-7' : 'translate-x-1';
+                    } else {
+                        classes += 'h-4 w-4 ';
+                        classes += this.checked ? 'translate-x-6' : 'translate-x-1';
+                    }
+                    
+                    return classes;
+                }
+            }" 
+            :class="disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
+            class="toggle-switch-container">
+                <div class="flex items-center" @click="toggle()">
+                    <div 
+                        :class="getSwitchClasses()" 
+                        role="switch" 
+                        :aria-checked="checked" 
+                        :tabindex="disabled ? '-1' : '0'"
+                        @keydown.enter="toggle()"
+                        @keydown.space.prevent="toggle()">
+                        <div :class="getThumbClasses()"></div>
                     </div>
+                    ${labelText ? `<span class="toggle-label ml-3 text-sm font-medium text-gray-700">${this._escapeHtml(labelText)}</span>` : ''}
                 </div>
-                ${this._renderSlotContent()}
+                ${originalContent ? `<div class="toggle-content mt-2">${originalContent}</div>` : ''}
             </div>
         `;
+  }
+
+  _getAlpineData() {
+    return this.querySelector('[x-data]')?.__x?.$data;
+  }
+
+  _createHiddenInput() {
+    // Remove existing hidden input if any
+    if (this._hiddenInput && this._hiddenInput.parentNode) {
+      this._hiddenInput.parentNode.removeChild(this._hiddenInput);
     }
 
-    _renderSlotContent() {
-        const slotContent = this.getSlotContent('default');
-        if (!slotContent) return '';
+    if (this.name) {
+      this._hiddenInput = document.createElement('input');
+      this._hiddenInput.type = 'checkbox';
+      this._hiddenInput.name = this.name;
+      this._hiddenInput.value = this.value;
+      this._hiddenInput.style.position = 'absolute';
+      this._hiddenInput.style.opacity = '0';
+      this._hiddenInput.style.pointerEvents = 'none';
+      this._hiddenInput.style.width = '1px';
+      this._hiddenInput.style.height = '1px';
 
-        return `<div class="toggle-slot ml-3">${slotContent}</div>`;
+      // Set initial checked state
+      this._hiddenInput.checked = this.hasAttribute('checked');
+
+      // Copy required attribute
+      if (this.hasAttribute('required')) {
+        this._hiddenInput.required = true;
+      }
+
+      this.appendChild(this._hiddenInput);
+
+      // Listen for form reset events
+      const form = this.closest('form');
+      if (form) {
+        form.addEventListener('reset', this._handleFormReset.bind(this));
+      }
     }
+  }
 
-    _getContainerClasses() {
-        const customClasses = this.getAttribute('class') || '';
-        const label = this.getAttribute('label');
+  _updateHiddenInput() {
+    if (this._hiddenInput) {
+      const alpineData = this._getAlpineData();
+      const isChecked = alpineData ? alpineData.checked : this.hasAttribute('checked');
+      this._hiddenInput.checked = isChecked;
 
-        const baseFlex = 'flex items-center';
-
-        return `toggle-switch ${baseFlex} ${customClasses}`.trim();
+      // Trigger form change events
+      this._hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+      this._hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
     }
+  }
 
-    _getSwitchClasses() {
-        return 'toggle-switch-container relative inline-flex items-center';
+  // Form integration methods
+  get form() {
+    return this._hiddenInput ? this._hiddenInput.form : this.closest('form');
+  }
+
+  get validity() {
+    return this._hiddenInput ? this._hiddenInput.validity : { valid: true };
+  }
+
+  checkValidity() {
+    return this._hiddenInput ? this._hiddenInput.checkValidity() : true;
+  }
+
+  reportValidity() {
+    return this._hiddenInput ? this._hiddenInput.reportValidity() : true;
+  }
+
+  setCustomValidity(message) {
+    if (this._hiddenInput) {
+      this._hiddenInput.setCustomValidity(message);
     }
+  }
 
-    _getTrackClasses() {
-        const size = this.size;
-        const disabled = this.state.disabled;
+  _handleFormReset() {
+    // Reset to initial checked state on form reset
+    setTimeout(() => {
+      const initialChecked = this.hasAttribute('checked');
+      const alpineData = this._getAlpineData();
+      if (alpineData) {
+        alpineData.checked = initialChecked;
+      }
+      if (this._hiddenInput) {
+        this._hiddenInput.checked = initialChecked;
+      }
+    }, 0);
+  }
 
-        const sizeClasses = {
-            'sm': 'w-8 h-4',
-            'md': 'w-10 h-6',
-            'lg': 'w-12 h-7'
-        };
+  _escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
-        const activeColor = this.getAttribute('active-bg') || this.getAttribute('active-color') || 'bg-blue-500';
-        const inactiveColor = this.getAttribute('inactive-bg') || this.getAttribute('inactive-color') || 'bg-gray-300';
-
-        const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
-        const sizeClass = sizeClasses[size] || sizeClasses['md'];
-        const colorClass = this.state.checked ? activeColor : inactiveColor;
-
-        return `toggle-track relative inline-block rounded-full transition-colors duration-800 ease-in-out ${sizeClass} ${colorClass} ${disabledClass}`;
+  // Public API methods
+  toggle() {
+    const alpineData = this._getAlpineData();
+    if (alpineData && !alpineData.disabled) {
+      alpineData.toggle();
     }
+  }
 
-    _getThumbClasses() {
-        const size = this.size;
-        const disabled = this.state.disabled;
-
-        const sizeSpecs = {
-            'sm': {
-                size: 'w-3 h-3',
-                translateChecked: 'translate-x-4',
-                translateUnchecked: 'translate-x-0',
-                position: 'top-0.5 left-0.5'
-            },
-            'md': {
-                size: 'w-4 h-4',
-                translateChecked: 'translate-x-4',
-                translateUnchecked: 'translate-x-0',
-                position: 'top-1 left-1'
-            },
-            'lg': {
-                size: 'w-5 h-5',
-                translateChecked: 'translate-x-5',
-                translateUnchecked: 'translate-x-0',
-                position: 'top-1 left-1'
-            }
-        };
-
-        const specs = sizeSpecs[size] || sizeSpecs['md'];
-        const switchColor = this.getAttribute('switch-color') || 'bg-white';
-        const shadowClass = disabled ? '' : 'shadow-sm';
-        const translateClass = this.state.checked ? specs.translateChecked : specs.translateUnchecked;
-
-        return `toggle-thumb absolute ${specs.position} rounded-full transition-all duration-300 ease-out ${switchColor} ${specs.size} ${translateClass} ${shadowClass}`;
+  check() {
+    const alpineData = this._getAlpineData();
+    if (alpineData && !alpineData.disabled) {
+      alpineData.checked = true;
+      this._updateHiddenInput();
     }
+  }
 
-    _afterRender() {
-        super._afterRender();
-        this._attachEventListeners();
+  uncheck() {
+    const alpineData = this._getAlpineData();
+    if (alpineData && !alpineData.disabled) {
+      alpineData.checked = false;
+      this._updateHiddenInput();
     }
+  }
 
-    _attachEventListeners() {
-        const input = this.$('.toggle-input');
-        const track = this.$('.toggle-track');
+  enable() {
+    this.disabled = false;
+  }
 
-        if (input) {
-            input.removeEventListener('change', this._handleInputChange);
-            input.addEventListener('change', this._handleInputChange);
+  disable() {
+    this.disabled = true;
+  }
 
-            input.removeEventListener('keydown', this._handleKeydown);
-            input.addEventListener('keydown', this._handleKeydown);
-        }
+  // Getters and setters
+  get name() {
+    return this._getAttributeWithDefault('name', '');
+  }
 
-        if (track) {
-            track.removeEventListener('click', this._handleTrackClick.bind(this));
-            track.addEventListener('click', this._handleTrackClick.bind(this));
-        }
+  set name(value) {
+    this._setAttribute('name', value);
+  }
+
+  get checked() {
+    const alpineData = this._getAlpineData();
+    return alpineData ? alpineData.checked : this._getBooleanAttribute('checked');
+  }
+
+  set checked(value) {
+    const newValue = Boolean(value);
+    const alpineData = this._getAlpineData();
+
+    this._setBooleanAttribute('checked', newValue);
+
+    if (alpineData) {
+      alpineData.checked = newValue;
+      this._updateHiddenInput();
     }
+  }
 
-    _handleTrackClick(event) {
-        if (this.state.disabled) return;
+  get disabled() {
+    return this._getBooleanAttribute('disabled');
+  }
 
-        // Find and focus the input to trigger the change
-        const input = this.$('.toggle-input');
-        if (input) {
-            input.focus();
-            input.click();
-        }
+  set disabled(value) {
+    const alpineData = this._getAlpineData();
+
+    this._setBooleanAttribute('disabled', value);
+
+    if (alpineData) {
+      alpineData.disabled = Boolean(value);
     }
+  }
 
-    _handleInputChange(event) {
-        if (this.state.disabled) {
-            event.preventDefault();
-            return;
-        }
+  get size() {
+    return this._getAttributeWithDefault('size', 'md');
+  }
 
-        const newChecked = event.target.checked;
-        this.setState({ checked: newChecked });
+  set size(value) {
+    this._setAttribute('size', value);
+  }
 
-        // Emit custom event
-        this._emitEvent('toggle:changed', {
-            checked: newChecked,
-            value: newChecked ? this.getAttribute('value') || 'true' : 'false',
-            name: this.getAttribute('name')
-        });
+  get label() {
+    return this._getAttributeWithDefault('label', '');
+  }
+
+  set label(value) {
+    this._setAttribute('label', value);
+  }
+
+  get value() {
+    return this._getAttributeWithDefault('value', 'true');
+  }
+
+  set value(value) {
+    this._setAttribute('value', value);
+  }
+
+  get activeBg() {
+    return this._getAttributeWithDefault('active-bg', 'bg-blue-500');
+  }
+
+  set activeBg(value) {
+    this._setAttribute('active-bg', value);
+  }
+
+  get inactiveBg() {
+    return this._getAttributeWithDefault('inactive-bg', 'bg-gray-300');
+  }
+
+  set inactiveBg(value) {
+    this._setAttribute('inactive-bg', value);
+  }
+
+  get switchColor() {
+    return this._getAttributeWithDefault('switch-color', 'bg-white');
+  }
+
+  set switchColor(value) {
+    this._setAttribute('switch-color', value);
+  }
+
+  get required() {
+    return this._getBooleanAttribute('required');
+  }
+
+  set required(value) {
+    this._setBooleanAttribute('required', value);
+
+    if (this._hiddenInput) {
+      this._hiddenInput.required = Boolean(value);
     }
+  }
 
-    _handleKeydown(event) {
-        if (this.state.disabled) return;
+  // Additional checkbox-like properties
+  get type() {
+    return 'checkbox';
+  }
 
-        if (event.key === ' ' || event.key === 'Enter') {
-            event.preventDefault();
-            this.toggle();
-        }
+  get defaultChecked() {
+    return this._getBooleanAttribute('checked');
+  }
+
+  set defaultChecked(value) {
+    this._setBooleanAttribute('checked', value);
+  }
+
+  get indeterminate() {
+    return this._hiddenInput ? this._hiddenInput.indeterminate : false;
+  }
+
+  set indeterminate(value) {
+    if (this._hiddenInput) {
+      this._hiddenInput.indeterminate = Boolean(value);
     }
+  }
 
-    // Attribute change handlers
-    _handleCheckedChange(oldValue, newValue) {
-        this.setState({ checked: this.getBooleanAttribute('checked') });
+  _handleAttributeChange(name, oldValue, newValue) {
+    if (oldValue !== newValue && this._isInitialized) {
+      if (name === 'checked') {
+        this.checked = newValue !== null && newValue !== 'false';
+        this._render();
+      } else if (name === 'disabled') {
+        this.disabled = newValue !== null && newValue !== 'false';
+        this._render();
+      } else if (name === 'size') {
+        this.size = newValue;
+        this._render();
+      } else if (name === 'on-label') {
+        this.onLabel = newValue;
+        this._render();
+      } else if (name === 'off-label') {
+        this.offLabel = newValue;
+        this._render();
+      }
     }
-
-    _handleDisabledChange(oldValue, newValue) {
-        this.setState({ disabled: this.getBooleanAttribute('disabled') });
-        this._updateAccessibility();
-    }
-
-    _handleSizeChange(oldValue, newValue) {
-        // Validate size
-        const validSizes = ['sm', 'md', 'lg'];
-        if (newValue && !validSizes.includes(newValue)) {
-            console.warn(`Invalid size "${newValue}". Valid sizes are: ${validSizes.join(', ')}`);
-        }
-    }
-
-    // Private helper methods
-    _initializeState() {
-        const checked = this.getBooleanAttribute('checked');
-        const disabled = this.getBooleanAttribute('disabled');
-
-        this.setState({ checked, disabled }, false);
-    }
-
-    _setupAccessibility() {
-        this.setAttribute('role', 'switch');
-        this._updateAccessibility();
-    }
-
-    _updateAccessibility() {
-        this.setAttribute('aria-checked', this.state.checked.toString());
-        this.setAttribute('aria-disabled', this.state.disabled.toString());
-
-        const label = this.getAttribute('label');
-        if (label && !this.getAttribute('aria-label')) {
-            this.setAttribute('aria-label', label);
-        }
-    }
-
-    _generateInputId() {
-        if (this.id) {
-            return `${this.id}-input`;
-        }
-        return `toggle-${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    // Public API methods
-    toggle() {
-        if (this.state.disabled) return this;
-
-        const newChecked = !this.state.checked;
-        this.checked = newChecked;
-        return this;
-    }
-
-    check() {
-        if (this.state.disabled) return this;
-        this.checked = true;
-        return this;
-    }
-
-    uncheck() {
-        if (this.state.disabled) return this;
-        this.checked = false;
-        return this;
-    }
-
-    enable() {
-        this.disabled = false;
-        return this;
-    }
-
-    disable() {
-        this.disabled = true;
-        return this;
-    }
-
-    // Getters and setters
-    get checked() {
-        return this.state.checked;
-    }
-
-    set checked(value) {
-        const boolValue = Boolean(value);
-        this.setState({ checked: boolValue });
-
-        if (boolValue) {
-            this.setAttribute('checked', '');
-        } else {
-            this.removeAttribute('checked');
-        }
-
-        this._updateAccessibility();
-
-        // Update the actual input element
-        const input = this.$('.toggle-input');
-        if (input) {
-            input.checked = boolValue;
-        }
-    }
-
-    get disabled() {
-        return this.state.disabled;
-    }
-
-    set disabled(value) {
-        const boolValue = Boolean(value);
-        this.setState({ disabled: boolValue });
-
-        if (boolValue) {
-            this.setAttribute('disabled', '');
-        } else {
-            this.removeAttribute('disabled');
-        }
-
-        this._updateAccessibility();
-    }
-
-    get size() {
-        return this.getAttribute('size') || 'md';
-    }
-
-    set size(value) {
-        if (value) {
-            this.setAttribute('size', value);
-        } else {
-            this.removeAttribute('size');
-        }
-    }
-
-    get value() {
-        return this.state.checked ? (this.getAttribute('value') || 'true') : 'false';
-    }
-
-    get name() {
-        return this.getAttribute('name') || '';
-    }
-
-    set name(value) {
-        if (value) {
-            this.setAttribute('name', value);
-        } else {
-            this.removeAttribute('name');
-        }
-    }
-
-    // Form integration
-    get form() {
-        return this.closest('form');
-    }
-
-    // For form data collection
-    get type() {
-        return 'checkbox';
-    }
-
-    // Validation integration
-    _onFirstConnect() {
-        super._onFirstConnect();
-
-        // Use validation mixin for form validation
-        this.useMixin('validation');
-
-        // Add size validator
-        this.addValidator('size', (value) => {
-            return !value || ['sm', 'md', 'lg'].includes(value);
-        }, 'Size must be one of: sm, md, lg');
-    }
+  }
 }
 
-// Register the component
 customElements.define('toggle-switch', ToggleSwitch);

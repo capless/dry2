@@ -4,68 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accordion Component Showcase - DRY2</title>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
-    <script src="../src/dry2/accordion.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-        
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-        
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-        
-        .code-block {
-            padding: 1rem;
-            border-radius: 0.375rem;
-            background-color: #1f2937;
-            color: #f9fafb;
-            font-family: monospace;
-            overflow-x: auto;
-            font-size: 0.875rem;
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
+    <script src="../src/dry2/accordion.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -74,154 +33,155 @@
         </div>
     </div>
 
-<div class="p-8">
-    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Accordion Component</h1>
-            <p class="text-lg text-gray-600">A customizable accordion component to create collapsible content sections with smooth animations.</p>
-        </header>
-        
-        <main>
-            <!-- Basic Accordion Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Basic Accordion</h2>
-                <p class="demo-description">A simple accordion with expandable sections. Only one section can be open at a time by default.</p>
-                
-                <div class="demo-container">
-                    <dry-accordion>
-                        <accordion-item title="What is your return policy?" open>
-                            <p>We offer a 30-day return policy for all items. Items must be in original condition with tags attached. Please contact our customer service team to initiate a return.</p>
-                        </accordion-item>
-                        <accordion-item title="How long does shipping take?">
-                            <p>Standard shipping typically takes 3-5 business days. Express shipping options are available for faster delivery. Shipping times may vary during peak seasons.</p>
-                        </accordion-item>
-                        <accordion-item title="Do you ship internationally?">
-                            <p>Yes, we ship to most countries worldwide. International shipping costs and delivery times vary by destination. Additional customs fees may apply.</p>
-                        </accordion-item>
-                    </dry-accordion>
-                </div>
-                
-                <div class="code-block">
-                    <pre>&lt;dry-accordion&gt;
+    <div class="p-8">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Accordion Component</h1>
+            <p class="text-gray-600 mb-8">A customizable accordion component to create collapsible content sections with smooth animations.</p>
+
+            <main>
+                <!-- Basic Accordion Section -->
+                <section class="demo-section">
+                    <h2 class="demo-title">Basic Accordion</h2>
+                    <p class="demo-description">A simple accordion with expandable sections. Only one section can be open at a time by default.</p>
+                    
+                    <div class="demo-container">
+                        <dry-accordion>
+                            <accordion-item title="What is your return policy?" open>
+                                <p>We offer a 30-day return policy for all items. Items must be in original condition with tags attached. Please contact our customer service team to initiate a return.</p>
+                            </accordion-item>
+                            <accordion-item title="How long does shipping take?">
+                                <p>Standard shipping typically takes 3-5 business days. Express shipping options are available for faster delivery. Shipping times may vary during peak seasons.</p>
+                            </accordion-item>
+                            <accordion-item title="Do you ship internationally?">
+                                <p>Yes, we ship to most countries worldwide. International shipping costs and delivery times vary by destination. Additional customs fees may apply.</p>
+                            </accordion-item>
+                        </dry-accordion>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;dry-accordion&gt;
     &lt;accordion-item title="What is your return policy?" open&gt;
         &lt;p&gt;We offer a 30-day return policy...&lt;/p&gt;
     &lt;/accordion-item&gt;
     &lt;accordion-item title="How long does shipping take?"&gt;
         &lt;p&gt;Standard shipping typically takes...&lt;/p&gt;
     &lt;/accordion-item&gt;
-&lt;/dry-accordion&gt;</pre>
-                </div>
-            </section>
-            
-            <!-- Multiple Accordion Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Multiple Open Sections</h2>
-                <p class="demo-description">Allow multiple sections to be open simultaneously using the multiple attribute.</p>
+    &lt;accordion-item title="Do you ship internationally?"&gt;
+        &lt;p&gt;Yes, we ship to most countries worldwide...&lt;/p&gt;
+    &lt;/accordion-item&gt;
+&lt;/dry-accordion&gt;</dry-code>
+                </section>
                 
-                <div class="demo-container">
-                    <dry-accordion multiple>
-                        <accordion-item title="Features">
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li>Responsive design</li>
-                                <li>Customizable styling</li>
-                                <li>Smooth animations</li>
-                                <li>Accessibility support</li>
-                            </ul>
-                        </accordion-item>
-                        <accordion-item title="Technical Requirements" open>
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li>Modern web browser</li>
-                                <li>JavaScript enabled</li>
-                                <li>Alpine.js framework</li>
-                            </ul>
-                        </accordion-item>
-                        <accordion-item title="Browser Support" open>
-                            <p>This component works in all modern browsers including Chrome, Firefox, Safari, and Edge. IE11 support requires polyfills.</p>
-                        </accordion-item>
-                    </dry-accordion>
-                </div>
-                
-                <div class="code-block">
-                    <pre>&lt;dry-accordion multiple&gt;
-    &lt;accordion-item title="Features"&gt;...&lt;/accordion-item&gt;
+                <!-- Multiple Accordion Section -->
+                <section class="demo-section">
+                    <h2 class="demo-title">Multiple Open Sections</h2>
+                    <p class="demo-description">Allow multiple sections to be open simultaneously using the multiple attribute.</p>
+                    
+                    <div class="demo-container">
+                        <dry-accordion multiple>
+                            <accordion-item title="Features">
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Responsive design</li>
+                                    <li>Customizable styling</li>
+                                    <li>Smooth animations</li>
+                                    <li>Accessibility support</li>
+                                </ul>
+                            </accordion-item>
+                            <accordion-item title="Technical Requirements" open>
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Modern web browser</li>
+                                    <li>JavaScript enabled</li>
+                                    <li>Alpine.js framework</li>
+                                </ul>
+                            </accordion-item>
+                            <accordion-item title="Browser Support" open>
+                                <p>This component works in all modern browsers including Chrome, Firefox, Safari, and Edge. IE11 support requires polyfills.</p>
+                            </accordion-item>
+                        </dry-accordion>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;dry-accordion multiple&gt;
+    &lt;accordion-item title="Features"&gt;
+        &lt;ul class="list-disc pl-5 space-y-1"&gt;
+            &lt;li&gt;Responsive design&lt;/li&gt;
+            &lt;li&gt;Customizable styling&lt;/li&gt;
+            &lt;li&gt;Smooth animations&lt;/li&gt;
+            &lt;li&gt;Accessibility support&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/accordion-item&gt;
     &lt;accordion-item title="Technical Requirements" open&gt;...&lt;/accordion-item&gt;
     &lt;accordion-item title="Browser Support" open&gt;...&lt;/accordion-item&gt;
-&lt;/dry-accordion&gt;</pre>
-                </div>
-            </section>
-            
-            <!-- Custom Icons Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Custom Icons</h2>
-                <p class="demo-description">Add custom icons to accordion headers for better visual organization.</p>
+&lt;/dry-accordion&gt;</dry-code>
+                </section>
                 
-                <div class="demo-container">
-                    <dry-accordion>
-                        <accordion-item title="User Settings" 
-                                        icon='<svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>'>
-                            <p>Manage your account settings, profile information, and preferences. You can update your email, password, and notification settings here.</p>
-                        </accordion-item>
-                        <accordion-item title="Security" 
-                                        icon='<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>'>
-                            <p>Configure two-factor authentication, review login history, and manage your security preferences to keep your account safe.</p>
-                        </accordion-item>
-                        <accordion-item title="Notifications" 
-                                        icon='<svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>'>
-                            <p>Control email notifications, push notifications, and SMS alerts. Choose what updates you want to receive and how often.</p>
-                        </accordion-item>
-                    </dry-accordion>
-                </div>
-                
-                <div class="code-block">
-                    <pre>&lt;accordion-item title="User Settings" 
-                        icon='&lt;svg class="w-5 h-5 text-blue-500" fill="currentColor"&gt;...&lt;/svg&gt;'&gt;
+                <!-- Custom Icons Section -->
+                <section class="demo-section">
+                    <h2 class="demo-title">Custom Icons</h2>
+                    <p class="demo-description">Add custom icons to accordion headers for better visual organization.</p>
+                    
+                    <div class="demo-container">
+                        <dry-accordion>
+                            <accordion-item title="User Settings" 
+                                            icon='<svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>'>
+                                <p>Manage your account settings, profile information, and preferences. You can update your email, password, and notification settings here.</p>
+                            </accordion-item>
+                            <accordion-item title="Security" 
+                                            icon='<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>'>
+                                <p>Configure two-factor authentication, review login history, and manage your security preferences to keep your account safe.</p>
+                            </accordion-item>
+                            <accordion-item title="Notifications" 
+                                            icon='<svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>'>
+                                <p>Control email notifications, push notifications, and SMS alerts. Choose what updates you want to receive and how often.</p>
+                            </accordion-item>
+                        </dry-accordion>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;accordion-item title="User Settings" 
+    icon='&lt;svg class="w-5 h-5 text-blue-500" fill="currentColor"&gt;...&lt;/svg&gt;'&gt;
     &lt;p&gt;Manage your account settings...&lt;/p&gt;
-&lt;/accordion-item&gt;</pre>
-                </div>
-            </section>
-            
-            <!-- Interactive Demo Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Interactive Demo</h2>
-                <p class="demo-description">Control the accordion programmatically and see the smooth animations.</p>
+&lt;/accordion-item&gt;</dry-code>
+                </section>
+                
+                <!-- Interactive Demo Section -->
+                <section class="demo-section">
+                    <h2 class="demo-title">Interactive Demo</h2>
+                    <p class="demo-description">Control the accordion programmatically and see the smooth animations.</p>
 
-                <div class="demo-container">
-                    <div class="mb-4 flex flex-wrap gap-2">
-                        <button id="open-all" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
-                            Open All
-                        </button>
-                        <button id="close-all" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                            Close All
-                        </button>
-                        <button id="toggle-multiple" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                            Toggle Multiple Mode
-                        </button>
-                        <button id="toggle-disabled" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
-                            Toggle Disabled
-                        </button>
+                    <div class="demo-container">
+                        <div class="mb-4 flex flex-wrap gap-2">
+                            <button id="open-all" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                                Open All
+                            </button>
+                            <button id="close-all" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                Close All
+                            </button>
+                            <button id="toggle-multiple" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                Toggle Multiple Mode
+                            </button>
+                            <button id="toggle-disabled" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
+                                Toggle Disabled
+                            </button>
+                        </div>
+                        
+                        <dry-accordion id="interactive-accordion" multiple>
+                            <accordion-item id="item1" title="Section 1">
+                                <p>This is the content for section 1. You can control this accordion using the buttons above.</p>
+                            </accordion-item>
+                            <accordion-item id="item2" title="Section 2">
+                                <p>This is the content for section 2. Notice the smooth animations when sections open and close.</p>
+                            </accordion-item>
+                            <accordion-item id="item3" title="Section 3">
+                                <p>This is the content for section 3. The accordion can be disabled or enabled dynamically.</p>
+                            </accordion-item>
+                        </dry-accordion>
+                        
+                        <div id="event-log" class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                            <strong>Event Log:</strong>
+                            <div id="log-content" class="mt-2 space-y-1 max-h-32 overflow-y-auto"></div>
+                            <button id="clear-log" class="mt-2 text-xs bg-gray-400 text-white px-2 py-1 rounded">Clear</button>
+                        </div>
                     </div>
-                    
-                    <dry-accordion id="interactive-accordion" multiple>
-                        <accordion-item id="item1" title="Section 1">
-                            <p>This is the content for section 1. You can control this accordion using the buttons above.</p>
-                        </accordion-item>
-                        <accordion-item id="item2" title="Section 2">
-                            <p>This is the content for section 2. Notice the smooth animations when sections open and close.</p>
-                        </accordion-item>
-                        <accordion-item id="item3" title="Section 3">
-                            <p>This is the content for section 3. The accordion can be disabled or enabled dynamically.</p>
-                        </accordion-item>
-                    </dry-accordion>
-                    
-                    <div id="event-log" class="mt-4 p-3 bg-gray-50 rounded text-sm">
-                        <strong>Event Log:</strong>
-                        <div id="log-content" class="mt-2 space-y-1 max-h-32 overflow-y-auto"></div>
-                        <button id="clear-log" class="mt-2 text-xs bg-gray-400 text-white px-2 py-1 rounded">Clear</button>
-                    </div>
-                </div>
 
-                <div class="code-block">
-                    <pre>// Control accordion programmatically
+                    <dry-code language="JavaScript">// Control accordion programmatically
 accordion.openAll();     // Open all sections (multiple mode only)
 accordion.closeAll();    // Close all sections
 accordion.openItem('item1');   // Open specific section
@@ -231,193 +191,248 @@ accordion.toggleItem('item1'); // Toggle specific section
 // Listen for accordion events
 accordion.addEventListener('accordion:change', (event) => {
     console.log('Section changed:', event.detail);
-});</pre>
-                </div>
-            </section>
-            
-            <!-- API Reference -->
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+});</dry-code>
+                </section>
                 
-                <h3 class="text-xl font-semibold mt-6 mb-3">Accordion Properties</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Property</th>
-                            <th class="px-4 py-2 text-left">Type</th>
-                            <th class="px-4 py-2 text-left">Default</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">multiple</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Allow multiple sections to be open simultaneously</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">disabled</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Disable all accordion interactions</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- Component Builder Section -->
+                <div id="accordion-component-builder"></div>
                 
-                <h3 class="text-xl font-semibold mt-6 mb-3">Accordion Item Properties</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Property</th>
-                            <th class="px-4 py-2 text-left">Type</th>
-                            <th class="px-4 py-2 text-left">Default</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">title</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">''</td>
-                            <td class="px-4 py-2">The header text for the accordion section</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">icon</td>
-                            <td class="px-4 py-2">string (HTML)</td>
-                            <td class="px-4 py-2">''</td>
-                            <td class="px-4 py-2">Custom icon HTML to display in the header</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">open</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Whether the section is initially open</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">disabled</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Disable this specific section</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="text-xl font-semibold mt-6 mb-3">Methods</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Method</th>
-                            <th class="px-4 py-2 text-left">Parameters</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">openItem(itemId)</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">Open a specific accordion section</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">closeItem(itemId)</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">Close a specific accordion section</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">toggleItem(itemId)</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">Toggle a specific accordion section</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">openAll()</td>
-                            <td class="px-4 py-2">none</td>
-                            <td class="px-4 py-2">Open all sections (multiple mode only)</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">closeAll()</td>
-                            <td class="px-4 py-2">none</td>
-                            <td class="px-4 py-2">Close all sections</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="text-xl font-semibold mt-6 mb-3">Events</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Event</th>
-                            <th class="px-4 py-2 text-left">Detail</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">accordion:change</td>
-                            <td class="px-4 py-2">{ itemId, isOpen, openItems }</td>
-                            <td class="px-4 py-2">Fired when an accordion section is toggled</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
-        
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            <p>DRY2 Web Components Library</p>
-            <p class="mt-2">
-                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-            </p>
-        </footer>
+                <!-- API Reference -->
+                <section class="demo-section">
+                    <h2 class="demo-title">API Reference</h2>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-3">Accordion Properties</h3>
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Property</th>
+                                <th class="px-4 py-2 text-left">Type</th>
+                                <th class="px-4 py-2 text-left">Default</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">multiple</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Allow multiple sections to be open simultaneously</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">disabled</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Disable all accordion interactions</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-3">Accordion Item Properties</h3>
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Property</th>
+                                <th class="px-4 py-2 text-left">Type</th>
+                                <th class="px-4 py-2 text-left">Default</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">title</td>
+                                <td class="px-4 py-2">string</td>
+                                <td class="px-4 py-2">''</td>
+                                <td class="px-4 py-2">The header text for the accordion section</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">icon</td>
+                                <td class="px-4 py-2">string (HTML)</td>
+                                <td class="px-4 py-2">''</td>
+                                <td class="px-4 py-2">Custom icon HTML to display in the header</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">open</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Whether the section is initially open</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">disabled</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Disable this specific section</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-3">Methods</h3>
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Parameters</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">openItem(itemId)</td>
+                                <td class="px-4 py-2">string</td>
+                                <td class="px-4 py-2">Open a specific accordion section</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">closeItem(itemId)</td>
+                                <td class="px-4 py-2">string</td>
+                                <td class="px-4 py-2">Close a specific accordion section</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">toggleItem(itemId)</td>
+                                <td class="px-4 py-2">string</td>
+                                <td class="px-4 py-2">Toggle a specific accordion section</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">openAll()</td>
+                                <td class="px-4 py-2">none</td>
+                                <td class="px-4 py-2">Open all sections (multiple mode only)</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">closeAll()</td>
+                                <td class="px-4 py-2">none</td>
+                                <td class="px-4 py-2">Close all sections</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-3">Events</h3>
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Event</th>
+                                <th class="px-4 py-2 text-left">Detail</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">accordion:change</td>
+                                <td class="px-4 py-2">{ itemId, isOpen, openItems }</td>
+                                <td class="px-4 py-2">Fired when an accordion section is toggled</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
     </div>
 
-<script>
-    // Interactive demo functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const accordion = document.getElementById('interactive-accordion');
-        const logContent = document.getElementById('log-content');
-        
-        function addLogEntry(message) {
-            const entry = document.createElement('div');
-            entry.className = 'text-xs text-gray-600';
-            entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
-            logContent.appendChild(entry);
-            logContent.scrollTop = logContent.scrollHeight;
-        }
-        
-        // Event listeners for control buttons
-        document.getElementById('open-all').addEventListener('click', () => {
-            accordion.openAll();
-            addLogEntry('Opened all sections');
+    <script>
+        // Interactive demo functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordion = document.getElementById('interactive-accordion');
+            const logContent = document.getElementById('log-content');
+            
+            function addLogEntry(message) {
+                const entry = document.createElement('div');
+                entry.className = 'text-xs text-gray-600';
+                entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+                logContent.appendChild(entry);
+                logContent.scrollTop = logContent.scrollHeight;
+            }
+            
+            // Event listeners for control buttons
+            document.getElementById('open-all').addEventListener('click', () => {
+                accordion.openAll();
+                addLogEntry('Opened all sections');
+            });
+            
+            document.getElementById('close-all').addEventListener('click', () => {
+                accordion.closeAll();
+                addLogEntry('Closed all sections');
+            });
+            
+            document.getElementById('toggle-multiple').addEventListener('click', () => {
+                accordion.multiple = !accordion.multiple;
+                addLogEntry(`Multiple mode: ${accordion.multiple ? 'enabled' : 'disabled'}`);
+            });
+            
+            document.getElementById('toggle-disabled').addEventListener('click', () => {
+                accordion.disabled = !accordion.disabled;
+                addLogEntry(`Accordion: ${accordion.disabled ? 'disabled' : 'enabled'}`);
+            });
+            
+            document.getElementById('clear-log').addEventListener('click', () => {
+                logContent.innerHTML = '';
+            });
+            
+            // Listen for accordion events
+            accordion.addEventListener('accordion:change', (event) => {
+                const { itemId, isOpen, openItems } = event.detail;
+                addLogEntry(`${itemId} ${isOpen ? 'opened' : 'closed'} (${openItems.length} open)`);
+            });
+            
+            // Initial log entry
+            addLogEntry('Interactive demo loaded');
+
+            // Initialize Component Builder
+            new ComponentBuilder({
+                elementId: 'accordion-component-builder',
+                componentTag: 'dry-accordion',
+                title: 'Accordion Component Builder',
+                description: 'Try changing the accordion properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    multiple: {
+                        type: 'checkbox',
+                        label: 'Multiple Mode',
+                        default: false
+                    },
+                    disabled: {
+                        type: 'checkbox',
+                        label: 'Disabled',
+                        default: false
+                    }
+                },
+                
+                defaults: {
+                    multiple: false,
+                    disabled: false
+                },
+                
+                previewWrapper: function(componentHTML) {
+                    // Ensure the accordion items are properly nested within the accordion
+                    // Remove the closing tag from componentHTML and add our items inside
+                    const openingTag = componentHTML.replace('</dry-accordion>', '');
+                    return `
+                        <div class="w-full">
+                            ${openingTag}
+                                <accordion-item title="Section 1" icon='<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'>
+                                    <p class="text-gray-600">This is the content of the first accordion section. It contains some sample text to demonstrate how the accordion works.</p>
+                                </accordion-item>
+                                <accordion-item title="Section 2" icon='<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path></svg>' open>
+                                    <p class="text-gray-600">This is the second section, which is initially open. You can collapse it by clicking on the header.</p>
+                                    <div class="mt-3">
+                                        <ul class="list-disc list-inside space-y-1 text-sm text-gray-500">
+                                            <li>Feature 1</li>
+                                            <li>Feature 2</li>
+                                            <li>Feature 3</li>
+                                        </ul>
+                                    </div>
+                                </accordion-item>
+                                <accordion-item title="Section 3" icon='<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"></path></svg>'>
+                                    <p class="text-gray-600">The third and final section demonstrates that you can have multiple sections with different content types.</p>
+                                </accordion-item>
+                            </dry-accordion>
+                        </div>
+                    `;
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
         });
-        
-        document.getElementById('close-all').addEventListener('click', () => {
-            accordion.closeAll();
-            addLogEntry('Closed all sections');
-        });
-        
-        document.getElementById('toggle-multiple').addEventListener('click', () => {
-            accordion.multiple = !accordion.multiple;
-            addLogEntry(`Multiple mode: ${accordion.multiple ? 'enabled' : 'disabled'}`);
-        });
-        
-        document.getElementById('toggle-disabled').addEventListener('click', () => {
-            accordion.disabled = !accordion.disabled;
-            addLogEntry(`Accordion: ${accordion.disabled ? 'disabled' : 'enabled'}`);
-        });
-        
-        document.getElementById('clear-log').addEventListener('click', () => {
-            logContent.innerHTML = '';
-        });
-        
-        // Listen for accordion events
-        accordion.addEventListener('accordion:change', (event) => {
-            const { itemId, isOpen, openItems } = event.detail;
-            addLogEntry(`${itemId} ${isOpen ? 'opened' : 'closed'} (${openItems.length} open)`);
-        });
-        
-        // Initial log entry
-        addLogEntry('Interactive demo loaded');
-    });
-</script>
-</div>
+    </script>
+
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

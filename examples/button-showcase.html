@@ -5,25 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Button Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/button.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
 <body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -35,27 +37,28 @@
     <div class="p-8">
     <div class="max-w-6xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Button Component</h1>
-        <p class="text-gray-600 mb-8">Customizable button component with different variants, sizes, and states.</p>
+        <p class="text-gray-600 mb-8">Simple button component with variants, sizes, and Font Awesome icons.</p>
 
+    <main>
         <!-- Variants -->
         <section class="mb-12">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Variants</h2>
             <div class="flex flex-wrap gap-4">
-                <dry-button variant="secondary">Secondary</dry-button><dry-button variant="primary">Primary</dry-button>
-                
+                <dry-button variant="primary">Primary</dry-button>
+                <dry-button variant="secondary">Secondary</dry-button>
                 <dry-button variant="outline">Outline</dry-button>
                 <dry-button variant="text">Text</dry-button>
                 <dry-button variant="danger">Danger</dry-button>
                 <dry-button variant="success">Success</dry-button>
                 <dry-button variant="warning">Warning</dry-button>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button variant="primary"&gt;Primary&lt;/dry-button&gt;
+            <dry-code language="HTML">&lt;dry-button variant="primary"&gt;Primary&lt;/dry-button&gt;
 &lt;dry-button variant="secondary"&gt;Secondary&lt;/dry-button&gt;
 &lt;dry-button variant="outline"&gt;Outline&lt;/dry-button&gt;
 &lt;dry-button variant="text"&gt;Text&lt;/dry-button&gt;
 &lt;dry-button variant="danger"&gt;Danger&lt;/dry-button&gt;
 &lt;dry-button variant="success"&gt;Success&lt;/dry-button&gt;
-&lt;dry-button variant="warning"&gt;Warning&lt;/dry-button&gt;</code></pre>
+&lt;dry-button variant="warning"&gt;Warning&lt;/dry-button&gt;</dry-code>
         </section>
 
         <!-- Sizes -->
@@ -67,10 +70,10 @@
                 <dry-button size="lg">Large</dry-button>
                 <dry-button size="xl">Extra Large</dry-button>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button size="sm"&gt;Small&lt;/dry-button&gt;
+            <dry-code language="HTML">&lt;dry-button size="sm"&gt;Small&lt;/dry-button&gt;
 &lt;dry-button size="md"&gt;Medium&lt;/dry-button&gt;
 &lt;dry-button size="lg"&gt;Large&lt;/dry-button&gt;
-&lt;dry-button size="xl"&gt;Extra Large&lt;/dry-button&gt;</code></pre>
+&lt;dry-button size="xl"&gt;Extra Large&lt;/dry-button&gt;</dry-code>
         </section>
 
         <!-- States -->
@@ -81,39 +84,26 @@
                 <dry-button disabled>Disabled</dry-button>
                 <dry-button loading>Loading</dry-button>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button&gt;Normal&lt;/dry-button&gt;
+            <dry-code language="HTML">&lt;dry-button&gt;Normal&lt;/dry-button&gt;
 &lt;dry-button disabled&gt;Disabled&lt;/dry-button&gt;
-&lt;dry-button loading&gt;Loading&lt;/dry-button&gt;</code></pre>
+&lt;dry-button loading&gt;Loading&lt;/dry-button&gt;</dry-code>
         </section>
 
         <!-- With Icons -->
         <section class="mb-12">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">With Icons</h2>
             <div class="flex flex-wrap gap-4">
-                <dry-button 
-                    icon-start='<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>'>
-                    Add Item
-                </dry-button>
-                <dry-button 
-                    variant="outline"
-                    icon-end='<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>'>
-                    Continue
-                </dry-button>
-                <dry-button 
-                    variant="danger"
-                    icon-start='<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>'>
-                    Delete
-                </dry-button>
+                <dry-button icon="fas fa-plus">Add Item</dry-button>
+                <dry-button variant="outline" icon="fas fa-arrow-right">Continue</dry-button>
+                <dry-button variant="danger" icon="fas fa-trash">Delete</dry-button>
+                <dry-button variant="success" icon="fas fa-check">Save</dry-button>
+                <dry-button icon="fas fa-download"></dry-button>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Icon at start --&gt;
-&lt;dry-button icon-start='&lt;svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"&gt;&lt;/path&gt;&lt;/svg&gt;'&gt;
-    Add Item
-&lt;/dry-button&gt;
-
-&lt;!-- Icon at end --&gt;
-&lt;dry-button variant="outline" icon-end='&lt;svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"&gt;&lt;/path&gt;&lt;/svg&gt;'&gt;
-    Continue
-&lt;/dry-button&gt;</code></pre>
+            <dry-code language="HTML">&lt;dry-button icon="fas fa-plus"&gt;Add Item&lt;/dry-button&gt;
+&lt;dry-button variant="outline" icon="fas fa-arrow-right"&gt;Continue&lt;/dry-button&gt;
+&lt;dry-button variant="danger" icon="fas fa-trash"&gt;Delete&lt;/dry-button&gt;
+&lt;dry-button variant="success" icon="fas fa-check"&gt;Save&lt;/dry-button&gt;
+&lt;dry-button icon="fas fa-download"&gt;&lt;/dry-button&gt;</dry-code>
         </section>
 
         <!-- As Links -->
@@ -121,90 +111,30 @@
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">As Links</h2>
             <div class="flex flex-wrap gap-4">
                 <dry-button href="#" variant="primary">Link Button</dry-button>
-                <dry-button href="#" target="_blank" variant="outline">External Link</dry-button>
+                <dry-button href="#" target="_blank" variant="outline" icon="fas fa-external-link-alt">External Link</dry-button>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;dry-button href="#" variant="primary"&gt;Link Button&lt;/dry-button&gt;
-&lt;dry-button href="#" target="_blank" variant="outline"&gt;External Link&lt;/dry-button&gt;</code></pre>
+            <dry-code language="HTML">&lt;dry-button href="#" variant="primary"&gt;Link Button&lt;/dry-button&gt;
+&lt;dry-button href="#" target="_blank" variant="outline" icon="fas fa-external-link-alt"&gt;External Link&lt;/dry-button&gt;</dry-code>
         </section>
 
-        <!-- Interactive Demo -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Interactive Demo</h2>
-            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                <div x-data="{ 
-                    variant: 'primary', 
-                    size: 'md', 
-                    disabled: false, 
-                    loading: false,
-                    buttonText: 'Click me'
-                }">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Controls -->
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Variant</label>
-                                <select x-model="variant" class="w-full p-2 border border-gray-300 rounded">
-                                    <option value="primary">Primary</option>
-                                    <option value="secondary">Secondary</option>
-                                    <option value="outline">Outline</option>
-                                    <option value="text">Text</option>
-                                    <option value="danger">Danger</option>
-                                    <option value="success">Success</option>
-                                    <option value="warning">Warning</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
-                                <select x-model="size" class="w-full p-2 border border-gray-300 rounded">
-                                    <option value="sm">Small</option>
-                                    <option value="md">Medium</option>
-                                    <option value="lg">Large</option>
-                                    <option value="xl">Extra Large</option>
-                                </select>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="flex items-center">
-                                    <input type="checkbox" x-model="disabled" class="mr-2">
-                                    Disabled
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" x-model="loading" class="mr-2">
-                                    Loading
-                                </label>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
-                                <input type="text" x-model="buttonText" class="w-full p-2 border border-gray-300 rounded">
-                            </div>
-                        </div>
-                        
-                        <!-- Preview -->
-                        <div class="flex items-center justify-center min-h-[200px] bg-gray-50 rounded-lg">
-                            <dry-button 
-                                :variant="variant"
-                                :size="size"
-                                :disabled="disabled"
-                                :loading="loading"
-                                x-text="buttonText"
-                                @click="alert('Button clicked!')">
-                            </dry-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Component Builder Section -->
+        <div id="button-component-builder"></div>
 
         <!-- API Examples -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JavaScript API</h2>
-            <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <section class="demo-section">
+            <h2 class="demo-title">JavaScript API</h2>
+            <p class="demo-description">Control button behavior programmatically using JavaScript methods.</p>
+            
+            <div class="demo-container">
                 <div class="flex gap-4 mb-4">
-                    <dry-button id="api-demo-btn" variant="primary">Demo Button</dry-button>
+                    <dry-button id="api-demo-btn" variant="primary" icon="fas fa-cog">Demo Button</dry-button>
                     <button onclick="toggleLoading()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Toggle Loading</button>
                     <button onclick="toggleDisabled()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Toggle Disabled</button>
                     <button onclick="changeText()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Change Text</button>
                 </div>
-                <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><code>const button = document.getElementById('api-demo-btn');
+            </div>
+
+            <dry-code language="JavaScript">const button = document.getElementById('api-demo-btn');
 
 // Toggle loading state
 button.setLoading(!button.loading);
@@ -216,9 +146,115 @@ button.setDisabled(!button.disabled);
 button.setText('New Text');
 
 // Programmatically click
-button.click();</code></pre>
-            </div>
+button.click();</dry-code>
         </section>
+
+        <!-- API Reference -->
+        <section class="demo-section">
+            <h2 class="demo-title">API Reference</h2>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3">Button Properties</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Property</th>
+                        <th class="px-4 py-2 text-left">Type</th>
+                        <th class="px-4 py-2 text-left">Default</th>
+                        <th class="px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">variant</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">'primary'</td>
+                        <td class="px-4 py-2">Visual style: 'primary', 'secondary', 'outline', 'text', 'danger', 'success', 'warning'</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">size</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">'md'</td>
+                        <td class="px-4 py-2">Button size: 'sm', 'md', 'lg', 'xl'</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">icon</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">Font Awesome icon classes</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">disabled</td>
+                        <td class="px-4 py-2">boolean</td>
+                        <td class="px-4 py-2">false</td>
+                        <td class="px-4 py-2">Whether the button is disabled</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">loading</td>
+                        <td class="px-4 py-2">boolean</td>
+                        <td class="px-4 py-2">false</td>
+                        <td class="px-4 py-2">Whether the button shows loading state</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">href</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">Render as link with this URL</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">target</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">Link target attribute</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">type</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">'button'</td>
+                        <td class="px-4 py-2">Button type: 'button', 'submit', 'reset'</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3">Methods</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Method</th>
+                        <th class="px-4 py-2 text-left">Parameters</th>
+                        <th class="px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">setLoading(loading)</td>
+                        <td class="px-4 py-2">boolean</td>
+                        <td class="px-4 py-2">Set loading state</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">setDisabled(disabled)</td>
+                        <td class="px-4 py-2">boolean</td>
+                        <td class="px-4 py-2">Set disabled state</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">setText(text)</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">Change button text</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">setIcon(iconClasses)</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">Change icon classes</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">click()</td>
+                        <td class="px-4 py-2">none</td>
+                        <td class="px-4 py-2">Programmatically click the button</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    </div>
     </div>
 
     <script>
@@ -244,6 +280,110 @@ button.click();</code></pre>
             textCounter = (textCounter + 1) % texts.length;
             button.setText(texts[textCounter]);
         }
+
+        // Initialize Component Builder
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComponentBuilder({
+                elementId: 'button-component-builder',
+                componentTag: 'dry-button',
+                title: 'Button Component Builder',
+                description: 'Try changing the button properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    variant: {
+                        type: 'select',
+                        label: 'Variant',
+                        options: [
+                            { value: 'primary', label: 'Primary' },
+                            { value: 'secondary', label: 'Secondary' },
+                            { value: 'outline', label: 'Outline' },
+                            { value: 'text', label: 'Text' },
+                            { value: 'danger', label: 'Danger' },
+                            { value: 'success', label: 'Success' },
+                            { value: 'warning', label: 'Warning' }
+                        ],
+                        default: 'primary'
+                    },
+                    size: {
+                        type: 'select',
+                        label: 'Size',
+                        options: [
+                            { value: 'sm', label: 'Small' },
+                            { value: 'md', label: 'Medium' },
+                            { value: 'lg', label: 'Large' },
+                            { value: 'xl', label: 'Extra Large' }
+                        ],
+                        default: 'md'
+                    },
+                    icon: {
+                        type: 'select',
+                        label: 'Icon',
+                        options: [
+                            { value: '', label: 'No Icon' },
+                            { value: 'fas fa-star', label: 'Star' },
+                            { value: 'fas fa-heart', label: 'Heart' },
+                            { value: 'fas fa-plus', label: 'Plus' },
+                            { value: 'fas fa-check', label: 'Check' },
+                            { value: 'fas fa-download', label: 'Download' },
+                            { value: 'fas fa-trash', label: 'Trash' }
+                        ],
+                        default: ''
+                    },
+                    disabled: {
+                        type: 'checkbox',
+                        label: 'Disabled',
+                        default: false
+                    },
+                    loading: {
+                        type: 'checkbox',
+                        label: 'Loading',
+                        default: false
+                    },
+                    href: {
+                        type: 'text',
+                        label: 'Link URL (optional)',
+                        default: ''
+                    },
+                    target: {
+                        type: 'select',
+                        label: 'Link Target',
+                        options: [
+                            { value: '', label: 'Default' },
+                            { value: '_blank', label: 'New Window' },
+                            { value: '_self', label: 'Same Window' }
+                        ],
+                        default: ''
+                    },
+                    type: {
+                        type: 'select',
+                        label: 'Button Type',
+                        options: [
+                            { value: 'button', label: 'Button' },
+                            { value: 'submit', label: 'Submit' },
+                            { value: 'reset', label: 'Reset' }
+                        ],
+                        default: 'button'
+                    }
+                },
+                
+                defaults: {
+                    variant: 'primary',
+                    size: 'md',
+                    icon: '',
+                    disabled: false,
+                    loading: false,
+                    href: '',
+                    target: '',
+                    type: 'button'
+                },
+                
+                contentGenerator: function(values) {
+                    return 'Click me';
+                }
+            });
+        });
     </script>
+    
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

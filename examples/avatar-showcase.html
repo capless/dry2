@@ -4,68 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avatar Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/avatar.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
-
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-
-        .code-block {
-            padding: 1rem;
-            border-radius: 0.375rem;
-            background-color: #1f2937;
-            color: #f9fafb;
-            font-family: monospace;
-            overflow-x: auto;
-            font-size: 0.875rem;
-        }
-    </style>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -74,52 +34,42 @@
         </div>
     </div>
 
-<div class="p-8">
-<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-    <header class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Avatar Component</h1>
-        <p class="text-lg text-gray-600">A customizable avatar component to display user profile images with fallback options.</p>
-    </header>
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Avatar Component</h1>
+        <p class="text-gray-600 mb-8">A customizable avatar component to display user profile images with fallback options.</p>
 
     <main>
         <!-- Sizes Section -->
-        <section class="demo-section">
-            <h2 class="demo-title">Avatar Sizes</h2>
-            <p class="demo-description">The Avatar component supports different sizes.</p>
-
-            <div class="demo-container flex items-center gap-4">
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Avatar Sizes</h2>
+            <div class="flex items-center gap-4">
                 <dry-avatar name="John Doe" size="xs"></dry-avatar>
                 <dry-avatar name="John Doe" size="sm"></dry-avatar>
                 <dry-avatar name="John Doe" size="md"></dry-avatar>
                 <dry-avatar name="John Doe" size="lg"></dry-avatar>
                 <dry-avatar name="John Doe" size="xl"></dry-avatar>
             </div>
-
-            <div class="code-block">
-                    <pre>&lt;avatar name="John Doe" size="xs"&gt;&lt;/avatar&gt;
-&lt;avatar name="John Doe" size="sm"&gt;&lt;/avatar&gt;
-&lt;avatar name="John Doe" size="md"&gt;&lt;/avatar&gt;
-&lt;avatar name="John Doe" size="lg"&gt;&lt;/avatar&gt;
-&lt;avatar name="John Doe" size="xl"&gt;&lt;/avatar&gt;</pre>
-            </div>
+            <dry-code language="HTML">
+                &lt;dry-avatar name="John Doe" size="xs"&gt;&lt;/dry-avatar&gt;
+                &lt;dry-avatar name="John Doe" size="sm"&gt;&lt;/dry-avatar&gt;
+                &lt;dry-avatar name="John Doe" size="md"&gt;&lt;/dry-avatar&gt;
+                &lt;dry-avatar name="John Doe" size="lg"&gt;&lt;/dry-avatar&gt;
+                &lt;dry-avatar name="John Doe" size="xl"&gt;&lt;/dry-avatar&gt;
+            </dry-code>
         </section>
 
         <!-- Shapes Section -->
-        <section class="demo-section">
-            <h2 class="demo-title">Avatar Shapes</h2>
-            <p class="demo-description">The Avatar component can be displayed in different shapes.</p>
-
-            <div class="demo-container flex items-center gap-4">
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Avatar Shapes</h2>
+            <div class="flex items-center gap-4">
                 <dry-avatar name="John Doe" shape="circle"></dry-avatar>
                 <dry-avatar name="John Doe" shape="square"></dry-avatar>
                 <dry-avatar name="John Doe" shape="rounded"></dry-avatar>
             </div>
-
-            <div class="code-block">
-                    <pre>&lt;avatar name="John Doe" shape="circle"&gt;&lt;/avatar&gt;
-&lt;avatar name="John Doe" shape="square"&gt;&lt;/avatar&gt;
-&lt;avatar name="John Doe" shape="rounded"&gt;&lt;/avatar&gt;</pre>
-            </div>
+            <dry-code language="HTML">&lt;dry-avatar name="John Doe" shape="circle"&gt;&lt;/dry-avatar&gt;
+&lt;dry-avatar name="John Doe" shape="square"&gt;&lt;/dry-avatar&gt;
+&lt;dry-avatar name="John Doe" shape="rounded"&gt;&lt;/dry-avatar&gt;</dry-code>
         </section>
 
         <!-- Images Section -->
@@ -139,12 +89,10 @@
 
             </div>
 
-            <div class="code-block">
-                    <pre>&lt;avatar
+            <dry-code language="HTML">&lt;dry-avatar
     name="John Doe"
     src="https://i.pravatar.cc/150?img=1"&gt;
-&lt;/avatar&gt;</pre>
-            </div>
+&lt;/dry-avatar&gt;</dry-code>
         </section>
 
         <!-- Initials Section -->
@@ -160,10 +108,8 @@
                 <dry-avatar name="SingleName"></dry-avatar>
             </div>
 
-            <div class="code-block">
-                    <pre>&lt;avatar name="John Doe"&gt;&lt;/avatar&gt;
-&lt;avatar initials="AB"&gt;&lt;/avatar&gt;</pre>
-            </div>
+            <dry-code language="HTML">&lt;dry-avatar name="John Doe"&gt;&lt;/dry-avatar&gt;
+&lt;dry-avatar initials="AB"&gt;&lt;/dry-avatar&gt;</dry-code>
         </section>
 
         <!-- Slot Content Section -->
@@ -185,77 +131,13 @@
                 </dry-avatar>
             </div>
 
-            <div class="code-block">
-                    <pre>&lt;avatar name="John Doe" size="lg"&gt;
+            <dry-code language="HTML">&lt;dry-avatar name="John Doe" size="lg"&gt;
     &lt;div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"&gt;&lt;/div&gt;
-&lt;/avatar&gt;</pre>
-            </div>
+&lt;/dry-avatar&gt;</dry-code>
         </section>
 
 
-        <!-- Interactive Demo Section -->
-        <section class="demo-section">
-            <h2 class="demo-title">Interactive Avatar Demo</h2>
-            <p class="demo-description">Try changing the avatar properties dynamically.</p>
 
-            <div class="demo-container">
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <div class="flex-1">
-                        <div class="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
-                            <dry-avatar id="interactive-avatar" name="John Doe" size="xl"></dry-avatar>
-                        </div>
-                    </div>
-                    
-                    <div class="flex-1 space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                            <input type="text" id="avatar-src" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                                   placeholder="https://example.com/image.jpg">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                            <input type="text" id="avatar-name" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                                   value="John Doe">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Custom Initials</label>
-                            <input type="text" id="avatar-initials" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                                   placeholder="JD" maxlength="3">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
-                            <select id="avatar-size" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <option value="xs">Extra Small</option>
-                                <option value="sm">Small</option>
-                                <option value="md">Medium</option>
-                                <option value="lg">Large</option>
-                                <option value="xl" selected>Extra Large</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Shape</label>
-                            <select id="avatar-shape" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <option value="circle" selected>Circle</option>
-                                <option value="rounded">Rounded</option>
-                                <option value="square">Square</option>
-                            </select>
-                        </div>
-                        
-                        <button id="reset-avatar" class="w-full bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-                            Reset to Defaults
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <pre id="interactive-code">&lt;dry-avatar name="John Doe" size="xl"&gt;&lt;/dry-avatar&gt;</pre>
-            </div>
-        </section>
 
         <!-- Error Handling Demo -->
         <section class="demo-section">
@@ -268,12 +150,13 @@
                 <dry-avatar name="No Image" size="lg"></dry-avatar>
             </div>
 
-            <div class="code-block">
-                <pre>&lt;dry-avatar name="Broken Image" src="https://invalid-url.com/broken.jpg"&gt;&lt;/dry-avatar&gt;
+            <dry-code language="HTML">&lt;dry-avatar name="Broken Image" src="https://invalid-url.com/broken.jpg"&gt;&lt;/dry-avatar&gt;
 &lt;dry-avatar name="Valid Image" src="https://i.pravatar.cc/150?img=3"&gt;&lt;/dry-avatar&gt;
-&lt;dry-avatar name="No Image"&gt;&lt;/dry-avatar&gt;</pre>
-            </div>
+&lt;dry-avatar name="No Image"&gt;&lt;/dry-avatar&gt;</dry-code>
         </section>
+
+        <!-- Component Builder Section -->
+        <div id="avatar-component-builder"></div>
 
         <!-- API Reference -->
         <section class="mt-12">
@@ -362,102 +245,75 @@
             </table>
         </section>
     </main>
+    </div>
+    </div>
 
-    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-        <p>DRY2 Web Components Library</p>
-        <p class="mt-2">
-            <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-        </p>
-    </footer>
-</div>
-</div>
+        <script>
+        // Component functionality  
+        document.addEventListener('DOMContentLoaded', function() {
 
-<script>
-    // Interactive demo functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const avatar = document.getElementById('interactive-avatar');
-        const srcInput = document.getElementById('avatar-src');
-        const nameInput = document.getElementById('avatar-name');
-        const initialsInput = document.getElementById('avatar-initials');
-        const sizeSelect = document.getElementById('avatar-size');
-        const shapeSelect = document.getElementById('avatar-shape');
-        const resetBtn = document.getElementById('reset-avatar');
-        const codeDisplay = document.getElementById('interactive-code');
-
-        function updateCodeDisplay() {
-            let code = '<dry-avatar';
-            
-            if (nameInput.value) {
-                code += ` name="${nameInput.value}"`;
-            }
-            
-            if (srcInput.value) {
-                code += ` src="${srcInput.value}"`;
-            }
-            
-            if (initialsInput.value) {
-                code += ` initials="${initialsInput.value}"`;
-            }
-            
-            if (sizeSelect.value !== 'md') {
-                code += ` size="${sizeSelect.value}"`;
-            }
-            
-            if (shapeSelect.value !== 'circle') {
-                code += ` shape="${shapeSelect.value}"`;
-            }
-            
-            code += '></dry-avatar>';
-            codeDisplay.textContent = code;
-        }
-
-        // Event listeners for form inputs
-        srcInput.addEventListener('input', function() {
-            avatar.setImage(this.value);
-            updateCodeDisplay();
+            // Initialize Component Builder
+            new ComponentBuilder({
+                elementId: 'avatar-component-builder',
+                componentTag: 'dry-avatar',
+                title: 'Avatar Component Builder',
+                description: 'Try changing the avatar properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    name: {
+                        type: 'text',
+                        label: 'Name',
+                        default: 'John Doe'
+                    },
+                    src: {
+                        type: 'text',
+                        label: 'Image URL',
+                        default: ''
+                    },
+                    initials: {
+                        type: 'text',
+                        label: 'Custom Initials',
+                        default: ''
+                    },
+                    size: {
+                        type: 'select',
+                        label: 'Size',
+                        options: [
+                            { value: 'xs', label: 'Extra Small' },
+                            { value: 'sm', label: 'Small' },
+                            { value: 'md', label: 'Medium' },
+                            { value: 'lg', label: 'Large' },
+                            { value: 'xl', label: 'Extra Large' }
+                        ],
+                        default: 'md'
+                    },
+                    shape: {
+                        type: 'select',
+                        label: 'Shape',
+                        options: [
+                            { value: 'circle', label: 'Circle' },
+                            { value: 'square', label: 'Square' },
+                            { value: 'rounded', label: 'Rounded' }
+                        ],
+                        default: 'circle'
+                    }
+                },
+                
+                defaults: {
+                    name: 'John Doe',
+                    src: '',
+                    initials: '',
+                    size: 'md',
+                    shape: 'circle'
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
         });
-
-        nameInput.addEventListener('input', function() {
-            avatar.setName(this.value);
-            updateCodeDisplay();
-        });
-
-        initialsInput.addEventListener('input', function() {
-            avatar.setInitials(this.value);
-            updateCodeDisplay();
-        });
-
-        sizeSelect.addEventListener('change', function() {
-            avatar.setSize(this.value);
-            updateCodeDisplay();
-        });
-
-        shapeSelect.addEventListener('change', function() {
-            avatar.setShape(this.value);
-            updateCodeDisplay();
-        });
-
-        resetBtn.addEventListener('click', function() {
-            // Reset form
-            srcInput.value = '';
-            nameInput.value = 'John Doe';
-            initialsInput.value = '';
-            sizeSelect.value = 'xl';
-            shapeSelect.value = 'circle';
-            
-            // Reset avatar
-            avatar.src = '';
-            avatar.name = 'John Doe';
-            avatar.initials = '';
-            avatar.size = 'xl';
-            avatar.shape = 'circle';
-            
-            updateCodeDisplay();
-        });
-
-        // Initial code display
-        updateCodeDisplay();
-    });
-</script>
+    </script>
+    
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

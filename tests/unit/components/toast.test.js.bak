@@ -1,0 +1,353 @@
+import '../setup.js';
+
+describe('Toast Component', () => {
+  beforeEach(() => {
+    cleanupDOM();
+  });
+
+  afterEach(() => {
+    cleanupDOM();
+  });
+  let ToastComponent, Toast;
+
+  before(async () => {
+    await import('../../src/dry2/dry2.js');
+    await import('../../src/dry2/toast.js');
+    ToastComponent = customElements.get('toast-component');
+    Toast = global.Toast;
+  });
+
+  describe('Basic Functionality', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should create toast component', async () => {
+      await waitForComponent(toast);
+      expect(toast).to.be.instanceOf(ToastComponent);
+      expect(toast.querySelector('.toast')).to.exist;
+    });
+
+    it('should display message', async () => {
+      await waitForComponent(toast);
+      const messageEl = toast.querySelector('.toast-message');
+      expect(messageEl.textContent).to.equal('Test message');
+    });
+
+    it('should support different types', async () => {
+      toast.setAttribute('type', 'success');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bg-green-500');
+    });
+
+    it('should auto-hide after duration', (done) => {
+      toast.setAttribute('duration', '100');
+      toast.setAttribute('auto-hide', 'true');
+      
+      waitForComponent(toast).then(() => {
+        setTimeout(() => {
+          expect(toast.style.display).to.equal('none');
+          done();
+        }, 150);
+      });
+    });
+
+    it('should be dismissible on click', async () => {
+      toast.setAttribute('dismissible', 'true');
+      await waitForComponent(toast);
+      
+      const closeBtn = toast.querySelector('.toast-close');
+      expect(closeBtn).to.exist;
+      
+      simulateClick(closeBtn);
+      expect(toast.style.display).to.equal('none');
+    });
+  });
+
+  describe('Toast Types', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should apply info styling', async () => {
+      toast.setAttribute('type', 'info');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bg-blue-500');
+    });
+
+    it('should apply success styling', async () => {
+      toast.setAttribute('type', 'success');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bg-green-500');
+    });
+
+    it('should apply warning styling', async () => {
+      toast.setAttribute('type', 'warning');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bg-yellow-500');
+    });
+
+    it('should apply error styling', async () => {
+      toast.setAttribute('type', 'error');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bg-red-500');
+    });
+  });
+
+  describe('Positioning', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should position top-right by default', async () => {
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('top-4');
+      expect(toastEl.className).to.include('right-4');
+    });
+
+    it('should position top-left', async () => {
+      toast.setAttribute('position', 'top-left');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('top-4');
+      expect(toastEl.className).to.include('left-4');
+    });
+
+    it('should position bottom-right', async () => {
+      toast.setAttribute('position', 'bottom-right');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bottom-4');
+      expect(toastEl.className).to.include('right-4');
+    });
+
+    it('should position bottom-left', async () => {
+      toast.setAttribute('position', 'bottom-left');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('bottom-4');
+      expect(toastEl.className).to.include('left-4');
+    });
+  });
+
+  describe('Static API', () => {
+    beforeEach(() => {
+      // Clear any existing toasts
+      document.querySelectorAll('toast-component').forEach(el => el.remove());
+    });
+
+    it('should provide Toast.info static method', () => {
+      Toast.info('Info message');
+      
+      const toast = document.querySelector('toast-component[type="info"]');
+      expect(toast).to.exist;
+      expect(toast.getAttribute('message')).to.equal('Info message');
+    });
+
+    it('should provide Toast.success static method', () => {
+      Toast.success('Success message');
+      
+      const toast = document.querySelector('toast-component[type="success"]');
+      expect(toast).to.exist;
+      expect(toast.getAttribute('message')).to.equal('Success message');
+    });
+
+    it('should provide Toast.warning static method', () => {
+      Toast.warning('Warning message');
+      
+      const toast = document.querySelector('toast-component[type="warning"]');
+      expect(toast).to.exist;
+      expect(toast.getAttribute('message')).to.equal('Warning message');
+    });
+
+    it('should provide Toast.error static method', () => {
+      Toast.error('Error message');
+      
+      const toast = document.querySelector('toast-component[type="error"]');
+      expect(toast).to.exist;
+      expect(toast.getAttribute('message')).to.equal('Error message');
+    });
+
+    it('should accept options in static methods', () => {
+      Toast.info('Test message', {
+        position: 'bottom-left',
+        duration: 2000,
+        dismissible: true
+      });
+      
+      const toast = document.querySelector('toast-component[type="info"]');
+      expect(toast.getAttribute('position')).to.equal('bottom-left');
+      expect(toast.getAttribute('duration')).to.equal('2000');
+      expect(toast.hasAttribute('dismissible')).to.be.true;
+    });
+  });
+
+  describe('Events', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should emit show event when displayed', (done) => {
+      toast.addEventListener('toast:show', (event) => {
+        expect(event.detail.message).to.equal('Test message');
+        done();
+      });
+      
+      waitForComponent(toast);
+    });
+
+    it('should emit hide event when hidden', (done) => {
+      toast.setAttribute('duration', '50');
+      toast.setAttribute('auto-hide', 'true');
+      
+      toast.addEventListener('toast:hide', (event) => {
+        expect(event.detail.reason).to.exist;
+        done();
+      });
+      
+      waitForComponent(toast);
+    });
+
+    it('should emit dismiss event when clicked', (done) => {
+      toast.setAttribute('dismissible', 'true');
+      
+      toast.addEventListener('toast:dismiss', (event) => {
+        expect(event.detail.reason).to.equal('click');
+        done();
+      });
+      
+      waitForComponent(toast).then(() => {
+        const closeBtn = toast.querySelector('.toast-close');
+        simulateClick(closeBtn);
+      });
+    });
+  });
+
+  describe('Animation', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should have entrance animation classes', async () => {
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('transition-all');
+    });
+
+    it('should support different animation types', async () => {
+      toast.setAttribute('animation', 'fade');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.className).to.include('transition-opacity');
+    });
+  });
+
+  describe('Public API', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should provide show method', async () => {
+      await waitForComponent(toast);
+      
+      toast.hide();
+      expect(toast.style.display).to.equal('none');
+      
+      toast.show();
+      expect(toast.style.display).to.not.equal('none');
+    });
+
+    it('should provide hide method', async () => {
+      await waitForComponent(toast);
+      
+      toast.hide();
+      expect(toast.style.display).to.equal('none');
+    });
+
+    it('should provide updateMessage method', async () => {
+      await waitForComponent(toast);
+      
+      toast.updateMessage('New message');
+      const messageEl = toast.querySelector('.toast-message');
+      expect(messageEl.textContent).to.equal('New message');
+    });
+  });
+
+  describe('Accessibility', () => {
+    let toast;
+
+    beforeEach(() => {
+      toast = document.createElement('toast-component');
+      toast.setAttribute('message', 'Test message');
+      document.body.appendChild(toast);
+    });
+
+    it('should have proper ARIA attributes', async () => {
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.getAttribute('role')).to.equal('alert');
+      expect(toastEl.getAttribute('aria-live')).to.equal('polite');
+    });
+
+    it('should have assertive aria-live for errors', async () => {
+      toast.setAttribute('type', 'error');
+      await waitForComponent(toast);
+      
+      const toastEl = toast.querySelector('.toast');
+      expect(toastEl.getAttribute('aria-live')).to.equal('assertive');
+    });
+
+    it('should be accessible via keyboard when dismissible', async () => {
+      toast.setAttribute('dismissible', 'true');
+      await waitForComponent(toast);
+      
+      const closeBtn = toast.querySelector('.toast-close');
+      expect(closeBtn.getAttribute('tabindex')).to.equal('0');
+      
+      simulateKeydown(closeBtn, 'Enter');
+      expect(toast.style.display).to.equal('none');
+    });
+  });
+});

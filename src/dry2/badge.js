@@ -1,221 +1,407 @@
-class BadgeComponent extends BaseWebComponent {
-    constructor() {
-        super();
-        this._visible = true;
-        this._isInitialized = false;
+class DryBadge extends BaseElement {
+  static get observedAttributes() {
+    return ['variant', 'size', 'position', 'dot', 'max', 'visible', 'class'];
+  }
+
+  constructor() {
+    super();
+    this._alpineDataRef = null;
+    this._isRendering = false;
+    this._validVariants = new Set(['primary', 'success', 'danger', 'warning', 'info']);
+    this._validSizes = new Set(['sm', 'md', 'lg']);
+    this._validPositions = new Set(['standalone', 'top-right', 'top-left', 'bottom-right', 'bottom-left']);
+  }
+
+  _initializeComponent() {
+    try {
+      // Store original content safely
+      const originalContent = this._extractAndSanitizeContent();
+      
+      // Create the component structure with Alpine.js
+      this._render(originalContent);
+      
+      // Cache Alpine.js data reference
+      this._cacheAlpineData();
+    } catch (error) {
+      console.error('DryBadge initialization failed:', error);
+      this._renderFallback();
+    }
+  }
+
+  _extractAndSanitizeContent() {
+    const content = this.textContent.trim();
+    // Sanitize content to prevent XSS
+    return this._escapeHtml(content);
+  }
+
+  _escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return '';
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  _escapeForJs(unsafe) {
+    if (typeof unsafe !== 'string') return '';
+    return unsafe
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'")
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t");
+  }
+
+  _validateAttribute(name, value) {
+    switch (name) {
+      case 'variant':
+        return this._validVariants.has(value) ? value : 'primary';
+      case 'size':
+        return this._validSizes.has(value) ? value : 'md';
+      case 'position':
+        return this._validPositions.has(value) ? value : 'standalone';
+      case 'max':
+        const maxNum = parseInt(value, 10);
+        return !isNaN(maxNum) && maxNum > 0 ? maxNum : null;
+      default:
+        return value;
+    }
+  }
+
+  _buildClassString(baseClasses, conditionalClasses) {
+    const classes = [baseClasses];
+    conditionalClasses.forEach(cls => cls && classes.push(cls));
+    return classes.filter(Boolean).join(' ');
+  }
+
+  _getSizeClasses(size, isDot) {
+    const sizeMap = {
+      sm: isDot ? 'w-2 h-2' : 'px-1.5 py-0.5 text-xs min-h-[1.125rem]',
+      md: isDot ? 'w-3 h-3' : 'px-2 py-0.5 text-xs min-h-[1.25rem]',
+      lg: isDot ? 'w-4 h-4' : 'px-3 py-1 text-sm min-h-[1.75rem]'
+    };
+    return sizeMap[size] || sizeMap.md;
+  }
+
+  _getVariantClasses(variant) {
+    const variantMap = {
+      success: 'bg-green-500 text-white',
+      danger: 'bg-red-500 text-white',
+      warning: 'bg-yellow-500 text-yellow-900',
+      info: 'bg-blue-500 text-white',
+      primary: 'bg-gray-800 text-white'
+    };
+    return variantMap[variant] || variantMap.primary;
+  }
+
+  _getPositionClasses(position) {
+    if (position === 'standalone') return '';
+    
+    const positionMap = {
+      'top-right': 'absolute z-10 -top-2 -right-2',
+      'top-left': 'absolute z-10 -top-2 -left-2',
+      'bottom-right': 'absolute z-10 bottom-4 -right-2',
+      'bottom-left': 'absolute z-10 bottom-4 -left-2'
+    };
+    return positionMap[position] || '';
+  }
+
+
+
+  _render(originalContent) {
+    if (this._isRendering) return;
+    this._isRendering = true;
+
+    try {
+      const variant = this._validateAttribute('variant', this.variant);
+      const size = this._validateAttribute('size', this.size);
+      const position = this._validateAttribute('position', this.position);
+      const isDot = this.dot;
+      const max = this._validateAttribute('max', this.max);
+      const visible = this.visible;
+
+      // Use template element for safer DOM creation
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <div x-data="{
+               content: '${this._escapeForJs(originalContent)}',
+               variant: '${variant}',
+               size: '${size}',
+               position: '${position}',
+               isDot: ${isDot},
+               max: ${max || 'null'},
+               visible: ${visible},
+               
+               getBadgeClasses() {
+                 const baseClasses = 'badge inline-flex items-center justify-center font-medium leading-none transition-all duration-200 rounded-full';
+                 let sizeClasses = '';
+                 let variantClasses = '';
+                 let positionClasses = '';
+                 
+                 // Size classes
+                 if (this.isDot) {
+                   sizeClasses = this.size === 'sm' ? 'w-2 h-2' : 
+                               this.size === 'lg' ? 'w-4 h-4' : 'w-3 h-3';
+                 } else {
+                   sizeClasses = this.size === 'sm' ? 'px-1.5 py-0.5 text-xs min-h-[1.125rem]' :
+                               this.size === 'lg' ? 'px-3 py-1 text-sm min-h-[1.75rem]' :
+                               'px-2 py-0.5 text-xs min-h-[1.25rem]';
+                 }
+                 
+                 // Variant classes
+                 variantClasses = this.variant === 'success' ? 'bg-green-500 text-white' :
+                                this.variant === 'danger' ? 'bg-red-500 text-white' :
+                                this.variant === 'warning' ? 'bg-yellow-500 text-yellow-900' :
+                                this.variant === 'info' ? 'bg-blue-500 text-white' :
+                                'bg-gray-800 text-white';
+                 
+                 // Position classes
+                 if (this.position !== 'standalone') {
+                   positionClasses = 'absolute z-10 ' + 
+                     (this.position === 'top-right' ? '-top-2 -right-2' :
+                      this.position === 'top-left' ? '-top-2 -left-2' :
+                      this.position === 'bottom-right' ? 'bottom-4 -right-2' :
+                      this.position === 'bottom-left' ? 'bottom-4 -left-2' : '');
+                 }
+                 
+                 return [baseClasses, sizeClasses, variantClasses, positionClasses]
+                   .filter(cls => cls.length > 0).join(' ');
+               },
+               
+               getContainerClasses() {
+                 return 'badge-container inline-block';
+               },
+               
+               getDisplayContent() {
+                 if (this.isDot) return '';
+                 if (this.max && !isNaN(this.content) && parseInt(this.content) > this.max) {
+                   return this.max + '+';
+                 }
+                 return this.content;
+               },
+               
+               shouldShowBadge() {
+                 return this.visible && (this.isDot || this.content.length > 0);
+               }
+             }"
+             :class="getContainerClasses()"
+             x-show="visible"
+             x-transition:enter="transition-all duration-200 ease-out"
+             x-transition:enter-start="opacity-0 scale-75"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition-all duration-150 ease-in"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-75">
+          <span :class="getBadgeClasses()"
+                x-show="shouldShowBadge()"
+                x-text="getDisplayContent()">
+          </span>
+        </div>
+      `;
+
+      // Clear and append new content
+      this.innerHTML = '';
+      this.appendChild(template.content.cloneNode(true));
+      
+      // Re-cache Alpine data reference
+      this._cacheAlpineData();
+    } catch (error) {
+      console.error('DryBadge render failed:', error);
+      this._renderFallback();
+    } finally {
+      this._isRendering = false;
+    }
+  }
+
+  _renderFallback() {
+    // Fallback rendering without Alpine.js for critical failures
+    const content = this._extractAndSanitizeContent();
+    const variant = this._validateAttribute('variant', this.variant);
+    const size = this._validateAttribute('size', this.size);
+    const isDot = this.dot;
+    
+    if (!this.visible || (!isDot && !content)) {
+      this.style.display = 'none';
+      return;
     }
 
-    static get observedAttributes() {
-        // Only observe attributes we actually need
-        return ['variant', 'size', 'position', 'dot', 'max', 'visible'];
+    const badgeClasses = this._buildClassString(
+      'badge inline-flex items-center justify-center font-medium leading-none rounded-full',
+      [
+        this._getSizeClasses(size, isDot),
+        this._getVariantClasses(variant),
+        this._getPositionClasses(this.position)
+      ]
+    );
+
+    this.innerHTML = `
+      <div class="badge-container inline-block">
+        <span class="${badgeClasses}">${isDot ? '' : content}</span>
+      </div>
+    `;
+  }
+
+  _cacheAlpineData() {
+    // Safely cache Alpine.js data reference with retry logic
+    setTimeout(() => {
+      try {
+        const element = this.querySelector('[x-data]');
+        this._alpineDataRef = element?.__x?.$data || null;
+      } catch (error) {
+        console.warn('Failed to cache Alpine.js data:', error);
+        this._alpineDataRef = null;
+      }
+    }, 0);
+  }
+
+  _updateAlpineProperty(property, value) {
+    if (this._alpineDataRef && this._alpineDataRef[property] !== undefined) {
+      try {
+        this._alpineDataRef[property] = value;
+        return true;
+      } catch (error) {
+        console.warn(`Failed to update Alpine.js property ${property}:`, error);
+      }
     }
+    return false;
+  }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        // Prevent infinite loops by checking if component is ready
-        if (oldValue !== newValue && this._isInitialized) {
-            this._handleAttributeChange(name, oldValue, newValue);
-        }
+  // Optimized attribute change handling - only update what's necessary
+  _handleAttributeChange(name, oldValue, newValue) {
+    if (oldValue === newValue || !this._isInitialized || this._isRendering) return;
+
+    const validatedValue = this._validateAttribute(name, newValue);
+    
+    try {
+      switch (name) {
+        case 'variant':
+        case 'size': 
+        case 'position':
+          // These affect styling, try Alpine update first, fallback to re-render
+          if (!this._updateAlpineProperty(name, validatedValue)) {
+            this._render(this._extractAndSanitizeContent());
+          }
+          break;
+          
+        case 'dot':
+          const isDot = newValue !== null && newValue !== 'false';
+          if (!this._updateAlpineProperty('isDot', isDot)) {
+            this._render(this._extractAndSanitizeContent());
+          }
+          break;
+          
+        case 'max':
+          if (!this._updateAlpineProperty('max', validatedValue)) {
+            this._render(this._extractAndSanitizeContent());
+          }
+          break;
+          
+        case 'visible':
+          const visible = newValue !== null && newValue !== 'false';
+          if (!this._updateAlpineProperty('visible', visible)) {
+            // Fallback to direct style manipulation
+            this.style.display = visible ? '' : 'none';
+          }
+          break;
+          
+        case 'class':
+          // Full re-render needed for class changes
+          this._render(this._extractAndSanitizeContent());
+          break;
+      }
+    } catch (error) {
+      console.error(`Error handling attribute change for ${name}:`, error);
+      // Fallback to safe re-render
+      this._renderFallback();
     }
+  }
 
-    _handleAttributeChange(name, oldValue, newValue) {
-        if (name === 'visible') {
-            this._visible = newValue !== 'false';
-        }
+  // Public API methods with error handling
+  show() {
+    this.visible = true;
+  }
 
-        // Use a timeout to batch updates and prevent excessive renders
-        if (this._updateTimeout) {
-            clearTimeout(this._updateTimeout);
-        }
+  hide() {
+    this.visible = false;
+  }
 
-        this._updateTimeout = setTimeout(() => {
-            this._updateDisplay();
-            this._updateTimeout = null;
-        }, 0);
+  toggle() {
+    this.visible = !this.visible;
+  }
+
+  setContent(content) {
+    if (content == null) content = '';
+    
+    const sanitizedContent = this._escapeHtml(content.toString());
+    
+    if (!this._updateAlpineProperty('content', sanitizedContent)) {
+      // Fallback: update text content and re-render
+      this.textContent = content;
+      this._render(sanitizedContent);
     }
+  }
 
-    connectedCallback() {
-        // Don't call super.connectedCallback() to avoid the innerHTML issue
-        if (!this._isInitialized) {
-            this._initialize();
-        }
+  // Getters and setters with validation
+  get variant() {
+    return this._getAttributeWithDefault('variant', 'primary');
+  }
+
+  set variant(value) {
+    const validatedValue = this._validateAttribute('variant', value);
+    this._setAttribute('variant', validatedValue);
+  }
+
+  get size() {
+    return this._getAttributeWithDefault('size', 'md');
+  }
+
+  set size(value) {
+    const validatedValue = this._validateAttribute('size', value);
+    this._setAttribute('size', validatedValue);
+  }
+
+  get position() {
+    return this._getAttributeWithDefault('position', 'standalone');
+  }
+
+  set position(value) {
+    const validatedValue = this._validateAttribute('position', value);
+    this._setAttribute('position', validatedValue);
+  }
+
+  get dot() {
+    return this._getBooleanAttribute('dot');
+  }
+
+  set dot(value) {
+    this._setBooleanAttribute('dot', value);
+  }
+
+  get max() {
+    return this._getNumericAttribute('max', null);
+  }
+
+  set max(value) {
+    const validatedValue = this._validateAttribute('max', value);
+    this._setNumericAttribute('max', validatedValue);
+  }
+
+  get visible() {
+    return !this.hasAttribute('hidden') && this.getAttribute('visible') !== 'false';
+  }
+
+  set visible(value) {
+    if (value) {
+      this.removeAttribute('hidden');
+      this.setAttribute('visible', 'true');
+    } else {
+      this.setAttribute('hidden', '');
+      this.setAttribute('visible', 'false');
     }
-
-    _initialize() {
-        // Store original content
-        this._originalContent = this.textContent || this.innerHTML;
-
-        // Set up the badge
-        this._updateDisplay();
-        this._isInitialized = true;
-    }
-
-    _updateDisplay() {
-        const variant = this.getAttribute('variant') || 'primary';
-        const size = this.getAttribute('size') || 'md';
-        const position = this.getAttribute('position') || 'standalone';
-        const isDot = this.hasAttribute('dot');
-        const max = this.getAttribute('max');
-        const visible = this._visible;
-
-        // Variant styles
-        const variantStyles = {
-            primary: 'bg-blue-500 text-white',
-            success: 'bg-green-500 text-white',
-            danger: 'bg-red-500 text-white',
-            warning: 'bg-yellow-500 text-black',
-            info: 'bg-cyan-500 text-white'
-        };
-
-        // Size styles
-        const sizeStyles = {
-            sm: isDot ? 'w-2 h-2' : 'px-2 py-0.5 text-xs',
-            md: isDot ? 'w-3 h-3' : 'px-2.5 py-1 text-sm',
-            lg: isDot ? 'w-4 h-4' : 'px-3 py-1.5 text-base'
-        };
-
-        // Position styles
-        const positionStyles = {
-            standalone: 'relative',
-            'top-right': 'absolute -top-1 -right-1',
-            'top-left': 'absolute -top-1 -left-1',
-            'bottom-right': 'absolute -bottom-1 -right-1',
-            'bottom-left': 'absolute -bottom-1 -left-1'
-        };
-
-        // Handle content and max values
-        let displayContent = this._originalContent;
-        if (max && !isDot && displayContent) {
-            const numericContent = parseInt(displayContent, 10);
-            if (!isNaN(numericContent) && numericContent > parseInt(max, 10)) {
-                displayContent = `${max}+`;
-            }
-        }
-
-        // Build classes
-        const baseClasses = 'inline-flex items-center justify-center font-medium rounded-full';
-        const classes = [
-            baseClasses,
-            variantStyles[variant] || variantStyles.primary,
-            sizeStyles[size] || sizeStyles.md,
-            positionStyles[position] || positionStyles.standalone
-        ].join(' ');
-
-        // Update the element safely
-        this.className = classes;
-        this.style.display = visible ? '' : 'none';
-
-        // Update content without triggering DOM mutations
-        if (!isDot && displayContent) {
-            // Only update if content actually changed
-            if (this.textContent !== displayContent) {
-                this.textContent = displayContent;
-            }
-        } else if (isDot) {
-            // Clear content for dot badges
-            if (this.textContent !== '') {
-                this.textContent = '';
-            }
-        }
-
-        // Handle parent positioning
-        if (position !== 'standalone' && this.parentElement) {
-            const parentStyle = getComputedStyle(this.parentElement);
-            if (parentStyle.position === 'static') {
-                this.parentElement.style.position = 'relative';
-            }
-        }
-    }
-
-    // Public API methods
-    show() {
-        this._visible = true;
-        this.setAttribute('visible', 'true');
-    }
-
-    hide() {
-        this._visible = false;
-        this.setAttribute('visible', 'false');
-    }
-
-    toggle() {
-        if (this._visible) {
-            this.hide();
-        } else {
-            this.show();
-        }
-    }
-
-    // Getters and setters
-    get variant() {
-        return this.getAttribute('variant') || 'primary';
-    }
-
-    set variant(value) {
-        this.setAttribute('variant', value);
-    }
-
-    get size() {
-        return this.getAttribute('size') || 'md';
-    }
-
-    set size(value) {
-        this.setAttribute('size', value);
-    }
-
-    get position() {
-        return this.getAttribute('position') || 'standalone';
-    }
-
-    set position(value) {
-        this.setAttribute('position', value);
-    }
-
-    get isDot() {
-        return this.hasAttribute('dot');
-    }
-
-    set isDot(value) {
-        if (value) {
-            this.setAttribute('dot', '');
-        } else {
-            this.removeAttribute('dot');
-        }
-    }
-
-    get max() {
-        return this.getAttribute('max');
-    }
-
-    set max(value) {
-        this.setAttribute('max', value);
-    }
-
-    get visible() {
-        return this._visible;
-    }
-
-    set visible(value) {
-        if (value) {
-            this.show();
-        } else {
-            this.hide();
-        }
-    }
-
-    // Override render to prevent BaseWebComponent from interfering
-    render() {
-        // Return empty string to prevent innerHTML manipulation
-        return '';
-    }
-
-    // Cleanup
-    disconnectedCallback() {
-        if (this._updateTimeout) {
-            clearTimeout(this._updateTimeout);
-            this._updateTimeout = null;
-        }
-    }
+  }
 }
 
-// Register the custom element
-customElements.define('dry-badge', BadgeComponent);
+customElements.define('dry-badge', DryBadge);

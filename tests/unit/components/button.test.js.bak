@@ -1,0 +1,255 @@
+import '../setup.js';
+
+describe('DryButton Component', () => {
+  beforeEach(() => {
+    cleanupDOM();
+  });
+
+  afterEach(() => {
+    cleanupDOM();
+  });
+  let DryButton;
+
+  before(async () => {
+    // Load the component
+    await import('../../src/dry2/dry2.js');
+    await import('../../src/dry2/button.js');
+    DryButton = customElements.get('dry-button');
+  });
+
+  describe('Basic Functionality', () => {
+    let button;
+
+    beforeEach(() => {
+      button = document.createElement('dry-button');
+      button.textContent = 'Test Button';
+      document.body.appendChild(button);
+    });
+
+    it('should create button element', async () => {
+      await waitForComponent(button);
+      expect(button).to.be.instanceOf(DryButton);
+      expect(button.querySelector('button')).to.exist;
+    });
+
+    it('should display button text', async () => {
+      await waitForComponent(button);
+      const buttonElement = button.querySelector('button');
+      expect(buttonElement.textContent).to.include('Test Button');
+    });
+
+    it('should support different variants', async () => {
+      button.variant = 'secondary';
+      await waitForComponent(button);
+      
+      const buttonElement = button.querySelector('button');
+      expect(buttonElement.className).to.include('bg-gray-100');
+    });
+
+    it('should support different sizes', async () => {
+      button.size = 'lg';
+      await waitForComponent(button);
+      
+      const buttonElement = button.querySelector('button');
+      expect(buttonElement.className).to.include('px-6');
+      expect(buttonElement.className).to.include('py-3');
+    });
+
+    it('should handle disabled state', async () => {
+      button.disabled = true;
+      await waitForComponent(button);
+      
+      const buttonElement = button.querySelector('button');
+      expect(buttonElement.disabled).to.be.true;
+      expect(buttonElement.className).to.include('opacity-50');
+    });
+
+    it('should handle loading state', async () => {
+      button.loading = true;
+      await waitForComponent(button);
+      
+      const spinner = button.querySelector('svg');
+      expect(spinner).to.exist;
+      expect(spinner.className).to.include('animate-spin');
+    });
+
+    it('should support icons', async () => {
+      button.iconStart = '<i class="fas fa-plus"></i>';
+      await waitForComponent(button);
+      
+      const iconElement = button.querySelector('span[x-show="shouldShowStartIcon()"]');
+      expect(iconElement).to.exist;
+    });
+  });
+
+  describe('Link Mode', () => {
+    let button;
+
+    beforeEach(() => {
+      button = document.createElement('dry-button');
+      button.textContent = 'Link Button';
+      button.href = 'https://example.com';
+      document.body.appendChild(button);
+    });
+
+    it('should render as anchor when href is provided', async () => {
+      await waitForComponent(button);
+      const anchorElement = button.querySelector('a');
+      expect(anchorElement).to.exist;
+      expect(anchorElement.href).to.equal('https://example.com/');
+    });
+
+    it('should support target attribute', async () => {
+      button.target = '_blank';
+      await waitForComponent(button);
+      
+      const anchorElement = button.querySelector('a');
+      expect(anchorElement.target).to.equal('_blank');
+    });
+  });
+
+  describe('Public API', () => {
+    let button;
+
+    beforeEach(() => {
+      button = document.createElement('dry-button');
+      document.body.appendChild(button);
+    });
+
+    it('should provide setLoading method', () => {
+      button.setLoading(true);
+      expect(button.loading).to.be.true;
+      
+      button.setLoading(false);
+      expect(button.loading).to.be.false;
+    });
+
+    it('should provide setDisabled method', () => {
+      button.setDisabled(true);
+      expect(button.disabled).to.be.true;
+      
+      button.setDisabled(false);
+      expect(button.disabled).to.be.false;
+    });
+
+    it('should provide setText method', () => {
+      button.setText('New Text');
+      expect(button.textContent).to.equal('New Text');
+    });
+
+    it('should provide click method', (done) => {
+      button.addEventListener('click', () => {
+        done();
+      });
+      
+      button.click();
+    });
+
+    it('should not click when disabled', () => {
+      let clicked = false;
+      button.addEventListener('click', () => {
+        clicked = true;
+      });
+      
+      button.disabled = true;
+      button.click();
+      expect(clicked).to.be.false;
+    });
+
+    it('should not click when loading', () => {
+      let clicked = false;
+      button.addEventListener('click', () => {
+        clicked = true;
+      });
+      
+      button.loading = true;
+      button.click();
+      expect(clicked).to.be.false;
+    });
+  });
+
+  describe('Attribute Getters/Setters', () => {
+    let button;
+
+    beforeEach(() => {
+      button = document.createElement('dry-button');
+    });
+
+    it('should handle variant attribute', () => {
+      expect(button.variant).to.equal('primary');
+      
+      button.variant = 'secondary';
+      expect(button.getAttribute('variant')).to.equal('secondary');
+      expect(button.variant).to.equal('secondary');
+    });
+
+    it('should handle size attribute', () => {
+      expect(button.size).to.equal('md');
+      
+      button.size = 'lg';
+      expect(button.getAttribute('size')).to.equal('lg');
+      expect(button.size).to.equal('lg');
+    });
+
+    it('should handle type attribute', () => {
+      expect(button.type).to.equal('button');
+      
+      button.type = 'submit';
+      expect(button.getAttribute('type')).to.equal('submit');
+      expect(button.type).to.equal('submit');
+    });
+
+    it('should handle href attribute', () => {
+      expect(button.href).to.equal('');
+      
+      button.href = 'https://example.com';
+      expect(button.getAttribute('href')).to.equal('https://example.com');
+      expect(button.href).to.equal('https://example.com');
+    });
+
+    it('should handle target attribute', () => {
+      expect(button.target).to.equal('');
+      
+      button.target = '_blank';
+      expect(button.getAttribute('target')).to.equal('_blank');
+      expect(button.target).to.equal('_blank');
+    });
+
+    it('should handle icon attributes', () => {
+      const iconHtml = '<i class="fas fa-plus"></i>';
+      
+      button.iconStart = iconHtml;
+      expect(button.getAttribute('icon-start')).to.equal(iconHtml);
+      expect(button.iconStart).to.equal(iconHtml);
+      
+      button.iconEnd = iconHtml;
+      expect(button.getAttribute('icon-end')).to.equal(iconHtml);
+      expect(button.iconEnd).to.equal(iconHtml);
+    });
+  });
+
+  describe('Accessibility', () => {
+    let button;
+
+    beforeEach(() => {
+      button = document.createElement('dry-button');
+      document.body.appendChild(button);
+    });
+
+    it('should have proper ARIA attributes when disabled', async () => {
+      button.disabled = true;
+      await waitForComponent(button);
+      
+      const buttonElement = button.querySelector('button');
+      expect(buttonElement.getAttribute('aria-disabled')).to.equal('true');
+    });
+
+    it('should have proper ARIA attributes when loading', async () => {
+      button.loading = true;
+      await waitForComponent(button);
+      
+      const buttonElement = button.querySelector('button');
+      expect(buttonElement.getAttribute('aria-busy')).to.equal('true');
+    });
+  });
+});

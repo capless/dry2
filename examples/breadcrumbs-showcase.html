@@ -4,66 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>breadcrumbs Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-    <!-- Font Awesome for icon examples -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
-
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-
-        .code-block {
-            padding: 1rem;
-            border-radius: 0.375rem;
-            background-color: #1f2937;
-            color: #f9fafb;
-            font-family: monospace;
-            overflow-x: auto;
-            font-size: 0.875rem;
-        }
-    </style>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -87,14 +47,14 @@
                 <div class="bg-blue-50 border border-blue-200 rounded p-4">
                     <h4 class="font-semibold text-blue-900 mb-2">Key Features:</h4>
                     <ul class="text-blue-800 text-sm space-y-1">
-                        <li>" Multiple separator styles (chevron, slash, bullet, arrow, custom)</li>
-                        <li>" Font Awesome icon support</li>
-                        <li>" Customizable styling via attributes</li>
-                        <li>" JavaScript API for dynamic control</li>
-                        <li>" Automatic active state management</li>
-                        <li>" Responsive design</li>
-                        <li>" Accessible with proper ARIA attributes</li>
-                        <li>" Method chaining support</li>
+                        <li>• Multiple separator styles (chevron, slash, bullet, arrow, custom)</li>
+                        <li>• Font Awesome icon support</li>
+                        <li>• Customizable styling via attributes</li>
+                        <li>• JavaScript API for dynamic control</li>
+                        <li>• Automatic active state management</li>
+                        <li>• Responsive design</li>
+                        <li>• Accessible with proper ARIA attributes</li>
+                        <li>• Method chaining support</li>
                     </ul>
                 </div>
             </div>
@@ -118,14 +78,12 @@
                     <breadcrumb-item>Smartphones</breadcrumb-item>
                 </dry-breadcrumbs>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-breadcrumbs&gt;
+                <dry-code language="HTML">&lt;dry-breadcrumbs&gt;
     &lt;breadcrumb-item href="/"&gt;Home&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item href="/products"&gt;Products&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item href="/products/electronics"&gt;Electronics&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item&gt;Smartphones&lt;/breadcrumb-item&gt;
-&lt;/dry-breadcrumbs&gt;</code></pre>
-                </div>
+&lt;/dry-breadcrumbs&gt;</dry-code>
             </div>
         </div>
 
@@ -183,8 +141,7 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<pre><code>&lt;!-- Chevron (default) --&gt;
+            <dry-code language="HTML">&lt;!-- Chevron (default) --&gt;
 &lt;dry-breadcrumbs separator="chevron"&gt;...&lt;/dry-breadcrumbs&gt;
 
 &lt;!-- Slash --&gt;
@@ -197,8 +154,7 @@
 &lt;dry-breadcrumbs separator="arrow"&gt;...&lt;/dry-breadcrumbs&gt;
 
 &lt;!-- Custom text --&gt;
-&lt;dry-breadcrumbs separator=" | "&gt;...&lt;/dry-breadcrumbs&gt;</code></pre>
-            </div>
+&lt;dry-breadcrumbs separator=" | "&gt;...&lt;/dry-breadcrumbs&gt;</dry-code>
         </div>
 
         <!-- Icon Examples -->
@@ -240,13 +196,11 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<pre><code>&lt;dry-breadcrumbs&gt;
+            <dry-code language="HTML">&lt;dry-breadcrumbs&gt;
     &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-home"&gt;&lt;/i&gt;'&gt;Home&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item href="/users" icon='&lt;i class="fas fa-users"&gt;&lt;/i&gt;'&gt;Users&lt;/breadcrumb-item&gt;
     &lt;breadcrumb-item icon='&lt;i class="fas fa-cog"&gt;&lt;/i&gt;'&gt;Settings&lt;/breadcrumb-item&gt;
-&lt;/dry-breadcrumbs&gt;</code></pre>
-            </div>
+&lt;/dry-breadcrumbs&gt;</dry-code>
         </div>
 
         <!-- Custom Styling -->
@@ -287,8 +241,7 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<pre><code>&lt;!-- Background container --&gt;
+            <dry-code language="HTML">&lt;!-- Background container --&gt;
 &lt;dry-breadcrumbs breadcrumb_class="p-3 bg-blue-50 rounded-lg border border-blue-200"&gt;
     &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-home text-blue-600"&gt;&lt;/i&gt;'&gt;Home&lt;/breadcrumb-item&gt;
 &lt;/dry-breadcrumbs&gt;
@@ -303,75 +256,11 @@
     &lt;dry-breadcrumbs breadcrumb_class="text-gray-300"&gt;
         &lt;breadcrumb-item href="/"&gt;Terminal&lt;/breadcrumb-item&gt;
     &lt;/dry-breadcrumbs&gt;
-&lt;/div&gt;</code></pre>
-            </div>
+&lt;/div&gt;</dry-code>
         </div>
 
-        <!-- JavaScript API -->
-        <div class="demo-section">
-            <h2 class="demo-title">JavaScript API</h2>
-            <div class="demo-description">
-                Control breadcrumbs programmatically with the built-in API methods.
-            </div>
-
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Interactive Demo</h3>
-                <p class="text-gray-600 mb-4">Use the buttons below to test the JavaScript API methods.</p>
-
-                <dry-breadcrumbs id="api-demo-breadcrumbs">
-                    <breadcrumb-item href="/">Home</breadcrumb-item>
-                    <breadcrumb-item href="/products">Products</breadcrumb-item>
-                </dry-breadcrumbs>
-
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <button id="add-category-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
-                        Add Category
-                    </button>
-                    <button id="set-first-active-btn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
-                        Set First Active
-                    </button>
-                    <button id="change-separator-btn" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
-                        Change Separator
-                    </button>
-                    <button id="get-info-btn" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
-                        Get Info
-                    </button>
-                    <button id="method-chain-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
-                        Method Chain
-                    </button>
-                </div>
-
-                <div id="info-display" class="mt-4 p-3 bg-gray-100 rounded text-sm hidden">
-                    <strong>Breadcrumb Info:</strong>
-                    <div id="info-content"></div>
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>// Get breadcrumbs instance
-const breadcrumbs = document.getElementById('my-breadcrumbs');
-
-// Add new item
-breadcrumbs.addItem('New Category', '/products/new');
-
-// Set active item by index
-breadcrumbs.setActive(0);
-
-// Change separator style
-breadcrumbs.separator = 'slash';
-
-// Get breadcrumb information
-console.log(breadcrumbs.itemCount);   // Number of items
-console.log(breadcrumbs.activeIndex); // Index of active item
-console.log(breadcrumbs.separator);   // Current separator
-
-// Method chaining
-breadcrumbs
-    .addItem('Electronics', '/electronics')
-    .addItem('Phones', '/electronics/phones')
-    .setActive(1);</code></pre>
-                </div>
-            </div>
-        </div>
+        <!-- Component Builder Section -->
+        <div id="breadcrumbs-component-builder"></div>
 
         <!-- Responsive Design -->
         <div class="demo-section">
@@ -415,8 +304,7 @@ breadcrumbs
                 </div>
             </div>
 
-            <div class="code-block">
-<pre><code>&lt;!-- Mobile-friendly with smaller text --&gt;
+            <dry-code language="HTML">&lt;!-- Mobile-friendly with smaller text --&gt;
 &lt;dry-breadcrumbs breadcrumb_class="text-sm"&gt;
     &lt;breadcrumb-item href="/" icon='&lt;i class="fas fa-home"&gt;&lt;/i&gt;'&gt;Home&lt;/breadcrumb-item&gt;
     &lt;!-- Multiple items... --&gt;
@@ -430,8 +318,7 @@ breadcrumbs
         &lt;breadcrumb-item href="/phones"&gt;Phones&lt;/breadcrumb-item&gt;
         &lt;breadcrumb-item&gt;Current Page&lt;/breadcrumb-item&gt;
     &lt;/dry-breadcrumbs&gt;
-&lt;/div&gt;</code></pre>
-            </div>
+&lt;/div&gt;</dry-code>
         </div>
 
         <!-- API Reference -->
@@ -544,54 +431,72 @@ breadcrumbs
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const breadcrumbs = document.getElementById('api-demo-breadcrumbs');
-        const infoDisplay = document.getElementById('info-display');
-        const infoContent = document.getElementById('info-content');
-        
-        let separatorIndex = 0;
-        const separators = ['chevron', 'slash', 'bullet', 'arrow'];
-        
-        // Add Category button
-        document.getElementById('add-category-btn').addEventListener('click', function() {
-            const categories = ['Electronics', 'Smartphones', 'iPhone', 'iPad', 'MacBook', 'Accessories'];
-            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-            breadcrumbs.addItem(randomCategory, `/products/${randomCategory.toLowerCase()}`);
-        });
-        
-        // Set First Active button
-        document.getElementById('set-first-active-btn').addEventListener('click', function() {
-            breadcrumbs.setActive(0);
-        });
-        
-        // Change Separator button
-        document.getElementById('change-separator-btn').addEventListener('click', function() {
-            separatorIndex = (separatorIndex + 1) % separators.length;
-            breadcrumbs.separator = separators[separatorIndex];
-        });
-        
-        // Get Info button
-        document.getElementById('get-info-btn').addEventListener('click', function() {
-            const info = `
-                <div><strong>Item Count:</strong> ${breadcrumbs.itemCount}</div>
-                <div><strong>Active Index:</strong> ${breadcrumbs.activeIndex}</div>
-                <div><strong>Current Separator:</strong> ${breadcrumbs.separator}</div>
-            `;
-            infoContent.innerHTML = info;
-            infoDisplay.classList.remove('hidden');
-        });
-        
-        // Method Chain button
-        document.getElementById('method-chain-btn').addEventListener('click', function() {
-            breadcrumbs
-                .addItem('Chained Item 1', '/chain1')
-                .addItem('Chained Item 2', '/chain2')
-                .setActive(1);
+        // Initialize Component Builder
+        new ComponentBuilder({
+            elementId: 'breadcrumbs-component-builder',
+            componentTag: 'dry-breadcrumbs',
+            title: 'Breadcrumbs Component Builder',
+            description: 'Try changing the breadcrumbs properties dynamically and see the results in real-time.',
             
-            infoContent.innerHTML = '<div><strong>Method chaining completed!</strong> Added 2 items and set active to index 1.</div>';
-            infoDisplay.classList.remove('hidden');
+            properties: {
+                separator: {
+                    type: 'select',
+                    label: 'Separator',
+                    options: [
+                        { value: 'chevron', label: 'Chevron' },
+                        { value: 'slash', label: 'Slash' },
+                        { value: 'bullet', label: 'Bullet' },
+                        { value: 'arrow', label: 'Arrow' }
+                    ],
+                    default: 'chevron'
+                },
+                breadcrumb_class: {
+                    type: 'text',
+                    label: 'Breadcrumb Class',
+                    default: ''
+                }
+            },
+            
+            defaults: {
+                separator: 'chevron',
+                breadcrumb_class: ''
+            },
+            
+            previewWrapper: function(componentHTML) {
+                return `<div class="w-full max-w-2xl">${componentHTML}</div>`;
+            },
+            
+            contentGenerator: function(values) {
+                return `
+                    <breadcrumb-item href="/" icon='<svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L9 5.414V17a1 1 0 102 0V5.414l5.293 5.293a1 1 0 001.414-1.414l-7-7z"></path></svg>'>Home</breadcrumb-item>
+                    <breadcrumb-item href="/products" icon='<svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h4a2 2 0 002-2v-4h2v4a2 2 0 002 2h4a2 2 0 002-2V7l-7-5zM6 18v-4h8v4H6z" clip-rule="evenodd"></path></svg>'>Products</breadcrumb-item>
+                    <breadcrumb-item href="/products/electronics" icon='<svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg>'>Electronics</breadcrumb-item>
+                    <breadcrumb-item icon='<svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>'>Smartphones</breadcrumb-item>
+                `;
+            },
+            
+            codeGenerator: function(values, config) {
+                const attributes = Object.entries(values)
+                    .filter(([key, value]) => {
+                        const defaultValue = config.defaults[key];
+                        return value !== defaultValue && value !== false && value !== '';
+                    })
+                    .map(([key, value]) => `${key}="${value}"`)
+                    .join(' ');
+                
+                return `<${config.componentTag}${attributes ? ' ' + attributes : ''}>
+    <breadcrumb-item href="/" icon="...">Home</breadcrumb-item>
+    <breadcrumb-item href="/products" icon="...">Products</breadcrumb-item>
+    <breadcrumb-item href="/products/electronics" icon="...">Electronics</breadcrumb-item>
+    <breadcrumb-item icon="...">Current Page</breadcrumb-item>
+</${config.componentTag}>`;
+            }
         });
     });
     </script>
+    
+    
 </div>
+<div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <!-- Navigation -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto px-4 xl:px-0">
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="../index.html" class="flex items-center">
@@ -18,13 +18,34 @@
                 </a>
             </div>
             <!-- Mobile menu button -->
-            <div class="md:hidden flex items-center">
-                <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" x-data="{ open: false }" @click="open = !open">
+            <div class="md:hidden flex items-center" x-data="{ open: false }">
+                <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" @click="open = !open">
                     <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
                         <path x-show="!open" fill-rule="evenodd" d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
                         <path x-show="open" fill-rule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"/>
                     </svg>
                 </button>
+                
+                <!-- Mobile menu dropdown -->
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     class="absolute top-16 right-4 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50"
+                     @click.away="open = false">
+                    <div class="py-2">
+                        <a href="../index.html#features" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Features</a>
+                        <a href="../index.html#components" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Components</a>
+                        <a href="../docs/" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Documentation</a>
+                        <a href="./index.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Examples</a>
+                        <a href="https://github.com/capless/dry2" target="_blank" class="block px-4 py-2 text-blue-600 hover:bg-blue-50">
+                            <i class="fab fa-github mr-2"></i>GitHub
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

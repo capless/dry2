@@ -3,198 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>select Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
+    <title>Select Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" crossorigin="anonymous"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
-
-
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-    </style>
+    <script src="../src/dry2/base.js"></script>
+    <script src="../src/dry2/select.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
 
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
-    <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
-    
-    <!-- Breadcrumbs -->
-    <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <dry-breadcrumbs>
-                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
-                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
-                <breadcrumb-item active>Select Component</breadcrumb-item>
-            </dry-breadcrumbs>
-        </div>
+<body class="bg-gray-50">
+<!-- Include Navigation -->
+<div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
+
+<!-- Breadcrumbs -->
+<div class="bg-white border-b">
+    <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
+        <dry-breadcrumbs>
+            <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+            <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+            <breadcrumb-item active>Select Component</breadcrumb-item>
+        </dry-breadcrumbs>
     </div>
+</div>
 
 <div class="p-8">
     <div class="max-w-6xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Select Component Showcase</h1>
-        <p class="text-gray-600 mb-8">Advanced select component with search, multi-select, and Alpine.js integration.</p>
+        <p class="text-gray-600 mb-8">Advanced select component with search, multi-select, and Alpine.js
+            integration.</p>
 
         <!-- Introduction -->
         <div class="demo-section">
             <div class="demo-container">
                 <p class="text-gray-700 mb-4">
-                    The <code class="bg-gray-200 px-2 py-1 rounded text-sm">dry-select</code> component provides an enhanced select experience with search functionality, 
-                    multi-select capabilities, and smooth animations. It integrates seamlessly with Alpine.js for reactive behavior.
+                    The <code class="bg-gray-200 px-2 py-1 rounded text-sm">dry-select</code> component provides
+                    enhanced select functionality
+                    with search capabilities, multi-select support, and seamless Alpine.js integration for modern web
+                    applications.
                 </p>
                 <div class="bg-blue-50 border border-blue-200 rounded p-4">
                     <h4 class="font-semibold text-blue-900 mb-2">Key Features:</h4>
                     <ul class="text-blue-800 text-sm space-y-1">
-                        <li>" Searchable dropdown with instant filtering</li>
-                        <li>" Single and multi-select modes</li>
-                        <li>" Customizable styling via attributes</li>
-                        <li>" Keyboard navigation support</li>
-                        <li>" Form integration with hidden inputs</li>
-                        <li>" Programmatic API for value manipulation</li>
-                        <li>" Accessible with proper ARIA attributes</li>
-                        <li>" Alpine.js integration for reactive data</li>
+                        <li>• Single and multi-select modes</li>
+                        <li>• Built-in search functionality</li>
+                        <li>• Customizable placeholder text</li>
+                        <li>• Pre-selected option support</li>
+                        <li>• JavaScript API for programmatic control</li>
+                        <li>• Alpine.js integration</li>
+                        <li>• Accessible with keyboard navigation</li>
                     </ul>
                 </div>
             </div>
@@ -204,16 +67,13 @@
         <div class="demo-section">
             <h2 class="demo-title">Basic Select Examples</h2>
             <div class="demo-description">
-                Basic select functionality with different configurations and styling options.
+                Simple select dropdowns with various options and configurations.
             </div>
 
-            <!-- Basic Single Select -->
             <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Basic Single Select</h3>
-                <p class="text-gray-600 mb-4">A simple single-select dropdown with search functionality.</p>
-
-                <div class="max-w-md">
-                    <label for="basic-select" class="block text-sm font-medium text-gray-700 mb-2">Choose a fruit:</label>
+                <div class="max-w-md mb-4">
+                    <label for="basic-select" class="block text-sm font-medium text-gray-700 mb-2">Choose a
+                        fruit:</label>
                     <dry-select name="fruit" placeholder="Select a fruit...">
                         <option value="apple">Apple</option>
                         <option value="banana">Banana</option>
@@ -225,27 +85,32 @@
                     </dry-select>
                 </div>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select name="fruit" placeholder="Select a fruit..."&gt;
-    &lt;option value="apple"&gt;Apple&lt;/option&gt;
-    &lt;option value="banana"&gt;Banana&lt;/option&gt;
-    &lt;option value="cherry"&gt;Cherry&lt;/option&gt;
-    &lt;option value="date"&gt;Date&lt;/option&gt;
-    &lt;option value="elderberry"&gt;Elderberry&lt;/option&gt;
-    &lt;option value="fig"&gt;Fig&lt;/option&gt;
-    &lt;option value="grape"&gt;Grape&lt;/option&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
+                <dry-code language="HTML">&lt;dry-select name="fruit" placeholder="Select a fruit..."&gt;
+                    &lt;option value="apple"&gt;Apple&lt;/option&gt;
+                    &lt;option value="banana"&gt;Banana&lt;/option&gt;
+                    &lt;option value="cherry"&gt;Cherry&lt;/option&gt;
+                    &lt;option value="date"&gt;Date&lt;/option&gt;
+                    &lt;option value="elderberry"&gt;Elderberry&lt;/option&gt;
+                    &lt;option value="fig"&gt;Fig&lt;/option&gt;
+                    &lt;option value="grape"&gt;Grape&lt;/option&gt;
+                    &lt;/dry-select&gt;
+                </dry-code>
+            </div>
+        </div>
+
+        <!-- Multi-Select -->
+        <div class="demo-section">
+            <h2 class="demo-title">Multi-Select</h2>
+            <div class="demo-description">
+                Select multiple options with built-in search and tag display.
             </div>
 
-            <!-- Multi-Select -->
             <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Multi-Select</h3>
-                <p class="text-gray-600 mb-4">Select multiple options with searchable tags interface.</p>
-
-                <div class="max-w-md">
-                    <label for="multi-select" class="block text-sm font-medium text-gray-700 mb-2">Choose programming languages:</label>
-                    <dry-select multiple name="languages" placeholder="Select languages..." search-placeholder="Search languages...">
+                <div class="max-w-md mb-4">
+                    <label for="multi-select" class="block text-sm font-medium text-gray-700 mb-2">Choose programming
+                        languages:</label>
+                    <dry-select multiple name="languages" placeholder="Select languages..."
+                                search-placeholder="Search languages...">
                         <option value="javascript">JavaScript</option>
                         <option value="python">Python</option>
                         <option value="java">Java</option>
@@ -259,29 +124,34 @@
                     </dry-select>
                 </div>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select multiple name="languages" placeholder="Select languages..." search-placeholder="Search languages..."&gt;
-    &lt;option value="javascript"&gt;JavaScript&lt;/option&gt;
-    &lt;option value="python"&gt;Python&lt;/option&gt;
-    &lt;option value="java"&gt;Java&lt;/option&gt;
-    &lt;option value="csharp"&gt;C#&lt;/option&gt;
-    &lt;option value="php"&gt;PHP&lt;/option&gt;
-    &lt;option value="ruby"&gt;Ruby&lt;/option&gt;
-    &lt;option value="go"&gt;Go&lt;/option&gt;
-    &lt;option value="rust"&gt;Rust&lt;/option&gt;
-    &lt;option value="typescript"&gt;TypeScript&lt;/option&gt;
-    &lt;option value="kotlin"&gt;Kotlin&lt;/option&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
+                <dry-code language="HTML">&lt;dry-select multiple name="languages" placeholder="Select languages..."
+                    search-placeholder="Search languages..."&gt;
+                    &lt;option value="javascript"&gt;JavaScript&lt;/option&gt;
+                    &lt;option value="python"&gt;Python&lt;/option&gt;
+                    &lt;option value="java"&gt;Java&lt;/option&gt;
+                    &lt;option value="csharp"&gt;C#&lt;/option&gt;
+                    &lt;option value="php"&gt;PHP&lt;/option&gt;
+                    &lt;option value="ruby"&gt;Ruby&lt;/option&gt;
+                    &lt;option value="go"&gt;Go&lt;/option&gt;
+                    &lt;option value="rust"&gt;Rust&lt;/option&gt;
+                    &lt;option value="typescript"&gt;TypeScript&lt;/option&gt;
+                    &lt;option value="kotlin"&gt;Kotlin&lt;/option&gt;
+                    &lt;/dry-select&gt;
+                </dry-code>
+            </div>
+        </div>
+
+        <!-- Pre-selected Options -->
+        <div class="demo-section">
+            <h2 class="demo-title">Pre-selected Options</h2>
+            <div class="demo-description">
+                Select components with pre-selected values using the selected attribute.
             </div>
 
-            <!-- Pre-selected Options -->
             <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Pre-selected Options</h3>
-                <p class="text-gray-600 mb-4">Select with pre-selected values using the selected attribute.</p>
-
-                <div class="max-w-md">
-                    <label for="preselected" class="block text-sm font-medium text-gray-700 mb-2">Favorite colors:</label>
+                <div class="max-w-md mb-4">
+                    <label for="preselected" class="block text-sm font-medium text-gray-700 mb-2">Favorite
+                        colors:</label>
                     <dry-select multiple name="colors" placeholder="Choose colors...">
                         <option value="red">Red</option>
                         <option value="blue" selected>Blue</option>
@@ -292,271 +162,69 @@
                     </dry-select>
                 </div>
 
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select multiple name="colors" placeholder="Choose colors..."&gt;
-    &lt;option value="red"&gt;Red&lt;/option&gt;
-    &lt;option value="blue" selected&gt;Blue&lt;/option&gt;
-    &lt;option value="green" selected&gt;Green&lt;/option&gt;
-    &lt;option value="yellow"&gt;Yellow&lt;/option&gt;
-    &lt;option value="purple"&gt;Purple&lt;/option&gt;
-    &lt;option value="orange"&gt;Orange&lt;/option&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
+                <dry-code language="HTML">&lt;dry-select multiple name="colors" placeholder="Choose colors..."&gt;
+                    &lt;option value="red"&gt;Red&lt;/option&gt;
+                    &lt;option value="blue" selected&gt;Blue&lt;/option&gt;
+                    &lt;option value="green" selected&gt;Green&lt;/option&gt;
+                    &lt;option value="yellow"&gt;Yellow&lt;/option&gt;
+                    &lt;option value="purple"&gt;Purple&lt;/option&gt;
+                    &lt;option value="orange"&gt;Orange&lt;/option&gt;
+                    &lt;/dry-select&gt;
+                </dry-code>
             </div>
         </div>
 
-        <!-- Styling Examples -->
-        <div class="demo-section">
-            <h2 class="demo-title">Custom Styling</h2>
-            <div class="demo-description">
-                Examples showing different styling options using button-class and dropdown-class attributes.
-            </div>
+        <!-- Component Builder Section -->
+        <div id="select-component-builder"></div>
 
-            <!-- Custom Button Styling -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Custom Button Styling</h3>
-                <p class="text-gray-600 mb-4">Select with custom button styling using gradient colors.</p>
-
-                <div class="max-w-md">
-                    <dry-select 
-                        name="styled-select"
-                        placeholder="Choose an option..."
-                        button-class="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl cursor-pointer focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-lg hover:shadow-xl">
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                        <option value="option4">Option 4</option>
-                    </dry-select>
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select 
-    name="styled-select"
-    placeholder="Choose an option..."
-    button-class="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl cursor-pointer focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-lg hover:shadow-xl"&gt;
-    &lt;option value="option1"&gt;Option 1&lt;/option&gt;
-    &lt;option value="option2"&gt;Option 2&lt;/option&gt;
-    &lt;option value="option3"&gt;Option 3&lt;/option&gt;
-    &lt;option value="option4"&gt;Option 4&lt;/option&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
-            </div>
-
-            <!-- Custom Dropdown Styling -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Custom Dropdown Styling</h3>
-                <p class="text-gray-600 mb-4">Select with custom dropdown styling and limited height.</p>
-
-                <div class="max-w-md">
-                    <dry-select 
-                        name="dropdown-styled"
-                        placeholder="Select a country..."
-                        dropdown-class="absolute z-10 w-full mt-1 bg-gray-50 border-2 border-gray-300 rounded-xl shadow-2xl overflow-auto"
-                        max-height="10rem">
-                        <option value="us">United States</option>
-                        <option value="ca">Canada</option>
-                        <option value="uk">United Kingdom</option>
-                        <option value="de">Germany</option>
-                        <option value="fr">France</option>
-                        <option value="jp">Japan</option>
-                        <option value="au">Australia</option>
-                        <option value="br">Brazil</option>
-                        <option value="in">India</option>
-                        <option value="cn">China</option>
-                        <option value="mx">Mexico</option>
-                        <option value="it">Italy</option>
-                    </dry-select>
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select 
-    name="dropdown-styled"
-    placeholder="Select a country..."
-    dropdown-class="absolute z-10 w-full mt-1 bg-gray-50 border-2 border-gray-300 rounded-xl shadow-2xl overflow-auto"
-    max-height="10rem"&gt;
-    &lt;option value="us"&gt;United States&lt;/option&gt;
-    &lt;option value="ca"&gt;Canada&lt;/option&gt;
-    &lt;!-- ... more options ... --&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- State Examples -->
-        <div class="demo-section">
-            <h2 class="demo-title">Component States</h2>
-            <div class="demo-description">
-                Examples showing different component states including disabled options and disabled component.
-            </div>
-
-            <!-- Disabled Component -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Disabled Select</h3>
-                <p class="text-gray-600 mb-4">Select component in disabled state.</p>
-
-                <div class="max-w-md">
-                    <dry-select disabled name="disabled-select" placeholder="This select is disabled">
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                    </dry-select>
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select disabled name="disabled-select" placeholder="This select is disabled"&gt;
-    &lt;option value="option1"&gt;Option 1&lt;/option&gt;
-    &lt;option value="option2"&gt;Option 2&lt;/option&gt;
-    &lt;option value="option3"&gt;Option 3&lt;/option&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
-            </div>
-
-            <!-- Disabled Options -->
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Disabled Options</h3>
-                <p class="text-gray-600 mb-4">Select with some options disabled (they won't appear in dropdown).</p>
-
-                <div class="max-w-md">
-                    <dry-select name="disabled-options" placeholder="Some options are disabled">
-                        <option value="available1">Available Option 1</option>
-                        <option value="disabled1" disabled>Disabled Option 1</option>
-                        <option value="available2">Available Option 2</option>
-                        <option value="disabled2" disabled>Disabled Option 2</option>
-                        <option value="available3">Available Option 3</option>
-                    </dry-select>
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>&lt;dry-select name="disabled-options" placeholder="Some options are disabled"&gt;
-    &lt;option value="available1"&gt;Available Option 1&lt;/option&gt;
-    &lt;option value="disabled1" disabled&gt;Disabled Option 1&lt;/option&gt;
-    &lt;option value="available2"&gt;Available Option 2&lt;/option&gt;
-    &lt;option value="disabled2" disabled&gt;Disabled Option 2&lt;/option&gt;
-    &lt;option value="available3"&gt;Available Option 3&lt;/option&gt;
-&lt;/dry-select&gt;</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- JavaScript API -->
-        <div class="demo-section">
-            <h2 class="demo-title">JavaScript API</h2>
-            <div class="demo-description">
-                Examples showing how to interact with the select component programmatically.
-            </div>
-
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Programmatic Control</h3>
-                <p class="text-gray-600 mb-4">Control the select component using JavaScript methods.</p>
-
-                <div class="max-w-md mb-4">
-                    <dry-select id="api-select" multiple name="api-demo" placeholder="API Demo Select">
-                        <option value="item1">Item 1</option>
-                        <option value="item2">Item 2</option>
-                        <option value="item3">Item 3</option>
-                        <option value="item4">Item 4</option>
-                        <option value="item5">Item 5</option>
-                    </dry-select>
-                </div>
-
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <button onclick="setValue(['item1', 'item3'])" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm">
-                        Set Items 1 & 3
-                    </button>
-                    <button onclick="getValue()" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded text-sm">
-                        Get Value
-                    </button>
-                    <button onclick="clearSelection()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm">
-                        Clear
-                    </button>
-                    <button onclick="selectAll()" class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-2 rounded text-sm">
-                        Select All
-                    </button>
-                </div>
-
-                <div id="api-output" class="bg-gray-100 p-3 rounded text-sm text-gray-700 min-h-[2rem]">
-                    Use the buttons above to test the API
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>const select = document.getElementById('api-select');
-
-// Set value (single or array for multi-select)
-select.value = ['item1', 'item3'];
-
-// Get current value
-const currentValue = select.value;
-
-// Clear all selections
-select.clear();
-
-// Select all options (multi-select only)
-select.selectAll();
-
-// Listen for changes
-select.addEventListener('change', (event) => {
-    console.log('New value:', event.detail.value);
-});</code></pre>
-                </div>
-            </div>
-        </div>
 
         <!-- API Reference -->
         <div class="demo-section">
             <h2 class="demo-title">API Reference</h2>
-            
+
             <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">Attributes</h3>
+                <h3 class="text-lg font-semibold mb-4">Select Component Attributes</h3>
                 <div class="overflow-x-auto">
                     <table class="min-w-full border-collapse border border-gray-300">
                         <thead>
-                            <tr class="bg-gray-50">
-                                <th class="border border-gray-300 px-4 py-2 text-left">Attribute</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
-                            </tr>
+                        <tr class="bg-gray-50">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Attribute</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Type</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>multiple</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Enables multi-select mode</td>
-                                <td class="border border-gray-300 px-4 py-2">false</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>disabled</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Disables the entire component</td>
-                                <td class="border border-gray-300 px-4 py-2">false</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>placeholder</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Text shown when no option is selected</td>
-                                <td class="border border-gray-300 px-4 py-2">"Select an option"</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>search-placeholder</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Placeholder for search input in multi-select mode</td>
-                                <td class="border border-gray-300 px-4 py-2">"Search options..."</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>button-class</code></td>
-                                <td class="border border-gray-300 px-4 py-2">CSS classes for the main button</td>
-                                <td class="border border-gray-300 px-4 py-2">Default Tailwind classes</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>dropdown-class</code></td>
-                                <td class="border border-gray-300 px-4 py-2">CSS classes for the dropdown</td>
-                                <td class="border border-gray-300 px-4 py-2">Default Tailwind classes</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>max-height</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Maximum height of dropdown</td>
-                                <td class="border border-gray-300 px-4 py-2">"15rem"</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>name</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Form field name for hidden inputs</td>
-                                <td class="border border-gray-300 px-4 py-2">""</td>
-                            </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2"><code>multiple</code></td>
+                            <td class="border border-gray-300 px-4 py-2">boolean</td>
+                            <td class="border border-gray-300 px-4 py-2">false</td>
+                            <td class="border border-gray-300 px-4 py-2">Enable multi-select mode</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-2"><code>placeholder</code></td>
+                            <td class="border border-gray-300 px-4 py-2">string</td>
+                            <td class="border border-gray-300 px-4 py-2">'Select...'</td>
+                            <td class="border border-gray-300 px-4 py-2">Placeholder text when no selection</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2"><code>search-placeholder</code></td>
+                            <td class="border border-gray-300 px-4 py-2">string</td>
+                            <td class="border border-gray-300 px-4 py-2">'Search...'</td>
+                            <td class="border border-gray-300 px-4 py-2">Placeholder for search input</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-2"><code>name</code></td>
+                            <td class="border border-gray-300 px-4 py-2">string</td>
+                            <td class="border border-gray-300 px-4 py-2">null</td>
+                            <td class="border border-gray-300 px-4 py-2">Form field name</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2"><code>disabled</code></td>
+                            <td class="border border-gray-300 px-4 py-2">boolean</td>
+                            <td class="border border-gray-300 px-4 py-2">false</td>
+                            <td class="border border-gray-300 px-4 py-2">Disable the select component</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -567,175 +235,140 @@ select.addEventListener('change', (event) => {
                 <div class="overflow-x-auto">
                     <table class="min-w-full border-collapse border border-gray-300">
                         <thead>
-                            <tr class="bg-gray-50">
-                                <th class="border border-gray-300 px-4 py-2 text-left">Method</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Parameters</th>
-                            </tr>
+                        <tr class="bg-gray-50">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Method</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>value</code> (getter)</td>
-                                <td class="border border-gray-300 px-4 py-2">Gets current selected value(s)</td>
-                                <td class="border border-gray-300 px-4 py-2">None</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>value</code> (setter)</td>
-                                <td class="border border-gray-300 px-4 py-2">Sets selected value(s)</td>
-                                <td class="border border-gray-300 px-4 py-2">String or Array</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>clear()</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Clears all selections</td>
-                                <td class="border border-gray-300 px-4 py-2">None</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><code>selectAll()</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Selects all available options (multi-select only)</td>
-                                <td class="border border-gray-300 px-4 py-2">None</td>
-                            </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2"><code>setValue(value)</code></td>
+                            <td class="border border-gray-300 px-4 py-2">Set selected value(s)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-2"><code>getValue()</code></td>
+                            <td class="border border-gray-300 px-4 py-2">Get current selected value(s)</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2"><code>clear()</code></td>
+                            <td class="border border-gray-300 px-4 py-2">Clear all selections</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-2"><code>selectAll()</code></td>
+                            <td class="border border-gray-300 px-4 py-2">Select all options (multi-select only)</td>
+                        </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-4">Events</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="border border-gray-300 px-4 py-2 text-left">Event</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Detail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2"><code>change</code></td>
-                                <td class="border border-gray-300 px-4 py-2">Fired when selection changes</td>
-                                <td class="border border-gray-300 px-4 py-2"><code>{ value: string | string[] }</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form Integration -->
-        <div class="demo-section">
-            <h2 class="demo-title">Form Integration</h2>
-            
-            <div class="demo-container">
-                <h3 class="text-lg font-semibold mb-3">Form Example</h3>
-                <p class="text-gray-600 mb-4">Select components integrate with HTML forms using hidden inputs.</p>
-
-                <form onsubmit="handleFormSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Single Select:</label>
-                        <dry-select name="single_field" placeholder="Choose one...">
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                        </dry-select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Multi Select:</label>
-                        <dry-select multiple name="multi_field" placeholder="Choose multiple...">
-                            <option value="item1">Item 1</option>
-                            <option value="item2">Item 2</option>
-                            <option value="item3">Item 3</option>
-                            <option value="item4">Item 4</option>
-                        </dry-select>
-                    </div>
-
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                        Submit Form
-                    </button>
-                </form>
-
-                <div id="form-output" class="mt-4 p-3 bg-gray-100 rounded text-sm text-gray-700 min-h-[2rem]">
-                    Submit the form to see the values
-                </div>
-
-                <div class="code-block mt-4">
-<pre><code>&lt;form onsubmit="handleFormSubmit(event)"&gt;
-    &lt;!-- Single select creates one hidden input --&gt;
-    &lt;dry-select name="single_field" placeholder="Choose one..."&gt;
-        &lt;option value="option1"&gt;Option 1&lt;/option&gt;
-        &lt;option value="option2"&gt;Option 2&lt;/option&gt;
-    &lt;/dry-select&gt;
-
-    &lt;!-- Multi select creates multiple hidden inputs with same name --&gt;
-    &lt;dry-select multiple name="multi_field" placeholder="Choose multiple..."&gt;
-        &lt;option value="item1"&gt;Item 1&lt;/option&gt;
-        &lt;option value="item2"&gt;Item 2&lt;/option&gt;
-    &lt;/dry-select&gt;
-
-    &lt;button type="submit"&gt;Submit&lt;/button&gt;
-&lt;/form&gt;</code></pre>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../src/dry2/select.js"></script>
-    <!-- JavaScript for API examples and form handling -->
+
     <script>
+        // JavaScript for API examples
         function setValue(value) {
             const select = document.getElementById('api-select');
-            select.value = value;
-            document.getElementById('api-output').textContent = `Set value to: ${JSON.stringify(value)}`;
+            if (select) {
+                select.value = value;
+                document.getElementById('api-output').textContent = `Set value to: ${JSON.stringify(value)}`;
+            }
         }
 
         function getValue() {
             const select = document.getElementById('api-select');
-            const value = select.value;
-            document.getElementById('api-output').textContent = `Current value: ${JSON.stringify(value)}`;
+            if (select) {
+                const value = select.value;
+                document.getElementById('api-output').textContent = `Current value: ${JSON.stringify(value)}`;
+            }
         }
 
         function clearSelection() {
             const select = document.getElementById('api-select');
-            select.clear();
-            document.getElementById('api-output').textContent = 'Cleared all selections';
+            if (select) {
+                select.clear();
+                document.getElementById('api-output').textContent = 'Cleared all selections';
+            }
         }
 
         function selectAll() {
             const select = document.getElementById('api-select');
-            select.selectAll();
-            document.getElementById('api-output').textContent = 'Selected all options';
+            if (select) {
+                select.selectAll();
+                document.getElementById('api-output').textContent = 'Selected all options';
+            }
         }
 
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const data = {};
-            
-            for (let [key, value] of formData.entries()) {
-                if (data[key]) {
-                    if (Array.isArray(data[key])) {
-                        data[key].push(value);
-                    } else {
-                        data[key] = [data[key], value];
-                    }
-                } else {
-                    data[key] = value;
-                }
-            }
-            
-            document.getElementById('form-output').textContent = `Form data: ${JSON.stringify(data, null, 2)}`;
-        }
+        // Make functions global
+        window.setValue = setValue;
+        window.getValue = getValue;
+        window.clearSelection = clearSelection;
+        window.selectAll = selectAll;
 
         // Add change event listeners for demo
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function () {
             const apiSelect = document.getElementById('api-select');
             if (apiSelect) {
                 apiSelect.addEventListener('change', (event) => {
                     console.log('API Select changed:', event.detail.value);
                 });
             }
+
+            // Initialize Component Builder
+            new ComponentBuilder({
+                elementId: 'select-component-builder',
+                componentTag: 'dry-select',
+                title: 'Select Component Builder',
+                description: 'Try changing the select properties dynamically and see the results in real-time.',
+
+                properties: {
+                    multiple: {
+                        type: 'checkbox',
+                        label: 'Multiple Selection',
+                        default: false
+                    },
+                    disabled: {
+                        type: 'checkbox',
+                        label: 'Disabled',
+                        default: false
+                    },
+                    placeholder: {
+                        type: 'text',
+                        label: 'Placeholder Text',
+                        default: 'Choose an option...'
+                    },
+                    'search-placeholder': {
+                        type: 'text',
+                        label: 'Search Placeholder',
+                        default: 'Search options...'
+                    }
+                },
+
+                defaults: {
+                    multiple: false,
+                    disabled: false,
+                    placeholder: 'Choose an option...',
+                    'search-placeholder': 'Search options...'
+                },
+
+                contentGenerator: function (values) {
+                    return `
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="cherry" selected>Cherry</option>
+    <option value="date">Date</option>
+    <option value="elderberry">Elderberry</option>
+    <option value="fig">Fig</option>
+    <option value="grape">Grape</option>
+    <option value="kiwi">Kiwi</option>
+    <option value="mango">Mango</option>
+    <option value="orange">Orange</option>`;
+                }
+            });
         });
     </script>
+
+
 </div>
+<div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

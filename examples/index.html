@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRY2 Web Components Library</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
         .component-card {
@@ -28,22 +30,14 @@
             -webkit-text-fill-color: transparent;
         }
     </style>
-    <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../dist/dry2.js"></script>
 </head>
 <body class="bg-gray-100">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
-    <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item active>Examples</breadcrumb-item>
@@ -51,37 +45,32 @@
         </div>
     </div>
 
-<header class="bg-white shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold text-gray-900">DRY2 Web Components Library</h1>
+<div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">DRY2 Web Components Library</h1>
+                <p class="text-lg text-gray-600">Explore our collection of web components based on user stories. Each component
+                    has its own showcase page with examples and API documentation.</p>
+            </div>
             <a href="https://github.com/capless/dry2" target="_blank" class="text-gray-500 hover:text-gray-700">
                 <i class="fab fa-github text-2xl"></i>
             </a>
         </div>
-    </div>
-</header>
-
-<main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Component Showcase</h2>
-        <p class="text-lg text-gray-600">Explore our collection of web components based on user stories. Each component
-            has its own showcase page with examples and API documentation.</p>
-    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Swap Component Card -->
-        <a href="swap-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+        <!-- Accordion Component Card -->
+        <a href="accordion-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900">Swap Component</h3>
-                    <i class="fas fa-exchange-alt text-green-500"></i>
+                    <h3 class="text-xl font-semibold text-gray-900">Accordion Component</h3>
+                    <i class="fas fa-chevron-down text-gray-500"></i>
                 </div>
-                <p class="text-gray-600">A component that swaps between two states or icons based on toggle state.</p>
+                <p class="text-gray-600">A component for displaying collapsible content sections with expand/collapse functionality.</p>
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">toggle</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">states</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">collapsible</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">sections</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">expand</span>
                 </div>
             </div>
         </a>
@@ -121,6 +110,87 @@
             </div>
         </a>
 
+        <!-- Breadcrumbs Component Card -->
+        <a href="breadcrumbs-showcase.html"
+           class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Breadcrumbs Component</h3>
+                    <i class="fas fa-chevron-right text-amber-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying the current location within a website's
+                    hierarchy.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">separators</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">links</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Button Component Card -->
+        <a href="button-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Button Component</h3>
+                    <i class="fas fa-hand-pointer text-blue-500"></i>
+                </div>
+                <p class="text-gray-600">Simple button component with variants, sizes, and Font Awesome icons.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">variants</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">sizes</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card Component Card -->
+        <a href="card-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Card Component</h3>
+                    <i class="fas fa-id-card text-purple-500"></i>
+                </div>
+                <p class="text-gray-600">Flexible card component for displaying content with headers, bodies, and actions.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">layout</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">content</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">actions</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Chat Bubble Component Card -->
+        <a href="chat-bubble-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Chat Bubble Component</h3>
+                    <i class="fas fa-comment text-cyan-500"></i>
+                </div>
+                <p class="text-gray-600">Chat bubble component for displaying messages in conversation interfaces.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">messages</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">alignment</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">avatars</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Code Component Card -->
+        <a href="code-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Code Component</h3>
+                    <i class="fas fa-code text-emerald-500"></i>
+                </div>
+                <p class="text-gray-600">Syntax-highlighted code blocks with copy-to-clipboard functionality for multiple programming languages.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">syntax highlighting</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">copy</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">languages</span>
+                </div>
+            </div>
+        </a>
 
         <!-- Countdown Component Card -->
         <a href="countdown-showcase.html"
@@ -136,6 +206,120 @@
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">timer</span>
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">format</span>
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">expiry</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Dialog Component Card -->
+        <a href="dialog-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Dialog Component</h3>
+                    <i class="fas fa-comments text-indigo-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying modal dialogs or popups for user interactions using Ajax via HTMX.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">modal</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">popup</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">ajax</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Drawer Component Card -->
+        <a href="drawer-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Drawer Component</h3>
+                    <i class="fas fa-archive text-blue-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying a side panel that can be opened or closed to show
+                    additional content.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">content</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">overlay</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- QR Component Card -->
+        <a href="qr-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">QR Component</h3>
+                    <i class="fas fa-qrcode text-purple-500"></i>
+                </div>
+                <p class="text-gray-600">A component for generating and displaying QR codes for URLs or text.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">generate</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">scan</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">download</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Select Component Card -->
+        <a href="select-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Select Component</h3>
+                    <i class="fas fa-list text-green-500"></i>
+                </div>
+                <p class="text-gray-600">Advanced select component with search, multi-select, and Alpine.js integration.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">multi-select</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">search</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">alpine</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Stat Component Card -->
+        <a href="stat-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Stat Component</h3>
+                    <i class="fas fa-chart-line text-cyan-500"></i>
+                </div>
+                <p class="text-gray-600">A component for displaying key metrics and statistics with trend
+                    indicators.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">trends</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">comparisons</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">formatting</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Swap Component Card -->
+        <a href="swap-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Swap Component</h3>
+                    <i class="fas fa-exchange-alt text-green-500"></i>
+                </div>
+                <p class="text-gray-600">A component that swaps between two states or icons based on toggle state.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">toggle</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">icons</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">states</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Tabs Component Card -->
+        <a href="tabs-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Tabs Component</h3>
+                    <i class="fas fa-folder-open text-yellow-500"></i>
+                </div>
+                <p class="text-gray-600">A component for organizing content into multiple panels with tab navigation.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">panels</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">content</span>
                 </div>
             </div>
         </a>
@@ -157,57 +341,6 @@
             </div>
         </a>
 
-        <!-- Breadcrumbs Component Card -->
-        <a href="breadcrumbs-showcase.html"
-           class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900">Breadcrumbs Component</h3>
-                    <i class="fas fa-chevron-right text-amber-500"></i>
-                </div>
-                <p class="text-gray-600">A component for displaying the current location within a website's
-                    hierarchy.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">separators</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">links</span>
-                </div>
-            </div>
-        </a>
-
-
-        <!-- Stat Component Card -->
-        <a href="stat-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900">Stat Component</h3>
-                    <i class="fas fa-chart-line text-cyan-500"></i>
-                </div>
-                <p class="text-gray-600">A component for displaying key metrics and statistics with trend
-                    indicators.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">trends</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">comparisons</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">formatting</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- QR Component Card -->
-        <a href="qr-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900">QR Component</h3>
-                    <i class="fas fa-qrcode text-purple-500"></i>
-                </div>
-                <p class="text-gray-600">A component for generating and displaying QR codes for URLs or text.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">generate</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">scan</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">download</span>
-                </div>
-            </div>
-        </a>
         <!-- Toast Component Card -->
         <a href="toast-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
             <div class="p-6">
@@ -223,6 +356,7 @@
                 </div>
             </div>
         </a>
+
         <!-- Toggle Switch Component Card -->
         <a href="toggle-switch-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
             <div class="p-6">
@@ -239,51 +373,12 @@
                 </div>
             </div>
         </a>
-        <!-- Drawer Component Card -->
-        <a href="drawer-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900">Drawer Component</h3>
-                    <i class="fas fa-archive text-blue-500"></i>
-                </div>
-                <p class="text-gray-600">A component for displaying a side panel that can be opened or closed to show
-                    additional content.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">navigation</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">content</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">overlay</span>
-                </div>
-            </div>
-        </a>
-        <!-- Dialog Component Card -->
-        <a href="dialog-showcase.html" class="component-card bg-white rounded-lg shadow overflow-hidden hover:shadow-lg">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900">Dialog Component</h3>
-                    <i class="fas fa-comments text-indigo-500"></i>
-                </div>
-                <p class="text-gray-600">A component for displaying modal dialogs or popups for user interactions using Ajax via HTMX.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">modal</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">popup</span>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">ajax</span>
-                </div>
-            </div>
-        </a>
+
+
     </div>
-
-
-</main>
-
-<footer class="bg-white mt-12">
-    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
-        <p class="text-center text-base text-gray-500">
-            DRY2 Web Components Library — A collection of reusable, accessible web components.
-        </p>
-        <p class="text-center text-sm text-gray-500 mt-2">
-            Based on user stories and implementation by Claude.
-        </p>
     </div>
-</footer>
+</div>
+
+<div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

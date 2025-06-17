@@ -1,0 +1,97 @@
+{
+  "name": "dry2-web-components",
+  "version": "1.0.0",
+  "description": "A comprehensive, accessible web components library built with modern web standards, Alpine.js, and Tailwind CSS",
+  "main": "dist/dry2.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist/",
+    "src/",
+    "docs/",
+    "examples/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "mocha tests/unit/**/*.test.js --require tests/unit/setup.js",
+    "test:unit:coverage": "c8 --reporter=text --reporter=html --reporter=json mocha tests/unit/**/*.test.js --require tests/unit/setup.js",
+    "test:unit:watch": "mocha tests/unit/**/*.test.js --require tests/unit/setup.js --watch",
+    "test:unit:component": "node -e \"const component = process.argv[1]; require('child_process').spawn('mocha', [`tests/unit/components/${component}.test.js`, '--require', 'tests/unit/setup.js'], {stdio: 'inherit'})\"",
+    "test:integration": "karma start tests/integration/karma.conf.js",
+    "test:integration:ci": "karma start tests/integration/karma.conf.js --single-run",
+    "lint": "eslint src/**/*.js tests/**/*.js",
+    "lint:fix": "eslint src/**/*.js tests/**/*.js --fix",
+    "build": "node scripts/build.js",
+    "dev": "node scripts/dev-server.js",
+    "docs": "node scripts/generate-docs.js",
+    "prepublishOnly": "npm run test && npm run lint && npm run build",
+    "version": "npm run build && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/dry2-web-components.git"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "ui-library",
+    "alpine.js",
+    "tailwind-css",
+    "accessibility",
+    "responsive-design",
+    "modern-web",
+    "component-library",
+    "javascript",
+    "html5",
+    "css3",
+    "frontend",
+    "ui-framework"
+  ],
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "url": "https://yourwebsite.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/dry2-web-components/issues"
+  },
+  "homepage": "https://github.com/yourusername/dry2-web-components#readme",
+  "peerDependencies": {
+    "alpinejs": "^3.0.0"
+  },
+  "devDependencies": {
+    "c8": "^8.0.1",
+    "chai": "^4.5.0",
+    "chokidar": "^3.6.0",
+    "eslint": "^8.57.1",
+    "express": "^4.21.2",
+    "jsdom": "^23.2.0",
+    "karma": "^6.4.4",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-mocha": "^2.0.1",
+    "karma-sinon": "^1.0.5",
+    "marked": "^9.1.6",
+    "mocha": "^10.8.2",
+    "terser": "^5.41.0"
+  },
+  "optionalDependencies": {
+    "dompurify": "^3.0.5",
+    "qrious": "^4.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not IE_Mob 11"
+  ]
+}

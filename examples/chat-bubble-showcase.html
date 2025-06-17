@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>chat bubble Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/chat-bubble.js"></script>
     <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -33,27 +34,30 @@
     </div>
 
 <div class="p-8">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-6xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Chat Bubble Component</h1>
         <p class="text-gray-600 mb-8">Display messages in a conversation interface with different styles for sent and received messages.</p>
 
         <!-- Basic Messages -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Basic Messages</h2>
-            <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
-                <dry-chat-bubble type="received" name="Alice" avatar="https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T10:30:00Z">
-                    Hey there! How's it going?
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T10:31:00Z" status="read">
-                    Hi Alice! I'm doing great, thanks for asking. How about you?
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="received" name="Alice" avatar="https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T10:32:00Z">
-                    I'm fantastic! Just finished a great book. Have you read anything interesting lately?
-                </dry-chat-bubble>
+        <section class="demo-section">
+            <h2 class="demo-title">Basic Messages</h2>
+            <div class="demo-container">
+                <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
+                    <dry-chat-bubble type="received" name="Alice" avatar="https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T10:30:00Z">
+                        Hey there! How's it going?
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T10:31:00Z" status="read">
+                        Hi Alice! I'm doing great, thanks for asking. How about you?
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="received" name="Alice" avatar="https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T10:32:00Z">
+                        I'm fantastic! Just finished a great book. Have you read anything interesting lately?
+                    </dry-chat-bubble>
+                </div>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Received message --&gt;
+            <dry-code language="HTML">
+&lt;!-- Received message --&gt;
 &lt;dry-chat-bubble 
     type="received" 
     name="Alice" 
@@ -72,39 +76,44 @@
     timestamp="2024-01-15T10:31:00Z" 
     status="read"&gt;
     Hi Alice! I'm doing great, thanks for asking. How about you?
-&lt;/dry-chat-bubble&gt;</code></pre>
+&lt;/dry-chat-bubble&gt;</dry-code>
         </section>
 
         <!-- Message Grouping -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Message Grouping</h2>
-            <p class="text-gray-600 mb-4">Messages from the same sender can be grouped together for a cleaner look.</p>
-            <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
-                <dry-chat-bubble type="received" name="Bob" avatar="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" group-start>
-                    Hey, I have some exciting news!
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="received">
-                    I just got promoted at work! 🎉
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="received" group-end timestamp="2024-01-15T14:20:00Z">
-                    Want to celebrate tonight?
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start>
-                    That's amazing! Congratulations! 🎊
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent">
-                    I'd love to celebrate with you!
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-end timestamp="2024-01-15T14:22:00Z" status="delivered">
-                    Where should we meet?
-                </dry-chat-bubble>
+        <section class="demo-section">
+            <h2 class="demo-title">Message Grouping</h2>
+            <div class="demo-description">
+                Messages from the same sender can be grouped together for a cleaner look.
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Grouped received messages --&gt;
+            <div class="demo-container">
+                <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
+                    <dry-chat-bubble type="received" name="Bob" avatar="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" group-start>
+                        Hey, I have some exciting news!
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="received">
+                        I just got promoted at work! 🎉
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="received" group-end timestamp="2024-01-15T14:20:00Z">
+                        Want to celebrate tonight?
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start>
+                        That's amazing! Congratulations! 🎊
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent">
+                        I'd love to celebrate with you!
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-end timestamp="2024-01-15T14:22:00Z" status="delivered">
+                        Where should we meet?
+                    </dry-chat-bubble>
+                </div>
+            </div>
+            <dry-code language="HTML">
+&lt;!-- Grouped received messages --&gt;
 &lt;dry-chat-bubble type="received" name="Bob" avatar="..." group-start&gt;
     Hey, I have some exciting news!
 &lt;/dry-chat-bubble&gt;
@@ -128,31 +137,36 @@
 
 &lt;dry-chat-bubble type="sent" group-end timestamp="2024-01-15T14:22:00Z" status="delivered"&gt;
     Where should we meet?
-&lt;/dry-chat-bubble&gt;</code></pre>
+&lt;/dry-chat-bubble&gt;</dry-code>
         </section>
 
         <!-- Message Status -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Message Status</h2>
-            <p class="text-gray-600 mb-4">Sent messages can show different delivery statuses.</p>
-            <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:00:00Z" status="sent">
-                    This message was just sent
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:01:00Z" status="delivered">
-                    This message was delivered
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:02:00Z" status="read">
-                    This message was read
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:03:00Z" status="failed">
-                    This message failed to send
-                </dry-chat-bubble>
+        <section class="demo-section">
+            <h2 class="demo-title">Message Status</h2>
+            <div class="demo-description">
+                Sent messages can show different delivery statuses.
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Different status states --&gt;
+            <div class="demo-container">
+                <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:00:00Z" status="sent">
+                        This message was just sent
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:01:00Z" status="delivered">
+                        This message was delivered
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:02:00Z" status="read">
+                        This message was read
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:03:00Z" status="failed">
+                        This message failed to send
+                    </dry-chat-bubble>
+                </div>
+            </div>
+            <dry-code language="HTML">
+&lt;!-- Different status states --&gt;
 &lt;dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:00:00Z" status="sent"&gt;
     This message was just sent
 &lt;/dry-chat-bubble&gt;
@@ -167,27 +181,30 @@
 
 &lt;dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T15:03:00Z" status="failed"&gt;
     This message failed to send
-&lt;/dry-chat-bubble&gt;</code></pre>
+&lt;/dry-chat-bubble&gt;</dry-code>
         </section>
 
         <!-- Rich Content -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Rich Content</h2>
-            <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
-                <dry-chat-bubble type="received" name="Emma" avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T16:00:00Z">
-                    Check out this amazing photo I took! 📸<br><br>
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop" alt="Beautiful landscape" class="rounded-lg mt-2 max-w-full">
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T16:01:00Z" status="read">
-                    Wow! That's absolutely stunning! 😍 Where was this taken?
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="received" name="Emma" avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T16:02:00Z">
-                    It was at <a href="#" class="text-blue-600 hover:text-blue-800 underline">Yosemite National Park</a>! We should plan a trip there together sometime.
-                </dry-chat-bubble>
+        <section class="demo-section">
+            <h2 class="demo-title">Rich Content</h2>
+            <div class="demo-container">
+                <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
+                    <dry-chat-bubble type="received" name="Emma" avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T16:00:00Z">
+                        Check out this amazing photo I took! 📸<br><br>
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop" alt="Beautiful landscape" class="rounded-lg mt-2 max-w-full">
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T16:01:00Z" status="read">
+                        Wow! That's absolutely stunning! 😍 Where was this taken?
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="received" name="Emma" avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T16:02:00Z">
+                        It was at <a href="#" class="text-blue-600 hover:text-blue-800 underline">Yosemite National Park</a>! We should plan a trip there together sometime.
+                    </dry-chat-bubble>
+                </div>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Message with rich content --&gt;
+            <dry-code language="HTML">
+&lt;!-- Message with rich content --&gt;
 &lt;dry-chat-bubble type="received" name="Emma" avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T16:00:00Z"&gt;
     Check out this amazing photo I took! 📸&lt;br&gt;&lt;br&gt;
     &lt;img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop" alt="Beautiful landscape" class="rounded-lg mt-2 max-w-full"&gt;
@@ -195,204 +212,233 @@
 
 &lt;dry-chat-bubble type="received" name="Emma" avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T16:02:00Z"&gt;
     It was at &lt;a href="#" class="text-blue-600 hover:text-blue-800 underline"&gt;Yosemite National Park&lt;/a&gt;! We should plan a trip there together sometime.
-&lt;/dry-chat-bubble&gt;</code></pre>
+&lt;/dry-chat-bubble&gt;</dry-code>
         </section>
 
         <!-- Long Messages -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Long Messages</h2>
-            <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
-                <dry-chat-bubble type="received" name="Alex" avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T17:00:00Z">
-                    I've been thinking about our conversation yesterday regarding the project proposal. I believe we have a really solid foundation, but there are a few areas where we could strengthen our approach. Specifically, I think we should consider adding more detailed market research and perhaps including some user testimonials to make our case more compelling. What do you think about scheduling a meeting next week to discuss these ideas further?
-                </dry-chat-bubble>
-                
-                <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T17:05:00Z" status="read">
-                    Absolutely! I completely agree with your suggestions. The market research angle is particularly important, and user testimonials would definitely add credibility to our proposal. I'm free Tuesday or Thursday afternoon next week. Would either of those times work for you? We could also invite Sarah from the marketing team since she has experience with similar projects.
-                </dry-chat-bubble>
+        <section class="demo-section">
+            <h2 class="demo-title">Long Messages</h2>
+            <div class="demo-container">
+                <div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
+                    <dry-chat-bubble type="received" name="Alex" avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T17:00:00Z">
+                        I've been thinking about our conversation yesterday regarding the project proposal. I believe we have a really solid foundation, but there are a few areas where we could strengthen our approach. Specifically, I think we should consider adding more detailed market research and perhaps including some user testimonials to make our case more compelling. What do you think about scheduling a meeting next week to discuss these ideas further?
+                    </dry-chat-bubble>
+                    
+                    <dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T17:05:00Z" status="read">
+                        Absolutely! I completely agree with your suggestions. The market research angle is particularly important, and user testimonials would definitely add credibility to our proposal. I'm free Tuesday or Thursday afternoon next week. Would either of those times work for you? We could also invite Sarah from the marketing team since she has experience with similar projects.
+                    </dry-chat-bubble>
+                </div>
             </div>
-            <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto mt-4"><code>&lt;!-- Long message example --&gt;
+            <dry-code language="HTML">
+&lt;!-- Long message example --&gt;
 &lt;dry-chat-bubble type="received" name="Alex" avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T17:00:00Z"&gt;
     I've been thinking about our conversation yesterday regarding the project proposal. I believe we have a really solid foundation, but there are a few areas where we could strengthen our approach. Specifically, I think we should consider adding more detailed market research and perhaps including some user testimonials to make our case more compelling. What do you think about scheduling a meeting next week to discuss these ideas further?
 &lt;/dry-chat-bubble&gt;
 
 &lt;dry-chat-bubble type="sent" group-start group-end timestamp="2024-01-15T17:05:00Z" status="read"&gt;
     Absolutely! I completely agree with your suggestions. The market research angle is particularly important, and user testimonials would definitely add credibility to our proposal. I'm free Tuesday or Thursday afternoon next week. Would either of those times work for you?
-&lt;/dry-chat-bubble&gt;</code></pre>
+&lt;/dry-chat-bubble&gt;</dry-code>
         </section>
 
         <!-- Chat Interface Demo -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Interactive Chat Demo</h2>
-            <div class="bg-white rounded-lg shadow-sm border max-w-2xl">
-                <!-- Chat Header -->
-                <div class="p-4 border-b bg-gray-50 rounded-t-lg">
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b776?w=40&h=40&fit=crop&crop=face" alt="Alice" class="w-10 h-10 rounded-full">
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Alice Johnson</h3>
-                            <p class="text-sm text-gray-500">Online</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chat Messages -->
-                <div id="chat-messages" class="p-4 h-64 overflow-y-auto">
-                    <dry-chat-bubble type="received" name="Alice" avatar="https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face" group-start group-end timestamp="2024-01-15T18:00:00Z">
-                        Welcome to the chat demo! Try sending a message below.
-                    </dry-chat-bubble>
-                </div>
-                
-                <!-- Chat Input -->
-                <div class="p-4 border-t bg-gray-50 rounded-b-lg">
-                    <div class="flex gap-2">
-                        <input 
-                            type="text" 
-                            id="message-input" 
-                            placeholder="Type your message..." 
-                            class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            onkeypress="handleEnterKey(event)">
-                        <button 
-                            onclick="sendMessage()" 
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Send
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Component Builder Section -->
+        <div id="chat-bubble-component-builder"></div>
 
-        <!-- JavaScript API -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JavaScript API</h2>
-            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                <div class="max-w-2xl mb-4">
-                    <dry-chat-bubble id="api-demo-bubble" type="sent" group-start group-end timestamp="2024-01-15T19:00:00Z" status="sent">
-                        Original message content
-                    </dry-chat-bubble>
-                </div>
-                
-                <div class="flex gap-2 mb-4 flex-wrap">
-                    <button onclick="changeStatus()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Change Status</button>
-                    <button onclick="changeType()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Change Type</button>
-                    <button onclick="updateTimestamp()" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Update Timestamp</button>
-                    <button onclick="changeContent()" class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">Change Content</button>
-                </div>
-                
-                <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><code>const bubble = document.getElementById('api-demo-bubble');
-
-// Change message status
-bubble.setStatus('read');
-
-// Update timestamp
-bubble.setTimestamp(new Date().toISOString());
-
-// Change content
-bubble.setContent('New message content');</code></pre>
-            </div>
+        <!-- API Reference -->
+        <section class="demo-section">
+            <h2 class="demo-title">API Reference</h2>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3">Chat Bubble Properties</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Property</th>
+                        <th class="px-4 py-2 text-left">Type</th>
+                        <th class="px-4 py-2 text-left">Default</th>
+                        <th class="px-4 py-2 text-left">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">type</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">'sent'</td>
+                        <td class="px-4 py-2">Message type: 'sent', 'received'</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">name</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">Sender name (for received messages)</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">avatar</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">Avatar image URL (for received messages)</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">status</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">Delivery status: 'sent', 'delivered', 'read', 'failed' (for sent messages)</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">timestamp</td>
+                        <td class="px-4 py-2">string</td>
+                        <td class="px-4 py-2">''</td>
+                        <td class="px-4 py-2">ISO timestamp string</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">group-start</td>
+                        <td class="px-4 py-2">boolean</td>
+                        <td class="px-4 py-2">false</td>
+                        <td class="px-4 py-2">Whether this is the first message in a group</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">group-end</td>
+                        <td class="px-4 py-2">boolean</td>
+                        <td class="px-4 py-2">false</td>
+                        <td class="px-4 py-2">Whether this is the last message in a group</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3">Usage Examples</h3>
+            <table class="min-w-full border border-gray-300 rounded">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Use Case</th>
+                        <th class="px-4 py-2 text-left">Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">Single sent message</td>
+                        <td class="px-4 py-2"><code>&lt;dry-chat-bubble type="sent" group-start group-end&gt;Hello!&lt;/dry-chat-bubble&gt;</code></td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">Single received message</td>
+                        <td class="px-4 py-2"><code>&lt;dry-chat-bubble type="received" name="John" avatar="..." group-start group-end&gt;Hi there!&lt;/dry-chat-bubble&gt;</code></td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">First in group</td>
+                        <td class="px-4 py-2"><code>&lt;dry-chat-bubble type="sent" group-start&gt;First message&lt;/dry-chat-bubble&gt;</code></td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">Middle of group</td>
+                        <td class="px-4 py-2"><code>&lt;dry-chat-bubble type="sent"&gt;Middle message&lt;/dry-chat-bubble&gt;</code></td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-2 font-medium">Last in group</td>
+                        <td class="px-4 py-2"><code>&lt;dry-chat-bubble type="sent" group-end timestamp="..."&gt;Last message&lt;/dry-chat-bubble&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </div>
 
     <script>
-        let messageCounter = 0;
-        let statusIndex = 0;
-        let typeIndex = 0;
-        const statuses = ['sent', 'delivered', 'read', 'failed'];
-        const types = ['sent', 'received'];
-
-        function handleEnterKey(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('message-input');
-            const message = input.value.trim();
-            
-            if (message) {
-                const chatMessages = document.getElementById('chat-messages');
-                const bubble = document.createElement('dry-chat-bubble');
+        // Initialize Component Builder
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComponentBuilder({
+                elementId: 'chat-bubble-component-builder',
+                componentTag: 'dry-chat-bubble',
+                title: 'Chat Bubble Component Builder',
+                description: 'Try changing the chat bubble properties dynamically and see the results in real-time.',
                 
-                bubble.type = 'sent';
-                bubble.setAttribute('group-start', '');
-                bubble.setAttribute('group-end', '');
-                bubble.timestamp = new Date().toISOString();
-                bubble.status = 'sent';
-                bubble.textContent = message;
+                properties: {
+                    type: {
+                        type: 'select',
+                        label: 'Type',
+                        options: [
+                            { value: 'sent', label: 'Sent' },
+                            { value: 'received', label: 'Received' }
+                        ],
+                        default: 'sent'
+                    },
+                    name: {
+                        type: 'text',
+                        label: 'Name (for received)',
+                        default: 'John Doe'
+                    },
+                    avatar: {
+                        type: 'text',
+                        label: 'Avatar URL (for received)',
+                        default: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face'
+                    },
+                    status: {
+                        type: 'select',
+                        label: 'Status (for sent)',
+                        options: [
+                            { value: '', label: 'None' },
+                            { value: 'sent', label: 'Sent' },
+                            { value: 'delivered', label: 'Delivered' },
+                            { value: 'read', label: 'Read' },
+                            { value: 'failed', label: 'Failed' }
+                        ],
+                        default: 'sent'
+                    },
+                    timestamp: {
+                        type: 'text',
+                        label: 'Timestamp (ISO format)',
+                        default: new Date().toISOString()
+                    },
+                    'group-start': {
+                        type: 'checkbox',
+                        label: 'Group Start',
+                        default: true
+                    },
+                    'group-end': {
+                        type: 'checkbox',
+                        label: 'Group End',
+                        default: true
+                    }
+                },
                 
-                chatMessages.appendChild(bubble);
-                input.value = '';
+                defaults: {
+                    type: 'sent',
+                    name: 'John Doe',
+                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face',
+                    status: 'sent',
+                    timestamp: new Date().toISOString(),
+                    'group-start': true,
+                    'group-end': true
+                },
                 
-                // Scroll to bottom
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                previewWrapper: function(componentHTML) {
+                    return `<div class="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">${componentHTML}</div>`;
+                },
                 
-                // Simulate response after delay
-                setTimeout(() => {
-                    const response = document.createElement('dry-chat-bubble');
-                    response.type = 'received';
-                    response.name = 'Alice';
-                    response.avatar = 'https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face';
-                    response.setAttribute('group-start', '');
-                    response.setAttribute('group-end', '');
-                    response.timestamp = new Date().toISOString();
-                    response.textContent = getRandomResponse();
+                contentGenerator: function(values) {
+                    return 'Hello! This is a sample chat message that demonstrates the chat bubble component with the current settings.';
+                },
+                
+                codeGenerator: function(values, config) {
+                    const attributes = Object.entries(values)
+                        .filter(([key, value]) => {
+                            const defaultValue = config.defaults[key];
+                            return value !== defaultValue && value !== false && value !== '';
+                        })
+                        .map(([key, value]) => {
+                            // Handle boolean attributes - if true, just include the attribute name
+                            if (typeof value === 'boolean' && value === true) {
+                                return key;
+                            }
+                            return `${key}="${value}"`;
+                        })
+                        .join(' ');
                     
-                    chatMessages.appendChild(response);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1000);
-            }
-        }
-
-        function getRandomResponse() {
-            const responses = [
-                "That's interesting!",
-                "I see what you mean.",
-                "Thanks for sharing that.",
-                "Could you tell me more?",
-                "That sounds great!",
-                "I agree with you.",
-                "That's a good point."
-            ];
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
-
-        function changeStatus() {
-            const bubble = document.getElementById('api-demo-bubble');
-            statusIndex = (statusIndex + 1) % statuses.length;
-            bubble.setStatus(statuses[statusIndex]);
-        }
-
-        function changeType() {
-            const bubble = document.getElementById('api-demo-bubble');
-            typeIndex = (typeIndex + 1) % types.length;
-            bubble.type = types[typeIndex];
-            
-            if (types[typeIndex] === 'received') {
-                bubble.name = 'Alice';
-                bubble.avatar = 'https://images.unsplash.com/photo-1494790108755-2616b612b776?w=32&h=32&fit=crop&crop=face';
-            } else {
-                bubble.name = '';
-                bubble.avatar = '';
-            }
-        }
-
-        function updateTimestamp() {
-            const bubble = document.getElementById('api-demo-bubble');
-            bubble.setTimestamp(new Date().toISOString());
-        }
-
-        function changeContent() {
-            const bubble = document.getElementById('api-demo-bubble');
-            const contents = [
-                'Original message content',
-                'Updated message!',
-                'This content was changed via API',
-                'Dynamic content update'
-            ];
-            messageCounter = (messageCounter + 1) % contents.length;
-            bubble.setContent(contents[messageCounter]);
-        }
+                    return `<${config.componentTag}${attributes ? ' ' + attributes : ''}>
+    Hello! This is a sample chat message.
+</${config.componentTag}>`;
+                }
+            });
+        });
     </script>
+    
+    
 </div>
+<div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

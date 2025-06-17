@@ -2,148 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toast Component Showcase - DRY2</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <!-- DRY2 core and Toast component -->
-    <script src="../src/dry2/dry2.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
     <script src="../src/dry2/toast.js"></script>
-
-    <style>
-        .demo-section      { margin-bottom: 2rem; }
-        .demo-title        { font-size: 1.25rem; font-weight: 600; margin-bottom: .5rem; }
-        .demo-description  { margin-bottom: 1rem; color: #4b5563; }
-        .demo-container    { background: white; border: 1px solid #e5e7eb; border-radius: .375rem;
-            padding: 1.5rem; position: relative; }
-        .showcase-relative { min-height: 160px; }
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-    </style>
     <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code, .code-content pre');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -152,17 +34,13 @@
         </div>
     </div>
 
-<div class="p-8">
-<div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-    <header class="mb-8">
-        <h1 class="text-3xl font-bold mb-2 text-gray-900">Toast Component</h1>
-        <p class="text-gray-600">
-            Lightweight notifications that slide in and out, with configurable type, position, duration, and styling.
-        </p>
-    </header>
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Toast Component</h1>
+        <p class="text-gray-600 mb-8">Lightweight notifications that slide in and out, with configurable type, position, duration, and styling.</p>
 
     <main>
-        <!-- Basic -->
+        <!-- Basic Toast -->
         <section class="demo-section">
             <h2 class="demo-title">Basic Toast</h2>
             <p class="demo-description">An info toast in the default bottom-right corner.</p>
@@ -171,45 +49,32 @@
                 <dry-toast message="Hello, this is an info toast!" auto-show></dry-toast>
             </div>
 
-            <div class="code-block"><pre>&lt;dry-toast message="Hello, this is an info toast!" auto-show&gt;&lt;/dry-toast&gt;</pre></div>
+            <dry-code language="HTML">&lt;dry-toast message="Hello, this is an info toast!" auto-show&gt;&lt;/dry-toast&gt;</dry-code>
         </section>
 
-        <!-- Types -->
+        <!-- Toast Types -->
         <section class="demo-section">
-            <h2 class="demo-title">Types</h2>
-            <p class="demo-description">
-                Use the <code>type</code> attribute or static methods for different styles.
-            </p>
+            <h2 class="demo-title">Toast Types</h2>
+            <p class="demo-description">Use the type attribute or static methods for different styles.</p>
 
             <div class="demo-container showcase-relative space-x-2">
-                <button id="btn-info"    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Show Info</button>
+                <button id="btn-info" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Show Info</button>
                 <button id="btn-success" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Show Success</button>
                 <button id="btn-warning" class="bg-yellow-500 text-gray-800 px-4 py-2 rounded hover:bg-yellow-600">Show Warning</button>
-                <button id="btn-error"   class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Show Error</button>
+                <button id="btn-error" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Show Error</button>
             </div>
 
-            <div class="code-block"><pre>
-// via static methods:
+            <dry-code language="JavaScript">// via static methods:
 Toast.info('This is an info toast');
 Toast.success('That worked!');
 Toast.warning('Be careful…');
-Toast.error('Something went wrong');
-        </pre></div>
-
-            <script>
-                document.getElementById('btn-info')   .addEventListener('click', () => Toast.info('This is an info toast'));
-                document.getElementById('btn-success').addEventListener('click', () => Toast.success('That worked!'));
-                document.getElementById('btn-warning').addEventListener('click', () => Toast.warning('Be careful…'));
-                document.getElementById('btn-error')  .addEventListener('click', () => Toast.error('Something went wrong'));
-            </script>
+Toast.error('Something went wrong');</dry-code>
         </section>
 
-        <!-- Positions -->
+        <!-- Position Variants -->
         <section class="demo-section">
             <h2 class="demo-title">Position Variants</h2>
-            <p class="demo-description">
-                Pass <code>position</code> in options to move the toast around the viewport.
-            </p>
+            <p class="demo-description">Pass position in options to move the toast around the viewport.</p>
 
             <div class="demo-container showcase-relative grid grid-cols-3 gap-2">
                 <button id="pos-tl" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Top-Left</button>
@@ -220,34 +85,15 @@ Toast.error('Something went wrong');
                 <button id="pos-br" class="bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">Bottom-Right</button>
             </div>
 
-            <div class="code-block"><pre>
-// e.g.:
-Toast.info('Top-Left toast',  { position: 'top-left' });
-Toast.success('Top-Center toast', { position: 'top-center' });
-        </pre></div>
-
-            <script>
-                const positions = {
-                    'pos-tl': 'top-left',
-                    'pos-tc': 'top-center',
-                    'pos-tr': 'top-right',
-                    'pos-bl': 'bottom-left',
-                    'pos-bc': 'bottom-center',
-                    'pos-br': 'bottom-right'
-                };
-                Object.entries(positions).forEach(([id,pos]) =>
-                    document.getElementById(id)
-                        .addEventListener('click', () => Toast.info(`${pos} toast`, { position: pos }))
-                );
-            </script>
+            <dry-code language="JavaScript">// e.g.:
+Toast.info('Top-Left toast', { position: 'top-left' });
+Toast.success('Top-Center toast', { position: 'top-center' });</dry-code>
         </section>
 
-        <!-- Duration & Styling -->
+        <!-- Duration & Custom Styling -->
         <section class="demo-section">
-            <h2 class="demo-title">Duration &amp; Custom Styling</h2>
-            <p class="demo-description">
-                Override <code>duration</code>, <code>container-class</code>, or <code>toast-class</code>.
-            </p>
+            <h2 class="demo-title">Duration & Custom Styling</h2>
+            <p class="demo-description">Override duration, container-class, or toast-class for customization.</p>
 
             <div class="demo-container showcase-relative space-x-2">
                 <button id="long-toast" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">
@@ -258,77 +104,25 @@ Toast.success('Top-Center toast', { position: 'top-center' });
                 </button>
             </div>
 
-            <div class="code-block"><pre>
-// 10 second toast:
+            <dry-code language="JavaScript">// 10 second toast:
 Toast.info('Lasts 10 seconds', { duration: 10000 });
 
 // custom CSS classes:
 Toast.success('Styled toast', {
   toastClass: 'bg-purple-100 text-purple-800 border-l-4 border-purple-400 p-4 rounded',
   duration: 5000
-});
-        </pre></div>
-
-            <script>
-                document.getElementById('long-toast')
-                    .addEventListener('click', () => Toast.info('Lasts 10 seconds', { duration: 10000 }));
-
-                document.getElementById('styled-toast')
-                    .addEventListener('click', () => Toast.success('Styled toast', {
-                        toastClass: 'bg-purple-100 text-purple-800 border-l-4 border-purple-400 p-4 rounded',
-                        duration: 5000
-                    }));
-            </script>
+});</dry-code>
         </section>
 
-        <!-- JS API -->
-        <section class="demo-section">
-            <h2 class="demo-title">JavaScript API</h2>
-            <p class="demo-description">
-                Control individual <code>&lt;dry-toast&gt;</code> elements and listen for show/hide events.
-            </p>
-
-            <div class="demo-container showcase-relative">
-                <dry-toast id="api-toast" message="Manual toast"></dry-toast>
-
-                <div class="mt-4 space-x-2">
-                    <button id="api-show" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Show</button>
-                    <button id="api-hide" class="bg-red-500  text-white px-4 py-2 rounded hover:bg-red-600">Hide</button>
-                </div>
-
-                <div id="api-log" class="hidden mt-4 p-3 bg-gray-100 rounded text-sm"></div>
-            </div>
-
-            <div class="code-block"><pre>// element API:
-const t = document.getElementById('api-toast');
-t.show();
-t.hide();
-
-// events:
-t.addEventListener('toast:show', () =&gt; console.log('shown'));
-t.addEventListener('toast:hide', () =&gt; console.log('hidden'));
-        </pre></div>
-
-            <script>
-                const t = document.getElementById('api-toast');
-                const log = document.getElementById('api-log');
-                function write(msg) {
-                    log.classList.remove('hidden');
-                    log.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
-                }
-                t.addEventListener('toast:show', () => write('toast shown'));
-                t.addEventListener('toast:hide', () => write('toast hidden'));
-                document.getElementById('api-show').addEventListener('click', () => t.show());
-                document.getElementById('api-hide').addEventListener('click', () => t.hide());
-            </script>
-        </section>
+        <!-- Component Builder Section -->
+        <div id="toast-component-builder"></div>
 
         <!-- API Reference -->
         <section class="mt-12">
             <h2 class="text-2xl font-bold mb-4">API Reference</h2>
 
-            <h3 class="text-xl font-semibold mb-2">Attributes</h3>
-            <table class="w-full border border-gray-300 rounded mb-6">
+            <h3 class="text-xl font-semibold mt-6 mb-3">Toast Component</h3>
+            <table class="min-w-full border border-gray-300 rounded">
                 <thead class="bg-gray-100">
                 <tr>
                     <th class="px-4 py-2 text-left">Attribute</th>
@@ -338,44 +132,173 @@ t.addEventListener('toast:hide', () =&gt; console.log('hidden'));
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">message</td><td class="px-4 py-2">string</td><td class="px-4 py-2">—</td><td class="px-4 py-2">Text or HTML content of the toast.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">type</td><td class="px-4 py-2">string</td><td class="px-4 py-2">info</td><td class="px-4 py-2">One of <code>info</code>, <code>success</code>, <code>warning</code>, <code>error</code>.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">position</td><td class="px-4 py-2">string</td><td class="px-4 py-2">bottom-right</td><td class="px-4 py-2">Corner: <code>top-left</code>, <code>top-center</code>, etc.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">duration</td><td class="px-4 py-2">number</td><td class="px-4 py-2">3000</td><td class="px-4 py-2">Milliseconds before auto-hide (0 = persistent).</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">auto-show</td><td class="px-4 py-2">boolean</td><td class="px-4 py-2">false</td><td class="px-4 py-2">Show immediately on render when present.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">container-class</td><td class="px-4 py-2">string</td><td class="px-4 py-2">—</td><td class="px-4 py-2">Override default toast container classes.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">toast-class</td><td class="px-4 py-2">string</td><td class="px-4 py-2">—</td><td class="px-4 py-2">Override default toast styling classes.</td></tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">message</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">''</td>
+                    <td class="px-4 py-2">Toast message content</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">type</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">info</td>
+                    <td class="px-4 py-2">Toast type: info, success, warning, error</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">position</td>
+                    <td class="px-4 py-2">string</td>
+                    <td class="px-4 py-2">bottom-right</td>
+                    <td class="px-4 py-2">Toast position on screen</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">duration</td>
+                    <td class="px-4 py-2">number</td>
+                    <td class="px-4 py-2">3000</td>
+                    <td class="px-4 py-2">Auto-dismiss duration in milliseconds</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">auto-show</td>
+                    <td class="px-4 py-2">boolean</td>
+                    <td class="px-4 py-2">false</td>
+                    <td class="px-4 py-2">Show toast automatically on load</td>
+                </tr>
                 </tbody>
             </table>
 
-            <h3 class="text-xl font-semibold mb-2">Methods &amp; Events</h3>
-            <table class="w-full border border-gray-300 rounded">
+            <h3 class="text-xl font-semibold mt-6 mb-3">Static Methods</h3>
+            <table class="min-w-full border border-gray-300 rounded">
                 <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-4 py-2 text-left">API</th>
-                    <th class="px-4 py-2 text-left">Usage</th>
+                    <th class="px-4 py-2 text-left">Method</th>
                     <th class="px-4 py-2 text-left">Description</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">show()</td><td class="px-4 py-2">instance.show()</td><td class="px-4 py-2">Programmatically display this toast.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">hide()</td><td class="px-4 py-2">instance.hide()</td><td class="px-4 py-2">Hide and remove this toast.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.info()</td><td class="px-4 py-2">Toast.info(msg, opts)</td><td class="px-4 py-2">Static helper for info toasts.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.success()</td><td class="px-4 py-2">Toast.success(msg, opts)</td><td class="px-4 py-2">Static helper for success toasts.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.warning()</td><td class="px-4 py-2">Toast.warning(msg, opts)</td><td class="px-4 py-2">Static helper for warning toasts.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">Toast.error()</td><td class="px-4 py-2">Toast.error(msg, opts)</td><td class="px-4 py-2">Static helper for error toasts.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">toast:show</td><td class="px-4 py-2">element.addEventListener</td><td class="px-4 py-2">Fired when a toast becomes visible.</td></tr>
-                <tr class="border-t"><td class="px-4 py-2 font-medium">toast:hide</td><td class="px-4 py-2">element.addEventListener</td><td class="px-4 py-2">Fired after a toast is hidden.</td></tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">Toast.info(message, options)</td>
+                    <td class="px-4 py-2">Show info toast</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">Toast.success(message, options)</td>
+                    <td class="px-4 py-2">Show success toast</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">Toast.warning(message, options)</td>
+                    <td class="px-4 py-2">Show warning toast</td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-4 py-2 font-medium">Toast.error(message, options)</td>
+                    <td class="px-4 py-2">Show error toast</td>
+                </tr>
                 </tbody>
             </table>
         </section>
     </main>
+    </div>
+    </div>
 
-    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-        <p>DRY2 Web Components Library</p>
-        <p class="mt-2"><a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a></p>
-    </footer>
-</div>
-</div>
+    <script>
+        // Toast demo functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Type buttons
+            document.getElementById('btn-info').addEventListener('click', () => Toast.info('This is an info toast'));
+            document.getElementById('btn-success').addEventListener('click', () => Toast.success('That worked!'));
+            document.getElementById('btn-warning').addEventListener('click', () => Toast.warning('Be careful…'));
+            document.getElementById('btn-error').addEventListener('click', () => Toast.error('Something went wrong'));
+
+            // Position buttons
+            const positions = {
+                'pos-tl': 'top-left',
+                'pos-tc': 'top-center',
+                'pos-tr': 'top-right',
+                'pos-bl': 'bottom-left',
+                'pos-bc': 'bottom-center',
+                'pos-br': 'bottom-right'
+            };
+            Object.entries(positions).forEach(([id, pos]) =>
+                document.getElementById(id)
+                    .addEventListener('click', () => Toast.info(`${pos} toast`, { position: pos }))
+            );
+
+            // Duration and styling buttons
+            document.getElementById('long-toast').addEventListener('click', () => 
+                Toast.info('Lasts 10 seconds', { duration: 10000 })
+            );
+            document.getElementById('styled-toast').addEventListener('click', () => 
+                Toast.success('Styled toast', {
+                    toastClass: 'bg-purple-100 text-purple-800 border-l-4 border-purple-400 p-4 rounded',
+                    duration: 5000
+                })
+            );
+
+            // Initialize Component Builder
+            new ComponentBuilder({
+                elementId: 'toast-component-builder',
+                componentTag: 'dry-toast',
+                title: 'Toast Component Builder',
+                description: 'Try changing the toast properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    message: {
+                        type: 'text',
+                        label: 'Message',
+                        default: 'This is a toast message!'
+                    },
+                    type: {
+                        type: 'select',
+                        label: 'Type',
+                        options: [
+                            { value: 'info', label: 'Info' },
+                            { value: 'success', label: 'Success' },
+                            { value: 'warning', label: 'Warning' },
+                            { value: 'error', label: 'Error' }
+                        ],
+                        default: 'info'
+                    },
+                    position: {
+                        type: 'select',
+                        label: 'Position',
+                        options: [
+                            { value: 'top-left', label: 'Top Left' },
+                            { value: 'top-center', label: 'Top Center' },
+                            { value: 'top-right', label: 'Top Right' },
+                            { value: 'bottom-left', label: 'Bottom Left' },
+                            { value: 'bottom-center', label: 'Bottom Center' },
+                            { value: 'bottom-right', label: 'Bottom Right' }
+                        ],
+                        default: 'bottom-right'
+                    },
+                    duration: {
+                        type: 'range',
+                        label: 'Duration (ms)',
+                        min: 1000,
+                        max: 10000,
+                        step: 500,
+                        default: 3000,
+                        displayFormat: (value) => `${value}ms`
+                    },
+                    'auto-show': {
+                        type: 'checkbox',
+                        label: 'Auto Show',
+                        default: true
+                    }
+                },
+                
+                defaults: {
+                    message: 'This is a toast message!',
+                    type: 'info',
+                    position: 'bottom-right',
+                    duration: 3000,
+                    'auto-show': true
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
+        });
+    </script>
+    
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

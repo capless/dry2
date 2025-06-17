@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Component Showcase - DRY2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Include Navigation -->
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
+    
+    <!-- Breadcrumbs -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
+            <dry-breadcrumbs>
+                <breadcrumb-item href="../index.html">Home</breadcrumb-item>
+                <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
+                <breadcrumb-item active>Code Component</breadcrumb-item>
+            </dry-breadcrumbs>
+        </div>
+    </div>
+    
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Code Component</h1>
+        <p class="text-gray-600 mb-8">Syntax-highlighted code blocks with copy-to-clipboard functionality for multiple programming languages.</p>
+
+    <main>
+        <!-- Basic Usage -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Basic Usage</h2>
+            <p class="text-gray-600 mb-4">The code component automatically escapes HTML and provides copy functionality.</p>
+            
+            <dry-code language="HTML">&lt;dry-code language="JavaScript"&gt;
+console.log('Hello World!');
+&lt;/dry-code&gt;</dry-code>
+        </section>
+
+        <!-- HTML/XML -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">HTML & XML</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">HTML</h3>
+                    <dry-code language="HTML">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My Website&lt;/title&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header class="main-header"&gt;
+        &lt;h1 id="title"&gt;Welcome&lt;/h1&gt;
+        &lt;nav&gt;
+            &lt;a href="#home"&gt;Home&lt;/a&gt;
+            &lt;a href="#about"&gt;About&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;p&gt;This is a paragraph with &lt;strong&gt;bold text&lt;/strong&gt;.&lt;/p&gt;
+    &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</dry-code>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">XML</h3>
+                    <dry-code language="XML">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;bookstore&gt;
+    &lt;book id="1" category="fiction"&gt;
+        &lt;title lang="en"&gt;Great Gatsby&lt;/title&gt;
+        &lt;author&gt;F. Scott Fitzgerald&lt;/author&gt;
+        &lt;year&gt;1925&lt;/year&gt;
+        &lt;price currency="USD"&gt;12.99&lt;/price&gt;
+    &lt;/book&gt;
+    &lt;book id="2" category="biography"&gt;
+        &lt;title lang="en"&gt;Steve Jobs&lt;/title&gt;
+        &lt;author&gt;Walter Isaacson&lt;/author&gt;
+        &lt;year&gt;2011&lt;/year&gt;
+        &lt;price currency="USD"&gt;14.99&lt;/price&gt;
+    &lt;/book&gt;
+&lt;/bookstore&gt;</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- JavaScript -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JavaScript</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">ES6+ Features</h3>
+                    <dry-code language="JavaScript">// Modern JavaScript with ES6+ features
+const users = [
+  { name: 'Alice', age: 30, active: true },
+  { name: 'Bob', age: 25, active: false },
+  { name: 'Charlie', age: 35, active: true }
+];
+
+// Arrow functions and destructuring
+const getActiveUsers = () => {
+  return users.filter(({ active }) => active);
+};
+
+// Async/await and template literals
+async function fetchUserData(userId) {
+  try {
+    const response = await fetch(`/api/users/${userId}`);
+    const userData = await response.json();
+    
+    if (!userData) {
+      throw new Error('User not found');
+    }
+    
+    return userData;
+  } catch (error) {
+    console.error(`Failed to fetch user ${userId}:`, error);
+    return null;
+  }
+}
+
+// Classes and inheritance
+class Animal {
+  constructor(name, species) {
+    this.name = name;
+    this.species = species;
+  }
+  
+  speak() {
+    console.log(`${this.name} makes a sound`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name, 'Canis familiaris');
+    this.breed = breed;
+  }
+  
+  speak() {
+    console.log(`${this.name} barks`);
+  }
+}</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- CSS -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">CSS</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Modern CSS</h3>
+                    <dry-code language="CSS">/* CSS Variables and Modern Features */
+:root {
+  --primary-color: #3b82f6;
+  --secondary-color: #64748b;
+  --background-color: #f8fafc;
+  --text-color: #1e293b;
+  --border-radius: 0.5rem;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid Layout */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  background-color: var(--background-color);
+}
+
+/* Flexbox and Modern Selectors */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Pseudo-elements and Advanced Selectors */
+.button {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary-color), #6366f1);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.button:hover::before {
+  left: 100%;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .card {
+    margin-bottom: 1rem;
+  }
+}</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Python -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Python</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Python Examples</h3>
+                    <dry-code language="Python"># Python data analysis and web scraping
+import pandas as pd
+import requests
+from datetime import datetime, timedelta
+import asyncio
+import aiohttp
+
+class DataProcessor:
+    """A class for processing and analyzing data"""
+    
+    def __init__(self, data_source):
+        self.data_source = data_source
+        self.processed_data = None
+        
+    def load_data(self, file_path):
+        """Load data from various file formats"""
+        try:
+            if file_path.endswith('.csv'):
+                data = pd.read_csv(file_path)
+            elif file_path.endswith('.json'):
+                data = pd.read_json(file_path)
+            else:
+                raise ValueError("Unsupported file format")
+                
+            return data
+        except Exception as e:
+            print(f"Error loading data: {e}")
+            return None
+    
+    def analyze_data(self, data):
+        """Perform statistical analysis"""
+        summary = {
+            'total_rows': len(data),
+            'columns': list(data.columns),
+            'missing_values': data.isnull().sum().to_dict(),
+            'data_types': data.dtypes.to_dict()
+        }
+        
+        # Calculate statistics for numeric columns
+        numeric_cols = data.select_dtypes(include=['number']).columns
+        for col in numeric_cols:
+            summary[f"{col}_stats"] = {
+                'mean': data[col].mean(),
+                'median': data[col].median(),
+                'std': data[col].std(),
+                'min': data[col].min(),
+                'max': data[col].max()
+            }
+            
+        return summary
+
+# Async web scraping example
+async def fetch_url(session, url):
+    """Fetch a single URL asynchronously"""
+    try:
+        async with session.get(url) as response:
+            return await response.text()
+    except aiohttp.ClientError as e:
+        print(f"Error fetching {url}: {e}")
+        return None
+
+async def scrape_multiple_urls(urls):
+    """Scrape multiple URLs concurrently"""
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_url(session, url) for url in urls]
+        results = await asyncio.gather(*tasks)
+        return results
+
+# List comprehension and functional programming
+def process_user_data(users):
+    """Process user data with functional programming concepts"""
+    
+    # Filter active users over 25
+    active_users = [
+        user for user in users 
+        if user.get('active', False) and user.get('age', 0) > 25
+    ]
+    
+    # Transform data using map and lambda
+    user_emails = list(map(lambda u: u['email'].lower(), active_users))
+    
+    # Group users by age range
+    age_groups = {}
+    for user in active_users:
+        age_range = f"{(user['age'] // 10) * 10}s"
+        if age_range not in age_groups:
+            age_groups[age_range] = []
+        age_groups[age_range].append(user)
+    
+    return {
+        'active_users': active_users,
+        'emails': user_emails,
+        'age_groups': age_groups
+    }
+
+# Example usage
+if __name__ == "__main__":
+    # Sample data
+    users = [
+        {'name': 'Alice', 'age': 30, 'email': 'Alice@Example.com', 'active': True},
+        {'name': 'Bob', 'age': 25, 'email': 'BOB@EXAMPLE.COM', 'active': False},
+        {'name': 'Charlie', 'age': 35, 'email': 'charlie@example.com', 'active': True}
+    ]
+    
+    # Process the data
+    processed = process_user_data(users)
+    print(f"Found {len(processed['active_users'])} active users")
+    
+    # Run async scraping
+    urls = ['https://example.com', 'https://httpbin.org/json']
+    results = asyncio.run(scrape_multiple_urls(urls))</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- JSON -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">JSON</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">API Response Example</h3>
+                    <dry-code language="JSON">{
+  "status": "success",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "username": "alice_doe",
+        "email": "alice@example.com",
+        "profile": {
+          "firstName": "Alice",
+          "lastName": "Doe",
+          "age": 28,
+          "active": true,
+          "preferences": {
+            "theme": "dark",
+            "notifications": true,
+            "privacy": "public"
+          }
+        },
+        "posts": [
+          {
+            "id": 101,
+            "title": "My First Post",
+            "content": "Hello world!",
+            "likes": 15,
+            "comments": 3,
+            "published": true,
+            "publishedAt": "2024-01-10T14:22:00Z"
+          },
+          {
+            "id": 102,
+            "title": "Another Update",
+            "content": "Having a great day!",
+            "likes": 8,
+            "comments": 1,
+            "published": true,
+            "publishedAt": "2024-01-12T09:15:00Z"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "username": "bob_smith",
+        "email": "bob@example.com",
+        "profile": {
+          "firstName": "Bob",
+          "lastName": "Smith",
+          "age": 32,
+          "active": false,
+          "preferences": {
+            "theme": "light",
+            "notifications": false,
+            "privacy": "private"
+          }
+        },
+        "posts": []
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 5,
+      "itemsPerPage": 10,
+      "totalItems": 47
+    }
+  },
+  "meta": {
+    "apiVersion": "v2.1",
+    "responseTime": 142,
+    "cached": false
+  }
+}</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- SQL -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">SQL</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Database Queries</h3>
+                    <dry-code language="SQL">-- Complex SQL query with multiple joins and aggregations
+-- Get user statistics with their post counts and engagement metrics
+
+SELECT 
+    u.id as user_id,
+    u.username,
+    u.email,
+    u.created_at,
+    COUNT(DISTINCT p.id) as total_posts,
+    COUNT(DISTINCT c.id) as total_comments,
+    COUNT(DISTINCT l.id) as total_likes,
+    AVG(p.view_count) as avg_post_views,
+    MAX(p.created_at) as last_post_date,
+    CASE 
+        WHEN COUNT(p.id) > 50 THEN 'Power User'
+        WHEN COUNT(p.id) > 10 THEN 'Active User'
+        WHEN COUNT(p.id) > 0 THEN 'Casual User'
+        ELSE 'New User'
+    END as user_category
+FROM users u
+LEFT JOIN posts p ON u.id = p.user_id 
+    AND p.published = true 
+    AND p.created_at >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+LEFT JOIN comments c ON p.id = c.post_id
+LEFT JOIN likes l ON p.id = l.post_id
+WHERE u.active = true
+    AND u.email IS NOT NULL
+    AND u.created_at >= '2023-01-01'
+GROUP BY u.id, u.username, u.email, u.created_at
+HAVING COUNT(DISTINCT p.id) > 0
+ORDER BY total_posts DESC, avg_post_views DESC
+LIMIT 100;
+
+-- Create table with indexes and constraints
+CREATE TABLE user_analytics (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    metric_name VARCHAR(50) NOT NULL,
+    metric_value DECIMAL(10,2) NOT NULL,
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    metadata JSON,
+    
+    INDEX idx_user_metric (user_id, metric_name),
+    INDEX idx_recorded_at (recorded_at),
+    
+    CONSTRAINT fk_user_analytics_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE,
+        
+    CONSTRAINT chk_metric_value 
+        CHECK (metric_value >= 0)
+);
+
+-- Advanced query with window functions
+SELECT 
+    user_id,
+    username,
+    post_title,
+    like_count,
+    ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY like_count DESC) as post_rank,
+    LAG(like_count) OVER (PARTITION BY user_id ORDER BY created_at) as prev_post_likes,
+    LEAD(like_count) OVER (PARTITION BY user_id ORDER BY created_at) as next_post_likes,
+    AVG(like_count) OVER (PARTITION BY user_id) as user_avg_likes,
+    PERCENT_RANK() OVER (ORDER BY like_count) as like_percentile
+FROM (
+    SELECT 
+        u.id as user_id,
+        u.username,
+        p.title as post_title,
+        COUNT(l.id) as like_count,
+        p.created_at
+    FROM users u
+    JOIN posts p ON u.id = p.user_id
+    LEFT JOIN likes l ON p.id = l.post_id
+    WHERE p.published = true
+    GROUP BY u.id, u.username, p.id, p.title, p.created_at
+) ranked_posts
+ORDER BY user_id, post_rank;</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bash/Shell -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Bash/Shell</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Shell Scripts</h3>
+                    <dry-code language="Bash">#!/bin/bash
+
+# Advanced bash script for deployment automation
+set -euo pipefail  # Exit on error, undefined vars, pipe failures
+
+# Configuration
+APP_NAME="my-web-app"
+DEPLOY_DIR="/var/www/${APP_NAME}"
+BACKUP_DIR="/var/backups/${APP_NAME}"
+LOG_FILE="/var/log/${APP_NAME}-deploy.log"
+NGINX_CONFIG="/etc/nginx/sites-available/${APP_NAME}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Logging function
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+
+# Error handling
+error_exit() {
+    echo -e "${RED}ERROR: $1${NC}" >&2
+    log "ERROR: $1"
+    exit 1
+}
+
+# Check if running as root
+check_permissions() {
+    if [[ $EUID -ne 0 ]]; then
+        error_exit "This script must be run as root"
+    fi
+}
+
+# Create backup of current deployment
+create_backup() {
+    local backup_name="${APP_NAME}-$(date +%Y%m%d-%H%M%S)"
+    local backup_path="${BACKUP_DIR}/${backup_name}"
+    
+    log "Creating backup: $backup_name"
+    
+    if [[ -d "$DEPLOY_DIR" ]]; then
+        mkdir -p "$BACKUP_DIR"
+        tar -czf "${backup_path}.tar.gz" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
+        log "Backup created successfully"
+    else
+        log "No existing deployment found, skipping backup"
+    fi
+}
+
+# Download and extract new version
+deploy_application() {
+    local version=${1:-"latest"}
+    local temp_dir="/tmp/${APP_NAME}-deploy"
+    
+    log "Deploying version: $version"
+    
+    # Clean up temp directory
+    rm -rf "$temp_dir"
+    mkdir -p "$temp_dir"
+    
+    # Download application
+    if [[ "$version" == "latest" ]]; then
+        git clone https://github.com/company/${APP_NAME}.git "$temp_dir"
+    else
+        git clone --branch "$version" https://github.com/company/${APP_NAME}.git "$temp_dir"
+    fi
+    
+    # Build application
+    cd "$temp_dir"
+    npm install --production
+    npm run build
+    
+    # Stop services
+    systemctl stop nginx
+    systemctl stop "${APP_NAME}"
+    
+    # Deploy new version
+    rm -rf "$DEPLOY_DIR"
+    mv "$temp_dir" "$DEPLOY_DIR"
+    chown -R www-data:www-data "$DEPLOY_DIR"
+    chmod -R 755 "$DEPLOY_DIR"
+    
+    # Update configuration
+    if [[ -f "${DEPLOY_DIR}/nginx.conf" ]]; then
+        cp "${DEPLOY_DIR}/nginx.conf" "$NGINX_CONFIG"
+        nginx -t || error_exit "Nginx configuration test failed"
+    fi
+    
+    # Start services
+    systemctl start "${APP_NAME}"
+    systemctl start nginx
+    
+    # Verify deployment
+    sleep 5
+    if curl -f http://localhost/health > /dev/null 2>&1; then
+        log "Deployment successful"
+        echo -e "${GREEN}✓ Deployment completed successfully${NC}"
+    else
+        error_exit "Health check failed"
+    fi
+}
+
+# Cleanup old backups (keep last 10)
+cleanup_backups() {
+    log "Cleaning up old backups"
+    find "$BACKUP_DIR" -name "${APP_NAME}-*.tar.gz" -type f -printf '%T@ %p\n' | \
+        sort -n | head -n -10 | cut -d' ' -f2- | xargs -r rm -f
+}
+
+# Main deployment process
+main() {
+    local version=${1:-"latest"}
+    
+    echo -e "${YELLOW}Starting deployment of ${APP_NAME} version ${version}${NC}"
+    log "Starting deployment process"
+    
+    check_permissions
+    create_backup
+    deploy_application "$version"
+    cleanup_backups
+    
+    echo -e "${GREEN}Deployment completed successfully!${NC}"
+    log "Deployment process completed"
+}
+
+# Parse command line arguments
+while getopts "v:h" opt; do
+    case $opt in
+        v)
+            VERSION="$OPTARG"
+            ;;
+        h)
+            echo "Usage: $0 [-v version] [-h]"
+            echo "  -v: Specify version to deploy (default: latest)"
+            echo "  -h: Show this help message"
+            exit 0
+            ;;
+        \?)
+            error_exit "Invalid option: -$OPTARG"
+            ;;
+    esac
+done
+
+# Run main function
+main "${VERSION:-latest}"</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuration Options -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Configuration Options</h2>
+            <p class="text-gray-600 mb-4">The code component supports various configuration options.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Without Header</h3>
+                    <dry-code language="JavaScript" show-header="false">// Code block without header
+const greeting = "Hello, World!";
+console.log(greeting);</dry-code>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Without Copy Button</h3>
+                    <dry-code language="Python" show-copy="false"># Code block without copy button
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))</dry-code>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Minimal (No Header, No Copy)</h3>
+                    <dry-code language="CSS" show-header="false" show-copy="false">/* Minimal code block */
+.button {
+    background: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}</dry-code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="demo-section">
+            <h2 class="demo-title">Interactive Demo</h2>
+            <p class="demo-description">Try different languages and configuration options.</p>
+            
+            <div class="demo-container">
+                <div x-data="demoData()">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Controls -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                                <select x-model="language" @change="codeContent = getExampleCode(language); updateDemo()" class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="JavaScript">JavaScript</option>
+                                    <option value="Python">Python</option>
+                                    <option value="HTML">HTML</option>
+                                    <option value="CSS">CSS</option>
+                                    <option value="JSON">JSON</option>
+                                    <option value="SQL">SQL</option>
+                                    <option value="Bash">Bash</option>
+                                    <option value="XML">XML</option>
+                                </select>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" x-model="showHeader" @change="updateDemo()" class="mr-2">
+                                    Show Header
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" x-model="showCopy" @change="updateDemo()" class="mr-2">
+                                    Show Copy Button
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Code Content</label>
+                                <textarea 
+                                    x-model="codeContent" 
+                                    class="w-full p-2 border border-gray-300 rounded font-mono text-sm" 
+                                    rows="12"
+                                    placeholder="Enter your code here...">
+                                </textarea>
+                            </div>
+                            
+                            <button 
+                                @click="updateDemo()"
+                                class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                Update Preview
+                            </button>
+                        </div>
+                        
+                        <!-- Preview -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-gray-700">Live Preview:</h3>
+                            <div id="demo-preview" class="min-h-[400px] border border-gray-200 rounded p-4 bg-white">
+                                <dry-code 
+                                    id="demo-code"
+                                    language="JavaScript"
+                                    show-header="true"
+                                    show-copy="true">// Interactive JavaScript example
+const message = 'Hello from the interactive demo!';
+console.log(message);
+
+// Try changing the language to see different syntax highlighting
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+greet('Developer');</dry-code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component Builder Section -->
+        <div id="code-component-builder"></div>
+
+        <!-- API Reference -->
+        <section class="demo-section">
+            <h2 class="demo-title">API Reference</h2>
+            <p class="demo-description">Complete API documentation for the code component.</p>
+            
+            <div class="demo-container space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Attributes</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border border-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Attribute</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Type</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Default</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2 font-mono text-sm">language</td>
+                                    <td class="px-4 py-2 text-sm">string</td>
+                                    <td class="px-4 py-2 text-sm">"HTML"</td>
+                                    <td class="px-4 py-2 text-sm">Programming language for syntax highlighting</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2 font-mono text-sm">show-copy</td>
+                                    <td class="px-4 py-2 text-sm">boolean</td>
+                                    <td class="px-4 py-2 text-sm">true</td>
+                                    <td class="px-4 py-2 text-sm">Show/hide the copy to clipboard button</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2 font-mono text-sm">show-header</td>
+                                    <td class="px-4 py-2 text-sm">boolean</td>
+                                    <td class="px-4 py-2 text-sm">true</td>
+                                    <td class="px-4 py-2 text-sm">Show/hide the header with language label</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">JavaScript Methods</h3>
+                    <dry-code language="JavaScript">// Get reference to code component
+const codeElement = document.querySelector('dry-code');
+
+// Copy code to clipboard programmatically
+codeElement.copy();
+
+// Update code content dynamically
+codeElement.setCode('console.log("New code content");');
+
+// Access properties
+console.log(codeElement.language);        // Get current language
+console.log(codeElement.showCopy);        // Get copy button visibility
+console.log(codeElement.showHeader);      // Get header visibility
+
+// Update properties
+codeElement.language = 'Python';
+codeElement.showCopy = false;
+codeElement.showHeader = true;</dry-code>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Supported Languages</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="p-3 bg-gray-50 rounded">
+                            <strong>Web Technologies</strong>
+                            <ul class="mt-2 text-sm text-gray-600">
+                                <li>HTML</li>
+                                <li>CSS</li>
+                                <li>JavaScript</li>
+                                <li>JSON</li>
+                                <li>XML</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded">
+                            <strong>Programming</strong>
+                            <ul class="mt-2 text-sm text-gray-600">
+                                <li>Python</li>
+                                <li>SQL</li>
+                                <li>Bash/Shell</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded">
+                            <strong>Aliases</strong>
+                            <ul class="mt-2 text-sm text-gray-600">
+                                <li>js → JavaScript</li>
+                                <li>py → Python</li>
+                                <li>sh → Bash</li>
+                                <li>shell → Bash</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded">
+                            <strong>Fallback</strong>
+                            <ul class="mt-2 text-sm text-gray-600">
+                                <li>Any unknown language will display without syntax highlighting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    </div>
+    </div>
+
+    <script>
+        // Alpine.js data function for the interactive demo
+        function demoData() {
+            return {
+                language: 'JavaScript',
+                showHeader: true,
+                showCopy: true,
+                codeContent: '// Interactive JavaScript example\nconst message = \'Hello from the interactive demo!\';\nconsole.log(message);\n\n// Try changing the language to see different syntax highlighting\nfunction greet(name) {\n    return `Hello, ${name}!`;\n}\n\ngreet(\'Developer\');',
+                
+                updateDemo() {
+                    const codeElement = document.getElementById('demo-code');
+                    if (codeElement) {
+                        // Update attributes
+                        codeElement.setAttribute('language', this.language);
+                        codeElement.setAttribute('show-header', this.showHeader);
+                        codeElement.setAttribute('show-copy', this.showCopy);
+                        
+                        // Update code content
+                        codeElement.setCode(this.codeContent);
+                    }
+                },
+                
+                getExampleCode(lang) {
+                    const examples = {
+                        'JavaScript': '// Modern JavaScript ES6+ Example\nconst users = [\n  { name: \'Alice\', age: 30, active: true },\n  { name: \'Bob\', age: 25, active: false }\n];\n\n// Arrow functions and destructuring\nconst getActiveUsers = () => users.filter(({ active }) => active);\n\n// Async/await example\nasync function fetchData() {\n  try {\n    const response = await fetch(\'/api/users\');\n    return await response.json();\n  } catch (error) {\n    console.error(\'Error:\', error);\n  }\n}',
+                        
+                        'Python': '# Python Data Processing Example\nimport pandas as pd\nfrom datetime import datetime\n\nclass DataProcessor:\n    def __init__(self, data_source):\n        self.data_source = data_source\n        self.processed_data = None\n        \n    def analyze_data(self, data):\n        summary = {\n            \'total_rows\': len(data),\n            \'columns\': list(data.columns),\n            \'missing_values\': data.isnull().sum().to_dict()\n        }\n        return summary\n\n# List comprehension example\nactive_users = [user for user in users if user.get(\'active\', False)]',
+                        
+                        'HTML': '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Interactive Demo</title>\n    <link rel="stylesheet" href="styles.css">\n</head>\n<body>\n    <header class="main-header">\n        <h1 id="title">Welcome</h1>\n        <nav>\n            <a href="#home">Home</a>\n            <a href="#about">About</a>\n        </nav>\n    </header>\n    <main>\n        <p>This is a paragraph with <strong>bold text</strong>.</p>\n    </main>\n</body>\n</html>',
+                        
+                        'CSS': '/* Modern CSS with Variables and Grid */\n:root {\n  --primary-color: #3b82f6;\n  --secondary-color: #64748b;\n  --border-radius: 0.5rem;\n}\n\n.container {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n  gap: 2rem;\n  padding: 2rem;\n}\n\n.card {\n  background: white;\n  border-radius: var(--border-radius);\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);\n  transition: transform 0.3s ease;\n}\n\n.card:hover {\n  transform: translateY(-4px);\n}',
+                        
+                        'JSON': '{\n  "status": "success",\n  "timestamp": "2024-01-15T10:30:00Z",\n  "data": {\n    "users": [\n      {\n        "id": 1,\n        "username": "alice_doe",\n        "email": "alice@example.com",\n        "profile": {\n          "firstName": "Alice",\n          "lastName": "Doe",\n          "age": 28,\n          "active": true,\n          "preferences": {\n            "theme": "dark",\n            "notifications": true\n          }\n        }\n      }\n    ],\n    "pagination": {\n      "currentPage": 1,\n      "totalPages": 5,\n      "itemsPerPage": 10\n    }\n  }\n}',
+                        
+                        'SQL': '-- Advanced SQL with Joins and Window Functions\nSELECT \n    u.id as user_id,\n    u.username,\n    u.email,\n    COUNT(DISTINCT p.id) as total_posts,\n    COUNT(DISTINCT c.id) as total_comments,\n    AVG(p.view_count) as avg_post_views,\n    ROW_NUMBER() OVER (ORDER BY COUNT(p.id) DESC) as user_rank,\n    CASE \n        WHEN COUNT(p.id) > 50 THEN \'Power User\'\n        WHEN COUNT(p.id) > 10 THEN \'Active User\'\n        ELSE \'Casual User\'\n    END as user_category\nFROM users u\nLEFT JOIN posts p ON u.id = p.user_id \nLEFT JOIN comments c ON p.id = c.post_id\nWHERE u.active = true\n    AND u.created_at >= \'2023-01-01\'\nGROUP BY u.id, u.username, u.email\nORDER BY total_posts DESC;',
+                        
+                        'Bash': '#!/bin/bash\n# Deployment Automation Script\nset -euo pipefail\n\nAPP_NAME="my-web-app"\nDEPLOY_DIR="/var/www/${APP_NAME}"\nLOG_FILE="/var/log/${APP_NAME}-deploy.log"\n\n# Logging function\nlog() {\n    echo "$(date \'+%Y-%m-%d %H:%M:%S\') - $1" | tee -a "$LOG_FILE"\n}\n\n# Create backup\ncreate_backup() {\n    local backup_name="${APP_NAME}-$(date +%Y%m%d-%H%M%S)"\n    log "Creating backup: $backup_name"\n    \n    if [[ -d "$DEPLOY_DIR" ]]; then\n        tar -czf "/var/backups/${backup_name}.tar.gz" "$DEPLOY_DIR"\n        log "Backup created successfully"\n    fi\n}\n\n# Main deployment\ndeploy() {\n    log "Starting deployment"\n    create_backup\n    # Add deployment logic here\n    log "Deployment completed"\n}\n\ndeploy',
+                        
+                        'XML': '<?xml version="1.0" encoding="UTF-8"?>\n<bookstore>\n    <book id="1" category="fiction">\n        <title lang="en">Great Gatsby</title>\n        <author>F. Scott Fitzgerald</author>\n        <year>1925</year>\n        <price currency="USD">12.99</price>\n        <description>\n            A classic American novel about the Jazz Age.\n        </description>\n    </book>\n    <book id="2" category="biography">\n        <title lang="en">Steve Jobs</title>\n        <author>Walter Isaacson</author>\n        <year>2011</year>\n        <price currency="USD">14.99</price>\n    </book>\n</bookstore>'
+                    };
+                    return examples[lang] || this.codeContent;
+                }
+            };
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Code Showcase loaded successfully');
+
+            // Initialize Component Builder
+            new ComponentBuilder({
+                elementId: 'code-component-builder',
+                componentTag: 'dry-code',
+                title: 'Code Component Builder',
+                description: 'Try changing the code component properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    language: {
+                        type: 'select',
+                        label: 'Language',
+                        options: [
+                            { value: 'HTML', label: 'HTML' },
+                            { value: 'CSS', label: 'CSS' },
+                            { value: 'JavaScript', label: 'JavaScript' },
+                            { value: 'Python', label: 'Python' },
+                            { value: 'JSON', label: 'JSON' },
+                            { value: 'SQL', label: 'SQL' },
+                            { value: 'Bash', label: 'Bash' },
+                            { value: 'XML', label: 'XML' }
+                        ],
+                        default: 'JavaScript'
+                    },
+                    'show-copy': {
+                        type: 'checkbox',
+                        label: 'Show Copy Button',
+                        default: true
+                    },
+                    'show-header': {
+                        type: 'checkbox',
+                        label: 'Show Header',
+                        default: true
+                    }
+                },
+                
+                defaults: {
+                    language: 'JavaScript',
+                    'show-copy': true,
+                    'show-header': true
+                },
+                
+                contentGenerator: function(values) {
+                    const examples = {
+                        'JavaScript': '// JavaScript Example\nconst greeting = "Hello, World!";\nconsole.log(greeting);\n\n// Arrow function\nconst add = (a, b) => a + b;\nconst result = add(5, 3);',
+                        'Python': '# Python Example\ndef greet(name):\n    return f"Hello, {name}!"\n\nif __name__ == "__main__":\n    message = greet("World")\n    print(message)',
+                        'HTML': '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <title>Example</title>\n</head>\n<body>\n    <h1>Hello World</h1>\n    <p>This is a paragraph.</p>\n</body>\n</html>',
+                        'CSS': '/* CSS Example */\n.container {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);\n    padding: 2rem;\n}',
+                        'JSON': '{\n  "name": "John Doe",\n  "age": 30,\n  "active": true,\n  "skills": ["JavaScript", "Python", "CSS"],\n  "contact": {\n    "email": "john@example.com"\n  }\n}',
+                        'SQL': 'SELECT u.name, COUNT(p.id) as post_count\nFROM users u\nLEFT JOIN posts p ON u.id = p.user_id\nWHERE u.active = true\nGROUP BY u.id, u.name\nORDER BY post_count DESC;',
+                        'Bash': '#!/bin/bash\necho "Starting deployment..."\n\nfor file in *.js; do\n    echo "Processing $file"\n    node "$file"\ndone\n\necho "Deployment complete!"',
+                        'XML': '<?xml version="1.0" encoding="UTF-8"?>\n<person>\n    <name>John Doe</name>\n    <age>30</age>\n    <email>john@example.com</email>\n</person>'
+                    };
+                    return examples[values.language] || examples['JavaScript'];
+                }
+            });
+        });
+    </script>
+    
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
+</body>
+</html> 

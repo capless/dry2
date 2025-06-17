@@ -1,307 +1,212 @@
-// Timeline Component for DRY2 Web Components
+class Timeline extends BaseElement {
+  constructor() {
+    super();
+    this._childObserver = null;
+  }
 
-class Timeline extends BaseWebComponent {
-    constructor() {
-        super();
+  _initializeComponent() {
+    // Apply simple container styling
+    this.className = this.getContainerClasses();
+    
+    // Initialize all timeline items after a brief delay to ensure they're all in DOM
+    setTimeout(() => {
+      this._initializeTimelineItems();
+    }, 0);
+    
+    // Set up observer for dynamically added timeline items
+    this._setupChildObserver();
+  }
+
+  _initializeTimelineItems() {
+    const items = this.querySelectorAll('timeline-item');
+    items.forEach((item, index) => {
+      if (item._initializeWithIndex) {
+        item._initializeWithIndex(index, index === items.length - 1);
+      }
+    });
+  }
+
+  _setupChildObserver() {
+    if (this._childObserver) {
+      this._childObserver.disconnect();
+    }
+    
+    this._childObserver = new MutationObserver((mutations) => {
+      let shouldReinitialize = false;
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TIMELINE-ITEM') {
+            shouldReinitialize = true;
+          }
+        });
+      });
+      
+      if (shouldReinitialize) {
+        setTimeout(() => this._initializeTimelineItems(), 0);
+      }
+    });
+    
+    this._childObserver.observe(this, { childList: true });
+  }
+
+  getContainerClasses() {
+    let classes = 'timeline-container space-y-4 ';
+
+    const customClass = this.getAttribute('class');
+    if (customClass) {
+      classes += customClass + ' ';
     }
 
-    render() {
-        const layout = this.layout;
-        const containerClasses = this.getContainerClasses(layout);
-        
-        // Check if we have direct children or need to set up for slotted content
-        if (!this.hasChildNodes() || (this.firstElementChild && this.firstElementChild.tagName === 'SLOT')) {
-            this.innerHTML = `<div class="${containerClasses}"><slot></slot></div>`;
-            return;
-        }
-        
-        // Process timeline items
-        const timelineItems = Array.from(this.querySelectorAll('timeline-item'));
-        
-        // If no items found, set up for slotted content
-        if (timelineItems.length === 0) {
-            this.innerHTML = `<div class="${containerClasses}"><slot></slot></div>`;
-            return;
-        }
-        
-        // Create the timeline with processed items
-        this.innerHTML = `
-            <div class="${containerClasses}">
-                ${timelineItems.map(item => item.outerHTML).join('')}
-            </div>
-        `;
-    }
+    return classes.trim();
+  }
 
-    getContainerClasses(layout) {
-        let classes = 'timeline-container relative ';
-        
-        // Layout-specific classes
-        if (layout === 'horizontal') {
-            classes += 'flex overflow-x-auto ';
-        } else {
-            // Default vertical layout
-            classes += 'flex flex-col ';
-        }
-        
-        // Add custom classes
-        if (this.class) {
-            classes += this.class + ' ';
-        }
-        
-        return classes.trim();
+  disconnectedCallback() {
+    if (this._childObserver) {
+      this._childObserver.disconnect();
     }
-
-    static get observedAttributes() {
-        return ['layout', 'class'];
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue && this.isConnected) {
-            this.render();
-        }
-    }
-
-    // Getters and setters for attributes
-    get layout() {
-        return this.getAttribute('layout') || 'vertical';
-    }
-
-    set layout(value) {
-        this.setAttribute('layout', value);
-    }
-
-    get class() {
-        return this.getAttribute('class') || '';
-    }
-
-    set class(value) {
-        value ? this.setAttribute('class', value) : this.removeAttribute('class');
-    }
+    super.disconnectedCallback();
+  }
 }
 
-// Timeline Item Component
-class TimelineItem extends BaseWebComponent {
-    constructor() {
-        super();
+class TimelineItem extends BaseElement {
+  constructor() {
+    super();
+    this._itemIndex = 0;
+    this._isLast = false;
+  }
+
+  static get observedAttributes() {
+    return ['variant', 'date', 'title', 'icon'];
+  }
+
+  _initializeComponent() {
+    // Store original content before any modifications
+    if (!this._originalContent) {
+      this._originalContent = this.innerHTML;
+    }
+    
+    // Don't initialize immediately - wait for parent timeline to call _initializeWithIndex
+    const parentTimeline = this.closest('timeline-component');
+    if (parentTimeline && parentTimeline._isInitialized) {
+      // Parent is already initialized, we can initialize now
+      this._initializeWithParent();
+    }
+    // Otherwise, parent will call _initializeWithIndex when it's ready
+  }
+
+  _initializeWithParent() {
+    const parentTimeline = this.closest('timeline-component');
+    if (parentTimeline) {
+      const allItems = parentTimeline.querySelectorAll('timeline-item');
+      this._itemIndex = Array.from(allItems).indexOf(this);
+      this._isLast = this._itemIndex === allItems.length - 1;
+    }
+    
+    this._initializeItem();
+  }
+
+  _initializeWithIndex(index, isLast) {
+    this._itemIndex = index;
+    this._isLast = isLast;
+    this._initializeItem();
+  }
+
+  _initializeItem() {
+    const originalContent = this._originalContent || this.innerHTML;
+    this.innerHTML = this._createTimelineItemHTML(originalContent);
+  }
+
+  _createTimelineItemHTML(originalContent) {
+    const variant = this.variant;
+    const date = this.date;
+    const title = this.title;
+
+    const itemClasses = this._getItemClasses();
+    const marker = this._createMarker();
+
+    const dateDisplay = date ? `<div class="text-sm text-gray-500 mb-1">${this._escapeHtml(date)}</div>` : '';
+    const titleDisplay = title ? `<div class="font-semibold text-gray-800 mb-2">${this._escapeHtml(title)}</div>` : '';
+
+    return `
+      <div class="${itemClasses}">
+        <div class="flex-shrink-0 mr-4">
+          ${marker}
+          ${!this._isLast ? '<div class="w-0.5 h-16 bg-gray-300 ml-4 mt-2"></div>' : ''}
+        </div>
+        <div class="flex-grow">
+          ${dateDisplay}
+          ${titleDisplay}
+          <div class="text-gray-600">${originalContent}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  _getItemClasses() {
+    let classes = 'timeline-item flex ';
+
+    const customClass = this.getAttribute('class');
+    if (customClass) {
+      classes += customClass + ' ';
     }
 
-    render() {
-        const layout = this.determineLayout();
-        const variant = this.variant;
-        const date = this.date;
-        const title = this.title;
-        const isLast = this.isLast; // Last item in timeline
-        
-        // Get appropriate classes based on layout and variant
-        const itemClasses = this.getItemClasses(layout, variant, isLast);
-        
-        // Create marker/icon element
-        const marker = this.createMarker(layout, variant);
-        
-        // Create date display if provided
-        const dateDisplay = date ? `<div class="timeline-date text-sm text-gray-500">${date}</div>` : '';
-        
-        // Create title display if provided
-        const titleDisplay = title ? `<div class="timeline-title font-medium">${title}</div>` : '';
-        
-        // Arrange content based on layout
-        let timelineItemHTML;
-        
-        if (layout === 'horizontal') {
-            timelineItemHTML = `
-                <div class="${itemClasses}">
-                    <div class="timeline-item-content p-4 flex flex-col min-w-[200px]">
-                        ${dateDisplay}
-                        ${titleDisplay}
-                        <div class="timeline-body mt-2">
-                            <slot></slot>
-                        </div>
-                    </div>
-                    ${marker}
-                </div>
-            `;
-        } else {
-            // Vertical layout
-            timelineItemHTML = `
-                <div class="${itemClasses}">
-                    <div class="timeline-marker-container">
-                        ${marker}
-                    </div>
-                    <div class="timeline-item-content ml-4 p-4">
-                        ${dateDisplay}
-                        ${titleDisplay}
-                        <div class="timeline-body mt-2">
-                            <slot></slot>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        this.innerHTML = timelineItemHTML;
+    return classes.trim();
+  }
+
+  _createMarker() {
+    let markerColorClass;
+
+    if (this.variant === 'success') {
+      markerColorClass = 'bg-green-500';
+    } else if (this.variant === 'error') {
+      markerColorClass = 'bg-red-500';
+    } else if (this.variant === 'warning') {
+      markerColorClass = 'bg-yellow-500';
+    } else if (this.variant === 'info') {
+      markerColorClass = 'bg-blue-500';
+    } else {
+      markerColorClass = 'bg-gray-400';
     }
 
-    determineLayout() {
-        // First check if this item has a layout override
-        if (this.hasAttribute('layout')) {
-            return this.getAttribute('layout');
-        }
-        
-        // Otherwise use the parent timeline's layout
-        const timelineParent = this.closest('timeline-component');
-        return timelineParent ? timelineParent.layout : 'vertical';
+    if (this.icon) {
+      return `<div class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 flex items-center justify-center">${this.icon}</div>`;
+    } else {
+      return `<div class="w-8 h-8 rounded-full ${markerColorClass} border-2 border-white"></div>`;
     }
+  }
 
-    get isLast() {
-        const timelineParent = this.closest('timeline-component');
-        if (!timelineParent) return false;
-        
-        const items = Array.from(timelineParent.querySelectorAll('timeline-item'));
-        return items[items.length - 1] === this;
-    }
+  get variant() {
+    return this._getAttributeWithDefault('variant', 'default');
+  }
 
-    getItemClasses(layout, variant, isLast) {
-        let classes = 'timeline-item relative ';
-        
-        // Layout-specific classes
-        if (layout === 'horizontal') {
-            classes += 'inline-block flex-shrink-0 ';
-            
-            // Add line connectors for horizontal layout
-            if (!isLast) {
-                classes += 'after:content-[""] after:absolute after:top-1/2 after:right-0 after:w-8 after:h-0.5 after:bg-gray-300 after:-mr-4 ';
-            }
-        } else {
-            // Vertical layout
-            classes += 'flex pb-6 ';
-            
-            // Add line connectors for vertical layout
-            if (!isLast) {
-                classes += 'before:content-[""] before:absolute before:left-[18px] before:top-[28px] before:bottom-0 before:w-0.5 before:bg-gray-300 ';
-            }
-        }
-        
-        // Variant-specific classes
-        switch (variant) {
-            case 'success':
-                classes += 'timeline-success ';
-                break;
-            case 'error':
-                classes += 'timeline-error ';
-                break;
-            case 'warning':
-                classes += 'timeline-warning ';
-                break;
-            case 'info':
-                classes += 'timeline-info ';
-                break;
-            default:
-                classes += 'timeline-default ';
-        }
-        
-        // Add custom classes
-        if (this.class) {
-            classes += this.class + ' ';
-        }
-        
-        return classes.trim();
-    }
+  get date() {
+    return this.getAttribute('date');
+  }
 
-    createMarker(layout, variant) {
-        // Get marker color based on variant
-        let markerColor;
-        switch (variant) {
-            case 'success': markerColor = 'bg-green-500'; break;
-            case 'error': markerColor = 'bg-red-500'; break;
-            case 'warning': markerColor = 'bg-yellow-500'; break;
-            case 'info': markerColor = 'bg-blue-500'; break;
-            default: markerColor = 'bg-gray-500';
-        }
-        
-        // Use custom icon if provided, otherwise use a dot/circle
-        let markerContent;
-        if (this.icon) {
-            markerContent = this.icon;
-        } else {
-            markerContent = `<div class="${markerColor} rounded-full h-3 w-3"></div>`;
-        }
-        
-        // Create marker element with appropriate positioning
-        if (layout === 'horizontal') {
-            return `
-                <div class="timeline-marker absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center h-8 w-8 rounded-full bg-white border-2 border-gray-300 z-10">
-                    ${markerContent}
-                </div>
-            `;
-        } else {
-            return `
-                <div class="timeline-marker absolute left-0 top-1 flex items-center justify-center h-8 w-8 rounded-full bg-white border-2 border-gray-300 z-10">
-                    ${markerContent}
-                </div>
-            `;
-        }
-    }
+  get title() {
+    return this.getAttribute('title');
+  }
 
-    static get observedAttributes() {
-        return ['variant', 'date', 'title', 'icon', 'layout', 'class'];
-    }
+  get icon() {
+    return this.getAttribute('icon');
+  }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue && this.isConnected) {
-            this.render();
-        }
-    }
+  _escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
-    // Getters and setters for attributes
-    get variant() {
-        return this.getAttribute('variant') || 'default';
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (oldValue !== newValue && this._isInitialized) {
+      this._initializeItem();
     }
-
-    set variant(value) {
-        this.setAttribute('variant', value);
-    }
-
-    get date() {
-        return this.getAttribute('date');
-    }
-
-    set date(value) {
-        value ? this.setAttribute('date', value) : this.removeAttribute('date');
-    }
-
-    get title() {
-        return this.getAttribute('title');
-    }
-
-    set title(value) {
-        value ? this.setAttribute('title', value) : this.removeAttribute('title');
-    }
-
-    get icon() {
-        return this.getAttribute('icon');
-    }
-
-    set icon(value) {
-        value ? this.setAttribute('icon', value) : this.removeAttribute('icon');
-    }
-
-    get layout() {
-        return this.getAttribute('layout');
-    }
-
-    set layout(value) {
-        value ? this.setAttribute('layout', value) : this.removeAttribute('layout');
-    }
-
-    get class() {
-        return this.getAttribute('class') || '';
-    }
-
-    set class(value) {
-        value ? this.setAttribute('class', value) : this.removeAttribute('class');
-    }
+  }
 }
 
-// Define the custom elements
 customElements.define('timeline-component', Timeline);
 customElements.define('timeline-item', TimelineItem);

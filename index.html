@@ -62,8 +62,9 @@
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#features" class="text-gray-600 hover:text-gray-900">Features</a>
                 <a href="#components" class="text-gray-600 hover:text-gray-900">Components</a>
-                <a href="#docs" class="text-gray-600 hover:text-gray-900">Documentation</a>
-                <a href="https://github.com" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                <a href="docs/" class="text-gray-600 hover:text-gray-900">Documentation</a>
+                <a href="examples/" class="text-gray-600 hover:text-gray-900">Examples</a>
+                <a href="https://github.com/capless/dry2" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                     <i class="fab fa-github mr-2"></i>GitHub
                 </a>
             </div>
@@ -81,64 +82,45 @@
                     <span class="gradient-text">Native Web Components</span>
                 </h1>
                 <p class="text-xl text-gray-600 mb-8">
-                    A comprehensive library of reusable web components built with vanilla JavaScript, HTMX, and Alpine.js. No framework dependencies, just pure web standards.
+                    A comprehensive library of 21 production-ready web components built with vanilla JavaScript and Alpine.js. Framework-agnostic, accessible, and powered by Tailwind CSS.
                 </p>
                 <div class="flex space-x-4">
-                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    <a href="docs/getting-started.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
                         Get Started <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <button class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:border-gray-400 transition-colors">
-                        View Demo
-                    </button>
+                    </a>
+                    <a href="examples/" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:border-gray-400 transition-colors inline-block">
+                        View Examples
+                    </a>
                 </div>
             </div>
             <div class="relative">
                 <div class="floating">
                     <div class="bg-white rounded-lg shadow-xl p-6">
-                        <div class="mb-4">
-                            <carousel-component
-                                slides='[
-                                    {
-                                        "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=400&fit=crop",
-                                        "title": "Mountain Landscape",
-                                        "description": "Beautiful mountain scenery with misty peaks"
-                                    },
-                                    {
-                                        "image": "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=800&h=400&fit=crop",
-                                        "title": "Desert Sunset",
-                                        "description": "Stunning sunset over desert rock formations"
-                                    },
-                                    {
-                                        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop",
-                                        "title": "Tropical Beach",
-                                        "description": "Crystal clear waters and white sandy beaches"
-                                    }
-                                ]'
-                                height="200"
-                                autoplay
-                                interval="5000"
-                                show-thumbnails="false"
-                                show-dots="true"
-                                show-arrows="true"
-                                show-controls="false"
-                            ></carousel-component>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Live Component Preview</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <dry-button variant="primary" size="md">Primary Button</dry-button>
+                                <dry-button variant="outline" size="md">Outline Button</dry-button>
+                            </div>
                         </div>
                         <div class="mb-4">
-                            <dry-drawer position="right" drawer-class="bg-white w-80" button-class="bg-blue-500 text-white px-4 py-2 rounded">
-                                Interactive Drawer Demo
-                                <span slot="header">Example Drawer</span>
-                                <div slot="content">
-                                    <p class="mb-4">This is a live example of our drawer component!</p>
-                                </div>
-                            </dry-drawer>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <avatar-component name="John Doe" size="md"></avatar-component>
+                                <avatar-component name="Jane Smith" size="md"></avatar-component>
+                                <avatar-component name="Alex Johnson" size="md"></avatar-component>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <badge-component variant="success" position="standalone">Active</badge-component>
+                                <badge-component variant="primary" position="standalone">21 Components</badge-component>
+                            </div>
                         </div>
                         <div class="mb-4">
-                            <avatar-component name="John Doe" size="lg" class="mr-2"></avatar-component>
-                            <avatar-component name="Jane Smith" size="lg" class="mr-2"></avatar-component>
-                            <badge-component variant="success" position="standalone">Live</badge-component>
+                            <stat-component value="21" label="Components Available" trend="up" trend-value="Production Ready"></stat-component>
                         </div>
-                        <div>
-                            <stat-component value="98" label="Performance Score" trend="up" trend-value="+12%"></stat-component>
+                        <div class="text-center">
+                            <toast-component type="success" auto-show duration="0">
+                                🎉 All components loaded successfully!
+                            </toast-component>
                         </div>
                     </div>
                 </div>
@@ -152,7 +134,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl font-bold text-gray-900">Why Choose DRY2 Components?</h2>
-            <p class="mt-4 text-xl text-gray-600">Built with modern web standards for maximum compatibility</p>
+            <p class="mt-4 text-xl text-gray-600">21 production-ready components built with modern web standards for maximum compatibility</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
@@ -188,7 +170,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl font-bold text-gray-900">Component Library</h2>
-            <p class="mt-4 text-xl text-gray-600">A growing collection of production-ready components</p>
+            <p class="mt-4 text-xl text-gray-600">21 production-ready components in a single, lightweight bundle</p>
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -270,22 +252,18 @@
         </div>
 
         <div class="bg-gray-900 rounded-lg p-8 text-white">
-                <pre><code>&lt;!-- Include the library --&gt;
-&lt;script src="https://unpkg.com/dry2-components/dist/bundle.js"&gt;&lt;/script&gt;
+                <pre><code>&lt;!-- Include dependencies --&gt;
+&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer&gt;&lt;/script&gt;
 
-&lt;!-- Use components with simple attributes --&gt;
-&lt;dry-drawer position="right" drawer-class="bg-white w-80"&gt;
-    &lt;span slot="header"&gt;My Drawer&lt;/span&gt;
-    &lt;div slot="content"&gt;
-        &lt;p&gt;Drawer content goes here!&lt;/p&gt;
-    &lt;/div&gt;
-&lt;/dry-drawer&gt;
+&lt;!-- Include DRY2 complete bundle (all 21 components) --&gt;
+&lt;script src="https://unpkg.com/dry2-web-components/dist/dry2.js"&gt;&lt;/script&gt;
 
+&lt;!-- Use any component - they're all available! --&gt;
+&lt;dry-button variant="primary" size="lg"&gt;Click me!&lt;/dry-button&gt;
 &lt;avatar-component name="John Doe" size="lg"&gt;&lt;/avatar-component&gt;
-
-&lt;toast-component type="success" auto-show&gt;
-    Operation completed successfully!
-&lt;/toast-component&gt;</code></pre>
+&lt;carousel-component slides='[...]' autoplay&gt;&lt;/carousel-component&gt;
+&lt;toast-component type="success" auto-show&gt;Success!&lt;/toast-component&gt;</code></pre>
         </div>
     </div>
 </section>
@@ -296,55 +274,16 @@
         <h2 class="text-3xl font-bold text-white mb-8">Ready to Get Started?</h2>
         <p class="text-xl text-blue-100 mb-8">Join thousands of developers building better UIs with DRY2 Components</p>
         <div class="flex justify-center space-x-4">
-            <button class="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+            <a href="docs/" class="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors inline-block">
                 Read Documentation
-            </button>
-            <button class="border border-white text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                View on GitHub
-            </button>
+            </a>
+                            <a href="https://github.com/capless/dry2" target="_blank" class="border border-white text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
+                    View on GitHub
+                </a>
         </div>
     </div>
 </section>
 
-<!-- Footer -->
-<footer class="bg-gray-900 text-gray-300 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-4 gap-8">
-            <div>
-                <h3 class="text-white font-bold text-lg mb-4">DRY2 Components</h3>
-                <p class="text-sm">Modern web components library for building better user interfaces.</p>
-            </div>
-            <div>
-                <h4 class="text-white font-semibold mb-4">Resources</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white">Documentation</a></li>
-                    <li><a href="#" class="hover:text-white">Examples</a></li>
-                    <li><a href="#" class="hover:text-white">API Reference</a></li>
-                    <li><a href="#" class="hover:text-white">Changelog</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-semibold mb-4">Community</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white">GitHub</a></li>
-                    <li><a href="#" class="hover:text-white">Discord</a></li>
-                    <li><a href="#" class="hover:text-white">Twitter</a></li>
-                    <li><a href="#" class="hover:text-white">Blog</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-semibold mb-4">Legal</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white">License</a></li>
-                    <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-white">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 text-sm text-center">
-            <p>&copy; 2025 DRY2 Components. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
+<div id="footer" hx-get="examples/footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

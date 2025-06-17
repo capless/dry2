@@ -3,172 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stat Component Showcase - DRY2</title>
+    <title>Stat Component Showcase - DRY2</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
-    <script src="../src/dry2/stat.js"></script>
-    
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-        
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-        
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-        
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-        
-        /* Additional styles for stat cards */
-        .stat-card {
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            background-color: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-    <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code, .code-content pre');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
+    <script src="../src/dry2/stat.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -177,49 +34,70 @@
         </div>
     </div>
 
-<div class="p-8">
-    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Stat Component</h1>
-            <p class="text-lg text-gray-600">A stat component to display key metrics or statistics with visual emphasis and optional comparison indicators.</p>
-        </header>
-        
-        <main>
-            <!-- Basic Stats Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Basic Stats</h2>
-                <p class="demo-description">Basic stat components with different data types.</p>
-                
-                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="stat-card">
-                        <dry-stat
-                            value="1234"
-                            label="Total Users"
-                            type="number">
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="75.5"
-                            label="Completion Rate"
-                            type="percentage"
-                            percentage-value>
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="9875.42"
-                            label="Revenue"
-                            type="currency"
-                            currency="USD">
-                        </dry-stat>
+    <div class="p-8">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Stat Component Showcase</h1>
+            <p class="text-gray-600 mb-8">A stat component to display key metrics or statistics with visual emphasis and optional comparison indicators.</p>
+
+            <!-- Introduction -->
+            <div class="demo-section">
+                <div class="demo-container">
+                    <p class="text-gray-700 mb-4">
+                        The <code class="bg-gray-200 px-2 py-1 rounded text-sm">dry-stat</code> component provides a clean way to display 
+                        key metrics and statistics with support for different data types, trend indicators, and custom styling.
+                    </p>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-4">
+                        <h4 class="font-semibold text-blue-900 mb-2">Key Features:</h4>
+                        <ul class="text-blue-800 text-sm space-y-1">
+                            <li>• Multiple value types (number, percentage, currency)</li>
+                            <li>• Trend indicators with direction and values</li>
+                            <li>• Custom icons and styling support</li>
+                            <li>• Comparison text for context</li>
+                            <li>• Horizontal and vertical layouts</li>
+                            <li>• Configurable decimal places and formatting</li>
+                            <li>• Responsive design patterns</li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Basic Stats Section -->
+            <div class="demo-section">
+                <h2 class="demo-title">Basic Stats</h2>
+                <div class="demo-description">
+                    Basic stat components with different data types and formatting options.
+                </div>
                 
-                <div class="code-block">
-                    <pre>&lt;dry-stat
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="stat-card">
+                            <dry-stat
+                                value="1234"
+                                label="Total Users"
+                                type="number">
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="75.5"
+                                label="Completion Rate"
+                                type="percentage"
+                                percentage-value>
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="9875.42"
+                                label="Revenue"
+                                type="currency"
+                                currency="USD">
+                            </dry-stat>
+                        </div>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;dry-stat
     value="1234"
     label="Total Users"
     type="number"&gt;
@@ -237,48 +115,50 @@
     label="Revenue"
     type="currency"
     currency="USD"&gt;
-&lt;/dry-stat&gt;</pre>
+&lt;/dry-stat&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
             <!-- Stats with Trends Section -->
-            <section class="demo-section">
+            <div class="demo-section">
                 <h2 class="demo-title">Stats with Trends</h2>
-                <p class="demo-description">Stat components with trend indicators showing increase, decrease, or neutral trends.</p>
-                
-                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="stat-card">
-                        <dry-stat
-                            value="1256"
-                            label="New Subscribers"
-                            trend="up"
-                            trend-value="+12.5%">
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="89.2"
-                            label="Page Load Time"
-                            type="number"
-                            decimal-places="1"
-                            trend="down"
-                            trend-value="-5.3%">
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="540"
-                            label="Active Sessions"
-                            trend="neutral"
-                            trend-value="±0%">
-                        </dry-stat>
-                    </div>
+                <div class="demo-description">
+                    Stat components with trend indicators showing increase, decrease, or neutral trends.
                 </div>
                 
-                <div class="code-block">
-                    <pre>&lt;dry-stat
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="stat-card">
+                            <dry-stat
+                                value="1256"
+                                label="New Subscribers"
+                                trend="up"
+                                trend-value="+12.5%">
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="89.2"
+                                label="Page Load Time"
+                                type="number"
+                                decimal-places="1"
+                                trend="down"
+                                trend-value="-5.3%">
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="540"
+                                label="Active Sessions"
+                                trend="neutral"
+                                trend-value="±0%">
+                            </dry-stat>
+                        </div>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;dry-stat
     value="1256"
     label="New Subscribers"
     trend="up"
@@ -299,41 +179,43 @@
     label="Active Sessions"
     trend="neutral"
     trend-value="±0%"&gt;
-&lt;/dry-stat&gt;</pre>
+&lt;/dry-stat&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
             <!-- Stats with Comparisons Section -->
-            <section class="demo-section">
+            <div class="demo-section">
                 <h2 class="demo-title">Stats with Comparisons</h2>
-                <p class="demo-description">Stat components with comparison text to provide context against a prior period.</p>
-                
-                <div class="demo-container grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="stat-card">
-                        <dry-stat
-                            value="8452"
-                            label="Page Views"
-                            trend="up"
-                            trend-value="+24%"
-                            comparison="vs. Previous Week">
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="3.2"
-                            label="Average Session Duration"
-                            type="number"
-                            decimal-places="1"
-                            trend="down"
-                            trend-value="-1.5%"
-                            comparison="vs. Last Month">
-                        </dry-stat>
-                    </div>
+                <div class="demo-description">
+                    Stat components with comparison text to provide context against a prior period.
                 </div>
                 
-                <div class="code-block">
-                    <pre>&lt;dry-stat
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="stat-card">
+                            <dry-stat
+                                value="8452"
+                                label="Page Views"
+                                trend="up"
+                                trend-value="+24%"
+                                comparison="vs. Previous Week">
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="3.2"
+                                label="Average Session Duration"
+                                type="number"
+                                decimal-places="1"
+                                trend="down"
+                                trend-value="-1.5%"
+                                comparison="vs. Last Month">
+                            </dry-stat>
+                        </div>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;dry-stat
     value="8452"
     label="Page Views"
     trend="up"
@@ -349,61 +231,65 @@
     trend="down"
     trend-value="-1.5%"
     comparison="vs. Last Month"&gt;
-&lt;/dry-stat&gt;</pre>
+&lt;/dry-stat&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
             <!-- Stats with Icons Section -->
-            <section class="demo-section">
+            <div class="demo-section">
                 <h2 class="demo-title">Stats with Icons</h2>
-                <p class="demo-description">Stat components with custom icons to visually represent the metric.</p>
-                
-                <div class="demo-container grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="stat-card">
-                        <dry-stat
-                            value="24.5K"
-                            label="Total Followers"
-                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>'>
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="14,328"
-                            label="Revenue"
-                            type="currency"
-                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <dry-stat
-                            value="92.7"
-                            label="Customer Satisfaction"
-                            type="percentage"
-                            percentage-value
-                            icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
-                        </dry-stat>
-                    </div>
+                <div class="demo-description">
+                    Stat components with custom icons to visually represent the metric.
                 </div>
                 
-                <div class="code-block">
-                    <pre>&lt;dry-stat
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="stat-card">
+                            <dry-stat
+                                value="24.5K"
+                                label="Total Followers"
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>'>
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="14,328"
+                                label="Revenue"
+                                type="currency"
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <dry-stat
+                                value="92.7"
+                                label="Customer Satisfaction"
+                                type="percentage"
+                                percentage-value
+                                icon='<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'>
+                            </dry-stat>
+                        </div>
+                    </div>
+                    
+                    <dry-code language="HTML">&lt;dry-stat
     value="24.5K"
     label="Total Followers"
     icon='&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /&gt;&lt;/svg&gt;'&gt;
-&lt;/dry-stat&gt;</pre>
+&lt;/dry-stat&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
             <!-- Layout Variations Section -->
-            <section class="demo-section">
+            <div class="demo-section">
                 <h2 class="demo-title">Layout Variations</h2>
-                <p class="demo-description">Stat components with vertical and horizontal layouts.</p>
+                <div class="demo-description">
+                    Stat components with vertical and horizontal layouts for different design needs.
+                </div>
                 
-                <div class="demo-container space-y-6">
+                <div class="demo-container">
                     <h3 class="font-medium mb-2">Vertical Layout (Default)</h3>
-                    <div class="stat-card w-64">
+                    <div class="stat-card w-64 mb-6">
                         <dry-stat
                             value="1,234"
                             label="Downloads"
@@ -414,8 +300,8 @@
                         </dry-stat>
                     </div>
                     
-                    <h3 class="font-medium mb-2 mt-6">Horizontal Layout</h3>
-                    <div class="stat-card">
+                    <h3 class="font-medium mb-2">Horizontal Layout</h3>
+                    <div class="stat-card mb-6">
                         <dry-stat
                             value="1,234"
                             label="Downloads"
@@ -425,10 +311,8 @@
                             layout="horizontal">
                         </dry-stat>
                     </div>
-                </div>
                 
-                <div class="code-block">
-                    <pre>&lt;dry-stat
+                    <dry-code language="HTML">&lt;dry-stat
     value="1,234"
     label="Downloads"
     icon='...'
@@ -444,41 +328,43 @@
     trend="up"
     trend-value="+8.3%"
     layout="horizontal"&gt;
-&lt;/dry-stat&gt;</pre>
+&lt;/dry-stat&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
             <!-- Customized Stats Section -->
-            <section class="demo-section">
+            <div class="demo-section">
                 <h2 class="demo-title">Customized Stats</h2>
-                <p class="demo-description">Stat components with custom styling and formatting.</p>
-                
-                <div class="demo-container grid grid-cols-1 gap-6">
-                    <div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white">
-                        <dry-stat
-                            value="5280"
-                            label="Active Users"
-                            trend="up"
-                            trend-value="+15%"
-                            class="text-white"
-                            comparison="Month-over-month growth">
-                        </dry-stat>
-                    </div>
-                    
-                    <div class="p-6 bg-gray-900 rounded-lg text-white">
-                        <dry-stat
-                            value="99.9"
-                            label="Uptime"
-                            type="percentage"
-                            percentage-value
-                            decimal-places="1"
-                            class="text-white">
-                        </dry-stat>
-                    </div>
+                <div class="demo-description">
+                    Stat components with custom styling and formatting options.
                 </div>
                 
-                <div class="code-block">
-                    <pre>&lt;div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white"&gt;
+                <div class="demo-container">
+                    <div class="grid grid-cols-1 gap-6 mb-6">
+                        <div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white">
+                            <dry-stat
+                                value="5280"
+                                label="Active Users"
+                                trend="up"
+                                trend-value="+15%"
+                                class="text-white"
+                                comparison="Month-over-month growth">
+                            </dry-stat>
+                        </div>
+                        
+                        <div class="p-6 bg-gray-900 rounded-lg text-white">
+                            <dry-stat
+                                value="99.9"
+                                label="Uptime"
+                                type="percentage"
+                                percentage-value
+                                decimal-places="1"
+                                class="text-white">
+                            </dry-stat>
+                        </div>
+                    </div>
+                
+                    <dry-code language="HTML">&lt;div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white"&gt;
     &lt;dry-stat
         value="5280"
         label="Active Users"
@@ -487,17 +373,19 @@
         class="text-white"
         comparison="Month-over-month growth"&gt;
     &lt;/dry-stat&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
             <!-- Stats Dashboard Example -->
-            <section class="demo-section">
+            <div class="demo-section">
                 <h2 class="demo-title">Stats Dashboard Example</h2>
-                <p class="demo-description">Example of multiple stat components used together in a dashboard layout.</p>
+                <div class="demo-description">
+                    Example of multiple stat components used together in a dashboard layout.
+                </div>
                 
                 <div class="demo-container">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <div class="stat-card bg-blue-50">
                             <dry-stat
                                 value="84,394"
@@ -547,10 +435,8 @@
                             </dry-stat>
                         </div>
                     </div>
-                </div>
                 
-                <div class="code-block">
-                    <pre>&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"&gt;
+                    <dry-code language="HTML">&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"&gt;
     &lt;div class="stat-card bg-blue-50"&gt;
         &lt;dry-stat
             value="84,394"
@@ -562,109 +448,224 @@
     &lt;/div&gt;
     
     &lt;!-- Additional stat cards... --&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;</dry-code>
                 </div>
-            </section>
+            </div>
             
+            <!-- Component Builder Section -->
+            <div id="stat-component-builder"></div>
+
             <!-- API Reference -->
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+            <div class="demo-section">
+                <h2 class="demo-title">API Reference</h2>
                 
-                <h3 class="text-xl font-semibold mt-6 mb-3">Stat Properties</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Property</th>
-                            <th class="px-4 py-2 text-left">Type</th>
-                            <th class="px-4 py-2 text-left">Default</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">value</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'0'</td>
-                            <td class="px-4 py-2">The value to display in the stat</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">label</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'Statistic'</td>
-                            <td class="px-4 py-2">Label describing the stat</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">trend</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">Trend direction: 'up', 'down', or 'neutral'</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">trend-value</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">Value to display next to trend indicator</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">comparison</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">Comparison text (e.g., 'vs. Previous Month')</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">icon</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">HTML string for an icon (SVG recommended)</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">type</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'number'</td>
-                            <td class="px-4 py-2">Value type: 'number', 'percentage', or 'currency'</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">decimal-places</td>
-                            <td class="px-4 py-2">number</td>
-                            <td class="px-4 py-2">0 for number, 2 for currency</td>
-                            <td class="px-4 py-2">Number of decimal places to display</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">currency</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'USD'</td>
-                            <td class="px-4 py-2">Currency code for currency type values</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">percentage-value</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Whether value is already in percentage format</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">layout</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'vertical'</td>
-                            <td class="px-4 py-2">Layout orientation: 'vertical' or 'horizontal'</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">class</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">''</td>
-                            <td class="px-4 py-2">Additional CSS classes</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
+                <div class="demo-container">
+                    <h3 class="text-lg font-semibold mb-4">Stat Properties</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Property</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Type</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>value</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">'0'</td>
+                                    <td class="border border-gray-300 px-4 py-2">The value to display in the stat</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>label</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">'Statistic'</td>
+                                    <td class="border border-gray-300 px-4 py-2">Label describing the stat</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>trend</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">undefined</td>
+                                    <td class="border border-gray-300 px-4 py-2">Trend direction: 'up', 'down', or 'neutral'</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>trend-value</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">undefined</td>
+                                    <td class="border border-gray-300 px-4 py-2">Value to display next to trend indicator</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>comparison</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">undefined</td>
+                                    <td class="border border-gray-300 px-4 py-2">Comparison text (e.g., 'vs. Previous Month')</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>icon</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">undefined</td>
+                                    <td class="border border-gray-300 px-4 py-2">HTML string for an icon (SVG recommended)</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>type</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">'number'</td>
+                                    <td class="border border-gray-300 px-4 py-2">Value type: 'number', 'percentage', or 'currency'</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>decimal-places</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">number</td>
+                                    <td class="border border-gray-300 px-4 py-2">0 for number, 2 for currency</td>
+                                    <td class="border border-gray-300 px-4 py-2">Number of decimal places to display</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>currency</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">'USD'</td>
+                                    <td class="border border-gray-300 px-4 py-2">Currency code for currency type values</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>percentage-value</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">boolean</td>
+                                    <td class="border border-gray-300 px-4 py-2">false</td>
+                                    <td class="border border-gray-300 px-4 py-2">Whether value is already in percentage format</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2"><code>layout</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">'vertical'</td>
+                                    <td class="border border-gray-300 px-4 py-2">Layout orientation: 'vertical' or 'horizontal'</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2"><code>class</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">string</td>
+                                    <td class="border border-gray-300 px-4 py-2">''</td>
+                                    <td class="border border-gray-300 px-4 py-2">Additional CSS classes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            <p>DRY2 Web Components Library</p>
-            <p class="mt-2">
-                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-            </p>
-        </footer>
+        
     </div>
-</div>
+
+    <script>
+        // Initialize Component Builder
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComponentBuilder({
+                elementId: 'stat-component-builder',
+                componentTag: 'dry-stat',
+                title: 'Stat Component Builder',
+                description: 'Try changing the stat properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    value: {
+                        type: 'text',
+                        label: 'Value',
+                        default: '42,567'
+                    },
+                    label: {
+                        type: 'text',
+                        label: 'Label',
+                        default: 'Total Users'
+                    },
+                    type: {
+                        type: 'select',
+                        label: 'Type',
+                        options: [
+                            { value: 'number', label: 'Number' },
+                            { value: 'currency', label: 'Currency' },
+                            { value: 'percentage', label: 'Percentage' }
+                        ],
+                        default: 'number'
+                    },
+                    trend: {
+                        type: 'select',
+                        label: 'Trend',
+                        options: [
+                            { value: '', label: 'No Trend' },
+                            { value: 'up', label: 'Up' },
+                            { value: 'down', label: 'Down' },
+                            { value: 'neutral', label: 'Neutral' }
+                        ],
+                        default: 'up'
+                    },
+                    'trend-value': {
+                        type: 'text',
+                        label: 'Trend Value',
+                        default: '+12.3%'
+                    },
+                    comparison: {
+                        type: 'text',
+                        label: 'Comparison Text',
+                        default: 'vs. Previous Month'
+                    },
+                    icon: {
+                        type: 'text',
+                        label: 'Icon (HTML/SVG)',
+                        default: ''
+                    },
+                    currency: {
+                        type: 'select',
+                        label: 'Currency',
+                        options: [
+                            { value: 'USD', label: 'USD ($)' },
+                            { value: 'EUR', label: 'EUR (€)' },
+                            { value: 'GBP', label: 'GBP (£)' },
+                            { value: 'JPY', label: 'JPY (¥)' }
+                        ],
+                        default: 'USD'
+                    },
+                    'percentage-value': {
+                        type: 'checkbox',
+                        label: 'Value is Percentage',
+                        default: false
+                    },
+                    'decimal-places': {
+                        type: 'range',
+                        label: 'Decimal Places',
+                        min: 0,
+                        max: 4,
+                        default: 0,
+                        displayFormat: (value) => value
+                    },
+                    layout: {
+                        type: 'select',
+                        label: 'Layout',
+                        options: [
+                            { value: 'vertical', label: 'Vertical' },
+                            { value: 'horizontal', label: 'Horizontal' }
+                        ],
+                        default: 'vertical'
+                    }
+                },
+                
+                defaults: {
+                    value: '42,567',
+                    label: 'Total Users',
+                    type: 'number',
+                    trend: 'up',
+                    'trend-value': '+12.3%',
+                    comparison: 'vs. Previous Month',
+                    icon: '',
+                    currency: 'USD',
+                    'percentage-value': false,
+                    'decimal-places': 0,
+                    layout: 'vertical'
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
+        });
+    </script>
+
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRY2 Components Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        
+        .sidebar-link.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .attribute-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        .attribute-table th,
+        .attribute-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .attribute-table th {
+            background: #f9fafb;
+            font-weight: 600;
+        }
+        
+        .component-header {
+            border-left: 4px solid #3b82f6;
+            background: #eff6ff;
+            padding: 1rem;
+            margin: 2rem 0 1rem 0;
+        }
+        
+        .nav-section {
+            position: sticky;
+            top: 80px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-2xl font-bold gradient-text">DRY2</a>
+                    <span class="ml-2 text-gray-600">Documentation</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="text-gray-600 hover:text-gray-900">Home</a>
+                    <a href="getting-started.html" class="text-gray-600 hover:text-gray-900">Getting Started</a>
+                    <a href="../examples/" class="text-gray-600 hover:text-gray-900">Examples</a>
+                    <a href="API.html" class="text-gray-600 hover:text-gray-900">API Reference</a>
+                                    <a href="https://github.com/capless/dry2" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-sm min-h-screen nav-section" x-data="{ activeSection: 'overview' }">
+            <div class="p-6 space-y-6">
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-3">Getting Started</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#overview" class="sidebar-link block px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-100">Overview</a></li>
+                        <li><a href="#installation" class="sidebar-link block px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-100">Installation</a></li>
+                        <li><a href="#usage" class="sidebar-link block px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-100">Usage</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-3">Form Components</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="#button" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Button</a></li>
+                        <li><a href="#select" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Select</a></li>
+                        <li><a href="#toggle-switch" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Toggle Switch</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-3">Layout Components</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="#accordion" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Accordion</a></li>
+                        <li><a href="#card" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Card</a></li>
+                        <li><a href="#collapse" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Collapse</a></li>
+                        <li><a href="#drawer" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Drawer</a></li>
+                        <li><a href="#dialog" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Dialog</a></li>
+                        <li><a href="#tabs" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Tabs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-3">Display Components</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="#avatar" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Avatar</a></li>
+                        <li><a href="#badge" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Badge</a></li>
+                        <li><a href="#breadcrumbs" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Breadcrumbs</a></li>
+                        <li><a href="#carousel" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Carousel</a></li>
+                        <li><a href="#code" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Code</a></li>
+                        <li><a href="#countdown" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Countdown</a></li>
+                        <li><a href="#qr" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">QR Code</a></li>
+                        <li><a href="#stat" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Stat</a></li>
+                        <li><a href="#timeline" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Timeline</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-3">Interaction Components</h3>
+                    <ul class="space-y-1 text-sm">
+    
+                        <li><a href="#swap" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Swap</a></li>
+                        <li><a href="#toast" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Toast</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-3">Communication</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="#chat-bubble" class="sidebar-link block px-3 py-1 rounded text-gray-700 hover:bg-gray-100">Chat Bubble</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <div class="max-w-4xl mx-auto">
+                <!-- Overview Section -->
+                <section id="overview" class="mb-12">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold text-gray-900 mb-4">DRY2 Web Components</h1>
+                        <p class="text-xl text-gray-600">A comprehensive library of 21 modern, accessible web components built with vanilla JavaScript, Alpine.js, and Tailwind CSS.</p>
+                    </div>
+
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-blue-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-700">
+                                    <strong>Framework Agnostic:</strong> These components work with any modern framework or vanilla JavaScript. No dependencies required beyond the components themselves.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 mb-4">Key Features</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span><strong>21 Production-Ready Components</strong> - From basic buttons to advanced carousels</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span><strong>Full Accessibility</strong> - ARIA attributes and keyboard navigation built-in</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span><strong>Tailwind CSS Integration</strong> - Consistent design system with utility classes</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span><strong>Alpine.js Enhanced</strong> - Reactive state management where needed</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                    <span><strong>Zero Framework Dependencies</strong> - Works anywhere web components are supported</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 mb-4">Architecture</h3>
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-lg border">
+                                    <h4 class="font-semibold text-gray-900 mb-2">Web Components</h4>
+                                    <p class="text-sm text-gray-600">Built on native web standards for maximum compatibility</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border">
+                                    <h4 class="font-semibold text-gray-900 mb-2">Alpine.js Integration</h4>
+                                    <p class="text-sm text-gray-600">Enhanced reactivity and animations for complex components</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border">
+                                    <h4 class="font-semibold text-gray-900 mb-2">Tailwind CSS</h4>
+                                    <p class="text-sm text-gray-600">Utility-first styling with consistent design tokens</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section id="installation" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Installation</h2>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">CDN Installation</h3>
+                    <div class="code-block mb-6">
+&lt;!-- Include dependencies --&gt;
+&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- Include DRY2 components bundle (all 21 components) --&gt;
+&lt;script src="https://unpkg.com/dry2-web-components/dist/dry2.js"&gt;&lt;/script&gt;
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">NPM Installation</h3>
+                    <div class="code-block mb-6">
+# Install the package
+npm install dry2-web-components
+
+# Import in your JavaScript
+import 'dry2-web-components/dist/dry2.js';
+                    </div>
+                </section>
+
+                <!-- Usage -->
+                <section id="usage" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Basic Usage</h2>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Quick Example</h3>
+                    <div class="code-block mb-8">
+&lt;!-- Use any component - they're all available! --&gt;
+&lt;dry-button variant="primary" size="lg"&gt;
+    &lt;i class="fas fa-rocket"&gt;&lt;/i&gt; Get Started
+&lt;/dry-button&gt;
+
+&lt;avatar-component name="John Doe" size="md"&gt;&lt;/avatar-component&gt;
+&lt;carousel-component slides='[...]' autoplay&gt;&lt;/carousel-component&gt;
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">What's Next?</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <a href="getting-started.html" class="bg-white p-4 rounded-lg border hover:border-blue-300 transition-colors">
+                                <i class="fas fa-play text-blue-600 text-xl mb-2"></i>
+                                <h4 class="font-semibold">Getting Started</h4>
+                                <p class="text-sm text-gray-600">Installation and setup guide</p>
+                            </a>
+                            <a href="../examples/" class="bg-white p-4 rounded-lg border hover:border-blue-300 transition-colors">
+                                <i class="fas fa-code text-blue-600 text-xl mb-2"></i>
+                                <h4 class="font-semibold">Examples</h4>
+                                <p class="text-sm text-gray-600">Live demos and code samples</p>
+                            </a>
+                            <a href="API.html" class="bg-white p-4 rounded-lg border hover:border-blue-300 transition-colors">
+                                <i class="fas fa-book text-blue-600 text-xl mb-2"></i>
+                                <h4 class="font-semibold">API Reference</h4>
+                                <p class="text-sm text-gray-600">Complete API documentation</p>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FORM COMPONENTS -->
+
+                <!-- Button Component -->
+                <section id="button" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Button Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">dry-button</code> | <a href="../examples/button-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">A versatile button component with multiple variants, sizes, loading states, and icon support.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;dry-button variant="primary" size="md"&gt;Click me!&lt;/dry-button&gt;
+&lt;dry-button variant="secondary" disabled&gt;Disabled&lt;/dry-button&gt;
+&lt;dry-button variant="outline" loading&gt;Loading...&lt;/dry-button&gt;
+&lt;dry-button href="/link" target="_blank"&gt;Link Button&lt;/dry-button&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>variant</code></td>
+                                <td>string</td>
+                                <td>primary</td>
+                                <td>primary, secondary, outline, text, danger, success, warning</td>
+                                <td>Button visual style</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>md</td>
+                                <td>sm, md, lg, xl</td>
+                                <td>Button size</td>
+                            </tr>
+                            <tr>
+                                <td><code>disabled</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Whether button is disabled</td>
+                            </tr>
+                            <tr>
+                                <td><code>loading</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Show loading spinner</td>
+                            </tr>
+                            <tr>
+                                <td><code>href</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Any URL</td>
+                                <td>Convert to anchor tag</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Select Component -->
+                <section id="select" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Select Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">super-select-component</code> | <a href="../examples/select-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Advanced select dropdown with search functionality, multi-selection, and custom styling.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;super-select-component 
+    placeholder="Choose options..."
+    searchable
+    multiple
+&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+    &lt;option value="2"&gt;Option 2&lt;/option&gt;
+    &lt;option value="3"&gt;Option 3&lt;/option&gt;
+&lt;/super-select-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>placeholder</code></td>
+                                <td>string</td>
+                                <td>"Select..."</td>
+                                <td>Placeholder text when no option is selected</td>
+                            </tr>
+                            <tr>
+                                <td><code>searchable</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Enable search functionality</td>
+                            </tr>
+                            <tr>
+                                <td><code>multiple</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Allow multiple selections</td>
+                            </tr>
+                            <tr>
+                                <td><code>disabled</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Disable the select component</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Toggle Switch Component -->
+                <section id="toggle-switch" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Toggle Switch Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">toggle-switch</code> | <a href="../examples/toggle-switch-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Form-compatible toggle switch with validation, custom styling, and accessibility support.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;toggle-switch name="notifications" size="md"&gt;Enable Notifications&lt;/toggle-switch&gt;
+&lt;toggle-switch checked disabled&gt;Disabled Switch&lt;/toggle-switch&gt;
+&lt;toggle-switch size="lg" required&gt;Required Setting&lt;/toggle-switch&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>name</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Any name</td>
+                                <td>Form field name</td>
+                            </tr>
+                            <tr>
+                                <td><code>checked</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Initial checked state</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>md</td>
+                                <td>sm, md, lg</td>
+                                <td>Switch size</td>
+                            </tr>
+                            <tr>
+                                <td><code>disabled</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Disable the switch</td>
+                            </tr>
+                            <tr>
+                                <td><code>required</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Required field validation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- LAYOUT COMPONENTS -->
+
+                <!-- Accordion Component -->
+                <section id="accordion" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Accordion Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">dry-accordion</code> | <a href="../examples/accordion-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Collapsible content sections with smooth animations, programmatic control, and accessibility support.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;dry-accordion allow-multiple&gt;
+    &lt;div slot="item"&gt;
+        &lt;h3 slot="header"&gt;Section 1&lt;/h3&gt;
+        &lt;div slot="content"&gt;Content for section 1&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div slot="item"&gt;
+        &lt;h3 slot="header"&gt;Section 2&lt;/h3&gt;
+        &lt;div slot="content"&gt;Content for section 2&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/dry-accordion&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>allow-multiple</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Allow multiple sections to be open simultaneously</td>
+                            </tr>
+                            <tr>
+                                <td><code>default-open</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Index of section to open by default</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Methods</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>openItem(index)</code></td>
+                                <td>number</td>
+                                <td>Open specific accordion item</td>
+                            </tr>
+                            <tr>
+                                <td><code>closeItem(index)</code></td>
+                                <td>number</td>
+                                <td>Close specific accordion item</td>
+                            </tr>
+                            <tr>
+                                <td><code>toggleItem(index)</code></td>
+                                <td>number</td>
+                                <td>Toggle specific accordion item</td>
+                            </tr>
+                            <tr>
+                                <td><code>openAll()</code></td>
+                                <td>-</td>
+                                <td>Open all accordion items</td>
+                            </tr>
+                            <tr>
+                                <td><code>closeAll()</code></td>
+                                <td>-</td>
+                                <td>Close all accordion items</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Card Component -->
+                <section id="card" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Card Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">card-component</code> | <a href="../examples/card-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Flexible card container with slots for header, media, body, and footer content.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;card-component variant="elevated"&gt;
+    &lt;h3 slot="header"&gt;Card Title&lt;/h3&gt;
+    &lt;img slot="media" src="image.jpg" alt="Card image"&gt;
+    &lt;p slot="body"&gt;Card content goes here&lt;/p&gt;
+    &lt;div slot="footer"&gt;
+        &lt;dry-button size="sm"&gt;Action&lt;/dry-button&gt;
+    &lt;/div&gt;
+&lt;/card-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>variant</code></td>
+                                <td>string</td>
+                                <td>filled</td>
+                                <td>filled, outlined, elevated</td>
+                                <td>Card visual style</td>
+                            </tr>
+                            <tr>
+                                <td><code>horizontal</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Horizontal layout with media on the side</td>
+                            </tr>
+                            <tr>
+                                <td><code>clickable</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Add hover effects and cursor pointer</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Collapse Component -->
+                <section id="collapse" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Collapse Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">collapse-component</code> | <a href="../examples/collapse-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Height-based collapse animations with programmatic control and custom triggers.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;dry-button onclick="document.querySelector('#collapse1').toggle()"&gt;
+    Toggle Content
+&lt;/dry-button&gt;
+
+&lt;collapse-component id="collapse1" duration="300"&gt;
+    &lt;p&gt;This content can be collapsed and expanded with smooth animations.&lt;/p&gt;
+    &lt;p&gt;Multiple paragraphs and complex content are supported.&lt;/p&gt;
+&lt;/collapse-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>open</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Initial open state</td>
+                            </tr>
+                            <tr>
+                                <td><code>duration</code></td>
+                                <td>number</td>
+                                <td>250</td>
+                                <td>Animation duration in milliseconds</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Methods</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>show()</code></td>
+                                <td>Show the collapse content</td>
+                            </tr>
+                            <tr>
+                                <td><code>hide()</code></td>
+                                <td>Hide the collapse content</td>
+                            </tr>
+                            <tr>
+                                <td><code>toggle()</code></td>
+                                <td>Toggle the collapse state</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Drawer Component -->
+                <section id="drawer" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Drawer Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">dry-drawer</code> | <a href="../examples/drawer-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Slide-in panels with positioning options, AJAX content support, and custom animations.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;dry-drawer position="right" drawer-class="bg-white w-80"&gt;
+    Open Drawer
+    &lt;span slot="header"&gt;Drawer Title&lt;/span&gt;
+    &lt;div slot="content"&gt;
+        &lt;p&gt;Drawer content goes here&lt;/p&gt;
+        &lt;p&gt;Multiple elements supported&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/dry-drawer&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>position</code></td>
+                                <td>string</td>
+                                <td>right</td>
+                                <td>left, right, top, bottom</td>
+                                <td>Drawer slide-in position</td>
+                            </tr>
+                            <tr>
+                                <td><code>drawer-class</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Any CSS classes</td>
+                                <td>Custom classes for drawer panel</td>
+                            </tr>
+                            <tr>
+                                <td><code>overlay-class</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Any CSS classes</td>
+                                <td>Custom classes for overlay backdrop</td>
+                            </tr>
+                            <tr>
+                                <td><code>button-class</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Any CSS classes</td>
+                                <td>Custom classes for trigger button</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Dialog Component -->
+                <section id="dialog" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Dialog Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">dialog-component</code> | <a href="../examples/dialog-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Modal dialogs with HTMX support for dynamic content loading and responsive design.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;dialog-component title="Confirmation"&gt;
+    Open Dialog
+    &lt;div slot="content"&gt;
+        &lt;p&gt;Are you sure you want to continue?&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div slot="footer"&gt;
+        &lt;dry-button variant="outline" onclick="this.closest('dialog-component').close()"&gt;Cancel&lt;/dry-button&gt;
+        &lt;dry-button variant="primary"&gt;Confirm&lt;/dry-button&gt;
+    &lt;/div&gt;
+&lt;/dialog-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>title</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Dialog title text</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>md</td>
+                                <td>Dialog size (sm, md, lg, xl, full)</td>
+                            </tr>
+                            <tr>
+                                <td><code>closable</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>Show close button</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Tabs Component -->
+                <section id="tabs" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Tabs Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">tabs-component</code> | <a href="../examples/tabs-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Tabbed interface with multiple variants, keyboard navigation, and icon support.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;tabs-component variant="underline"&gt;
+    &lt;div slot="tab"&gt;
+        &lt;span slot="label"&gt;Tab 1&lt;/span&gt;
+        &lt;div slot="content"&gt;Content for tab 1&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div slot="tab"&gt;
+        &lt;span slot="label"&gt;Tab 2&lt;/span&gt;
+        &lt;div slot="content"&gt;Content for tab 2&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/tabs-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>variant</code></td>
+                                <td>string</td>
+                                <td>boxed</td>
+                                <td>boxed, pills, underline</td>
+                                <td>Tab visual style</td>
+                            </tr>
+                            <tr>
+                                <td><code>active-tab</code></td>
+                                <td>number</td>
+                                <td>0</td>
+                                <td>Tab index</td>
+                                <td>Initially active tab</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- DISPLAY COMPONENTS -->
+
+                <!-- Avatar Component -->
+                <section id="avatar" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Avatar Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">avatar-component</code> | <a href="../examples/avatar-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">User avatar with automatic fallback to initials, multiple sizes and shapes, and consistent color generation.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;avatar-component name="John Doe" size="md"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component src="avatar.jpg" name="Jane Smith" size="lg"&gt;&lt;/avatar-component&gt;
+&lt;avatar-component name="AB" shape="square"&gt;&lt;/avatar-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>name</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Any name</td>
+                                <td>Full name for initials fallback</td>
+                            </tr>
+                            <tr>
+                                <td><code>src</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Image URL</td>
+                                <td>Avatar image source</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>md</td>
+                                <td>xs, sm, md, lg, xl</td>
+                                <td>Avatar size</td>
+                            </tr>
+                            <tr>
+                                <td><code>shape</code></td>
+                                <td>string</td>
+                                <td>circle</td>
+                                <td>circle, square, rounded</td>
+                                <td>Avatar shape</td>
+                            </tr>
+                            <tr>
+                                <td><code>alt</code></td>
+                                <td>string</td>
+                                <td>name value</td>
+                                <td>Any text</td>
+                                <td>Alt text for accessibility</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Badge Component -->
+                <section id="badge" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Badge Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">badge-component</code> | <a href="../examples/badge-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Notification badges with positioning, variants, overflow handling, and animations.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;badge-component variant="primary" position="standalone"&gt;New&lt;/badge-component&gt;
+&lt;badge-component variant="danger" position="top-right" max="99"&gt;150&lt;/badge-component&gt;
+&lt;badge-component variant="success" dot&gt;&lt;/badge-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>variant</code></td>
+                                <td>string</td>
+                                <td>primary</td>
+                                <td>primary, success, danger, warning, info</td>
+                                <td>Badge color scheme</td>
+                            </tr>
+                            <tr>
+                                <td><code>position</code></td>
+                                <td>string</td>
+                                <td>standalone</td>
+                                <td>standalone, top-right, top-left, bottom-right, bottom-left</td>
+                                <td>Badge positioning</td>
+                            </tr>
+                            <tr>
+                                <td><code>max</code></td>
+                                <td>number</td>
+                                <td>-</td>
+                                <td>Any number</td>
+                                <td>Maximum number to show (shows "max+" when exceeded)</td>
+                            </tr>
+                            <tr>
+                                <td><code>dot</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Show as small dot instead of text</td>
+                            </tr>
+                            <tr>
+                                <td><code>hidden</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Hide the badge</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Breadcrumbs Component -->
+                <section id="breadcrumbs" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Breadcrumbs Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">breadcrumbs-component</code> | <a href="../examples/breadcrumbs-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Hierarchical navigation with customizable separators, responsive design, and icon support.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;breadcrumbs-component separator="chevron"&gt;
+    &lt;a href="/" slot="crumb"&gt;Home&lt;/a&gt;
+    &lt;a href="/products" slot="crumb"&gt;Products&lt;/a&gt;
+    &lt;span slot="crumb" class="text-gray-500"&gt;Current Page&lt;/span&gt;
+&lt;/breadcrumbs-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>separator</code></td>
+                                <td>string</td>
+                                <td>chevron</td>
+                                <td>chevron, slash, bullet, arrow</td>
+                                <td>Separator style between breadcrumbs</td>
+                            </tr>
+                            <tr>
+                                <td><code>max-items</code></td>
+                                <td>number</td>
+                                <td>-</td>
+                                <td>Any number</td>
+                                <td>Maximum items to show before truncating</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Carousel Component -->
+                <section id="carousel" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Carousel Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">carousel-component</code> | <a href="../examples/carousel-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Image carousel with autoplay, navigation controls, touch support, and responsive design.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;carousel-component
+    slides='[
+        {
+            "image": "https://example.com/image1.jpg",
+            "title": "Slide 1",
+            "description": "First slide description"
+        },
+        {
+            "image": "https://example.com/image2.jpg",
+            "title": "Slide 2",
+            "description": "Second slide description"
+        }
+    ]'
+    autoplay
+    interval="5000"
+    show-dots="true"
+    show-arrows="true"
+&gt;&lt;/carousel-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>slides</code></td>
+                                <td>JSON string</td>
+                                <td>[]</td>
+                                <td>Array of slide objects with image, title, description</td>
+                            </tr>
+                            <tr>
+                                <td><code>autoplay</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Enable automatic slide progression</td>
+                            </tr>
+                            <tr>
+                                <td><code>interval</code></td>
+                                <td>number</td>
+                                <td>3000</td>
+                                <td>Autoplay interval in milliseconds</td>
+                            </tr>
+                            <tr>
+                                <td><code>show-dots</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>Show navigation dots</td>
+                            </tr>
+                            <tr>
+                                <td><code>show-arrows</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>Show navigation arrows</td>
+                            </tr>
+                            <tr>
+                                <td><code>height</code></td>
+                                <td>string</td>
+                                <td>300</td>
+                                <td>Carousel height in pixels</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Code Component -->
+                <section id="code" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Code Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">dry-code</code> | <a href="../examples/code-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Syntax-highlighted code blocks with copy-to-clipboard functionality for multiple programming languages.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;dry-code language="javascript"&gt;
+function greet(name) {
+    console.log(`Hello, ${name}!`);
+}
+
+greet('World');
+&lt;/dry-code&gt;
+
+&lt;dry-code language="html" show-header="false"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Welcome&lt;/h1&gt;
+&lt;/div&gt;
+&lt;/dry-code&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>language</code></td>
+                                <td>string</td>
+                                <td>HTML</td>
+                                <td>html, xml, javascript, js, css, json, python, py, bash, shell, sh, sql</td>
+                                <td>Programming language for syntax highlighting</td>
+                            </tr>
+                            <tr>
+                                <td><code>show-copy</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>true, false</td>
+                                <td>Show copy-to-clipboard button</td>
+                            </tr>
+                            <tr>
+                                <td><code>show-header</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>true, false</td>
+                                <td>Show header with language label and copy button</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Methods</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>copy()</code></td>
+                                <td>None</td>
+                                <td>Programmatically copy code content to clipboard</td>
+                            </tr>
+                            <tr>
+                                <td><code>setCode(code)</code></td>
+                                <td>string</td>
+                                <td>Update the code content and re-render</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Countdown Component -->
+                <section id="countdown" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Countdown Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">countdown-component</code> | <a href="../examples/countdown-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Flexible countdown timer with multiple format options, real-time updates, and completion events.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;countdown-component target="2025-12-31T23:59:59"&gt;
+    &lt;span slot="expired"&gt;Time's up!&lt;/span&gt;
+&lt;/countdown-component&gt;
+
+&lt;countdown-component duration="3600" format="hms"&gt;
+    &lt;span slot="expired"&gt;Timer finished!&lt;/span&gt;
+&lt;/countdown-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>target</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>ISO date string</td>
+                                <td>Target date/time to count down to</td>
+                            </tr>
+                            <tr>
+                                <td><code>duration</code></td>
+                                <td>number</td>
+                                <td>-</td>
+                                <td>Seconds</td>
+                                <td>Duration in seconds (alternative to target)</td>
+                            </tr>
+                            <tr>
+                                <td><code>format</code></td>
+                                <td>string</td>
+                                <td>dhms</td>
+                                <td>dhms, hms, ms, s</td>
+                                <td>Display format (days/hours/minutes/seconds)</td>
+                            </tr>
+                            <tr>
+                                <td><code>interval</code></td>
+                                <td>number</td>
+                                <td>1000</td>
+                                <td>Milliseconds</td>
+                                <td>Update interval</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- QR Component -->
+                <section id="qr" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">QR Code Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">qr-component</code> | <a href="../examples/qr-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">QR code generation with customization options, download functionality, and error handling.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;qr-component 
+    data="https://example.com"
+    size="200"
+    foreground="#000000"
+    background="#ffffff"
+    show-download="true"
+&gt;&lt;/qr-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>data</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Data to encode in QR code</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>number</td>
+                                <td>128</td>
+                                <td>QR code size in pixels</td>
+                            </tr>
+                            <tr>
+                                <td><code>foreground</code></td>
+                                <td>string</td>
+                                <td>#000000</td>
+                                <td>Foreground color (hex)</td>
+                            </tr>
+                            <tr>
+                                <td><code>background</code></td>
+                                <td>string</td>
+                                <td>#ffffff</td>
+                                <td>Background color (hex)</td>
+                            </tr>
+                            <tr>
+                                <td><code>level</code></td>
+                                <td>string</td>
+                                <td>M</td>
+                                <td>Error correction level (L, M, Q, H)</td>
+                            </tr>
+                            <tr>
+                                <td><code>show-download</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Show download button</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Stat Component -->
+                <section id="stat" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Stat Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">stat-component</code> | <a href="../examples/stat-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Statistical display with value formatting, trend indicators, and comparison text.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;stat-component 
+    value="98.5"
+    label="Performance Score"
+    trend="up"
+    trend-value="+12%"
+    icon="fas fa-chart-line"
+&gt;&lt;/stat-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>value</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Any value</td>
+                                <td>Main statistic value</td>
+                            </tr>
+                            <tr>
+                                <td><code>label</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Any text</td>
+                                <td>Descriptive label</td>
+                            </tr>
+                            <tr>
+                                <td><code>trend</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>up, down, neutral</td>
+                                <td>Trend direction</td>
+                            </tr>
+                            <tr>
+                                <td><code>trend-value</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Any text</td>
+                                <td>Trend change value</td>
+                            </tr>
+                            <tr>
+                                <td><code>icon</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>CSS class</td>
+                                <td>Icon class (Font Awesome, etc.)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Timeline Component -->
+                <section id="timeline" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Timeline Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">timeline-component</code> | <a href="../examples/timeline-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Timeline visualization with multiple variants, custom styling, and responsive design.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;timeline-component orientation="vertical"&gt;
+    &lt;div slot="item" data-type="success"&gt;
+        &lt;h4 slot="title"&gt;Project Started&lt;/h4&gt;
+        &lt;p slot="description"&gt;Initial planning and setup completed&lt;/p&gt;
+        &lt;span slot="time"&gt;January 2025&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div slot="item" data-type="info"&gt;
+        &lt;h4 slot="title"&gt;Development Phase&lt;/h4&gt;
+        &lt;p slot="description"&gt;Core features implemented&lt;/p&gt;
+        &lt;span slot="time"&gt;February 2025&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/timeline-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>orientation</code></td>
+                                <td>string</td>
+                                <td>vertical</td>
+                                <td>vertical, horizontal</td>
+                                <td>Timeline layout direction</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Item Types</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Color</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>success</code></td>
+                                <td>Green</td>
+                                <td>Completed milestones, achievements</td>
+                            </tr>
+                            <tr>
+                                <td><code>info</code></td>
+                                <td>Blue</td>
+                                <td>General information, ongoing tasks</td>
+                            </tr>
+                            <tr>
+                                <td><code>warning</code></td>
+                                <td>Yellow</td>
+                                <td>Important notes, cautions</td>
+                            </tr>
+                            <tr>
+                                <td><code>error</code></td>
+                                <td>Red</td>
+                                <td>Issues, failures, blockers</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- INTERACTION COMPONENTS -->
+
+                <!-- Swap Component -->
+                <section id="swap" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Swap Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">swap-component</code> | <a href="../examples/swap-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Toggle between two states with smooth transitions, custom events, and accessibility support.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;swap-component size="md"&gt;
+    &lt;i slot="off" class="fas fa-play"&gt;&lt;/i&gt;
+    &lt;i slot="on" class="fas fa-pause"&gt;&lt;/i&gt;
+&lt;/swap-component&gt;
+
+&lt;swap-component size="lg" active&gt;
+    &lt;span slot="off"&gt;Show&lt;/span&gt;
+    &lt;span slot="on"&gt;Hide&lt;/span&gt;
+&lt;/swap-component&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>active</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Initial state (true shows "on" slot)</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>md</td>
+                                <td>sm, md, lg</td>
+                                <td>Component size</td>
+                            </tr>
+                            <tr>
+                                <td><code>disabled</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Disable interaction</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Events</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Detail</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>swap:change</code></td>
+                                <td>{ active: boolean }</td>
+                                <td>Fired when swap state changes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Toast Component -->
+                <section id="toast" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Toast Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">toast-component</code> | <a href="../examples/toast-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Notification toasts with multiple types, positioning, auto-hide timers, and global convenience methods.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;!-- Using HTML element --&gt;
+&lt;toast-component type="success" auto-show duration="3000"&gt;
+    Operation completed successfully!
+&lt;/toast-component&gt;
+
+&lt;!-- Using static methods (recommended) --&gt;
+&lt;script&gt;
+    Toast.success('Success message!');
+    Toast.error('Error occurred!', { duration: 5000 });
+    Toast.warning('Warning message!');
+    Toast.info('Information message!');
+&lt;/script&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>type</code></td>
+                                <td>string</td>
+                                <td>info</td>
+                                <td>info, success, warning, error</td>
+                                <td>Toast type and color scheme</td>
+                            </tr>
+                            <tr>
+                                <td><code>position</code></td>
+                                <td>string</td>
+                                <td>top-right</td>
+                                <td>top-left, top-right, bottom-left, bottom-right</td>
+                                <td>Toast position on screen</td>
+                            </tr>
+                            <tr>
+                                <td><code>duration</code></td>
+                                <td>number</td>
+                                <td>4000</td>
+                                <td>Milliseconds</td>
+                                <td>Auto-hide duration (0 for no auto-hide)</td>
+                            </tr>
+                            <tr>
+                                <td><code>auto-show</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Show toast automatically on creation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Static Methods</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>Toast.success(message, options)</code></td>
+                                <td>string, object</td>
+                                <td>Show success toast</td>
+                            </tr>
+                            <tr>
+                                <td><code>Toast.error(message, options)</code></td>
+                                <td>string, object</td>
+                                <td>Show error toast</td>
+                            </tr>
+                            <tr>
+                                <td><code>Toast.warning(message, options)</code></td>
+                                <td>string, object</td>
+                                <td>Show warning toast</td>
+                            </tr>
+                            <tr>
+                                <td><code>Toast.info(message, options)</code></td>
+                                <td>string, object</td>
+                                <td>Show info toast</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- COMMUNICATION COMPONENTS -->
+
+                <!-- Chat Bubble Component -->
+                <section id="chat-bubble" class="mb-12">
+                    <div class="component-header">
+                        <h2 class="text-2xl font-bold text-gray-900">Chat Bubble Component</h2>
+                        <p class="text-gray-600 mt-2">Tag: <code class="bg-white px-2 py-1 rounded">chat-bubble</code> | <a href="../examples/chat-bubble-showcase.html" class="text-blue-600 hover:text-blue-800">View Demo →</a></p>
+                    </div>
+
+                    <p class="text-gray-600 mb-6">Chat interface with message grouping, status indicators, and support for different content types.</p>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Basic Usage</h3>
+                    <div class="code-block mb-6">
+&lt;chat-bubble 
+    type="sent"
+    timestamp="2025-01-15T10:30:00"
+    status="delivered"
+&gt;
+    Hello! How are you doing today?
+&lt;/chat-bubble&gt;
+
+&lt;chat-bubble 
+    type="received"
+    sender="John Doe"
+    timestamp="2025-01-15T10:31:00"
+&gt;
+    I'm doing great, thanks for asking!
+&lt;/chat-bubble&gt;
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Attributes</h3>
+                    <table class="attribute-table mb-6">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Options</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>type</code></td>
+                                <td>string</td>
+                                <td>received</td>
+                                <td>sent, received</td>
+                                <td>Message direction and styling</td>
+                            </tr>
+                            <tr>
+                                <td><code>sender</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>Any name</td>
+                                <td>Sender name (for received messages)</td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>ISO date string</td>
+                                <td>Message timestamp</td>
+                            </tr>
+                            <tr>
+                                <td><code>status</code></td>
+                                <td>string</td>
+                                <td>""</td>
+                                <td>sent, delivered, read</td>
+                                <td>Message delivery status</td>
+                            </tr>
+                            <tr>
+                                <td><code>group</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>true, false</td>
+                                <td>Group with adjacent messages from same sender</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-blue-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                <strong>Need more examples?</strong> Visit our <a href="../examples/" class="underline">examples directory</a> to see interactive demos of all components with complete code samples.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

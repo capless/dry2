@@ -3,164 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>countdown Component Showcase - DRY2</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Countdown Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
-    <script src="../src/dry2/countdown.js"></script>
-    
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-        
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-        
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-        
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-    </style>
-    <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code, .code-content pre');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../dist/dry2.js"></script>
+    
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -170,7 +31,7 @@
     </div>
 
 <div class="p-8">
-    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
+    <div class="max-w-6xl mx-auto">
         <header class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Countdown Component</h1>
             <p class="text-lg text-gray-600">A countdown component that displays time remaining until a specific date/time with flexible formatting options.</p>
@@ -197,25 +58,12 @@
                     </div>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;dry-countdown 
+                <dry-code language="HTML">&lt;dry-countdown 
     duration="60" 
     autostart 
     leading-zeros
     expiry-text="Time's up!"&gt;
-&lt;/dry-countdown&gt;</pre>
-                    </div>
-                </div>
+&lt;/dry-countdown&gt;</dry-code>
             </section>
             
             <!-- Target Date Countdown -->
@@ -244,26 +92,13 @@
                     </dry-countdown>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;dry-countdown 
+                <dry-code language="HTML">&lt;dry-countdown 
     target-date="2025-12-31T23:59:59" 
     autostart 
     leading-zeros
     show-zeros
     class="text-center"&gt;
-&lt;/dry-countdown&gt;</pre>
-                    </div>
-                </div>
+&lt;/dry-countdown&gt;</dry-code>
             </section>
             
             <!-- Custom Format Countdown -->
@@ -295,18 +130,7 @@
                     </div>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;!-- Days & Hours Only --&gt;
+                <dry-code language="HTML">&lt;!-- Days & Hours Only --&gt;
 &lt;dry-countdown 
     duration="172800" 
     format="days,hours" 
@@ -320,9 +144,7 @@
     format="minutes,seconds" 
     autostart 
     leading-zeros&gt;
-&lt;/dry-countdown&gt;</pre>
-                    </div>
-                </div>
+&lt;/dry-countdown&gt;</dry-code>
             </section>
             
             <!-- Custom Labels Countdown -->
@@ -342,18 +164,7 @@
                     </dry-countdown>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;dry-countdown 
+                <dry-code language="HTML">&lt;dry-countdown 
     duration="90061" 
     autostart 
     leading-zeros
@@ -361,9 +172,7 @@
     hours-label="Hr|Hrs"
     minutes-label="Min|Mins"
     seconds-label="Sec|Secs"&gt;
-&lt;/dry-countdown&gt;</pre>
-                    </div>
-                </div>
+&lt;/dry-countdown&gt;</dry-code>
             </section>
             
             <!-- Styled Countdown -->
@@ -381,26 +190,13 @@
                     </dry-countdown>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;dry-countdown 
+                <dry-code language="HTML">&lt;dry-countdown 
     duration="3600" 
     autostart 
     leading-zeros
     class="flex justify-center p-4 bg-blue-100 rounded-lg"
     unit-class="mx-4 bg-white p-4 rounded-lg shadow-md w-24 flex flex-col items-center"&gt;
-&lt;/dry-countdown&gt;</pre>
-                    </div>
-                </div>
+&lt;/dry-countdown&gt;</dry-code>
             </section>
             
             <!-- Expired Content Section -->
@@ -424,18 +220,7 @@
                     </div>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;dry-countdown 
+                <dry-code language="HTML">&lt;dry-countdown 
     duration="5" 
     autostart 
     leading-zeros&gt;
@@ -444,9 +229,7 @@
         &lt;p&gt;Your countdown has expired.&lt;/p&gt;
         &lt;button id="restart-expire" class="mt-2 px-3 py-1 bg-red-500 text-white rounded"&gt;Restart&lt;/button&gt;
     &lt;/div&gt;
-&lt;/dry-countdown&gt;</pre>
-                    </div>
-                </div>
+&lt;/dry-countdown&gt;</dry-code>
             </section>
             
             <!-- Event Handling Section -->
@@ -475,18 +258,7 @@
                     </div>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                             </svg>
-                             Copy
-                         </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;dry-countdown 
+                <dry-code language="JavaScript">&lt;dry-countdown 
     id="event-countdown"
     duration="10" 
     autostart 
@@ -508,165 +280,129 @@
     });
     
     // ... more event handlers
-&lt;/script&gt;</pre>
-                    </div>
-                </div>
+&lt;/script&gt;</dry-code>
             </section>
             
             <!-- API Reference -->
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+            <section class="demo-section">
+                <h2 class="demo-title">API Reference</h2>
                 
                 <h3 class="text-xl font-semibold mt-6 mb-3">Countdown Properties</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Property</th>
-                            <th class="px-4 py-2 text-left">Type</th>
-                            <th class="px-4 py-2 text-left">Default</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">target-date</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">ISO date string for the target date/time</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">duration</td>
-                            <td class="px-4 py-2">number</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">Duration in seconds for the countdown</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">format</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'days,hours,minutes,seconds'</td>
-                            <td class="px-4 py-2">Comma-separated list of time units to display</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">autostart</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Whether to start the countdown automatically</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">expiry-text</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">undefined</td>
-                            <td class="px-4 py-2">Text to display when countdown expires</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">leading-zeros</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Whether to display leading zeros for values</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">show-zeros</td>
-                            <td class="px-4 py-2">boolean</td>
-                            <td class="px-4 py-2">false</td>
-                            <td class="px-4 py-2">Whether to show zero values for units</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">unit-class</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'mx-2'</td>
-                            <td class="px-4 py-2">CSS classes for each time unit container</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">days-label</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'Day|Days'</td>
-                            <td class="px-4 py-2">Label for days (singular|plural)</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">hours-label</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'Hour|Hours'</td>
-                            <td class="px-4 py-2">Label for hours (singular|plural)</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">minutes-label</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'Minute|Minutes'</td>
-                            <td class="px-4 py-2">Label for minutes (singular|plural)</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">seconds-label</td>
-                            <td class="px-4 py-2">string</td>
-                            <td class="px-4 py-2">'Second|Seconds'</td>
-                            <td class="px-4 py-2">Label for seconds (singular|plural)</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Property</th>
+                                <th class="px-4 py-2 text-left">Type</th>
+                                <th class="px-4 py-2 text-left">Default</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">target-date</td>
+                                <td class="px-4 py-2">string</td>
+                                <td class="px-4 py-2">undefined</td>
+                                <td class="px-4 py-2">ISO date string for the target date/time</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">duration</td>
+                                <td class="px-4 py-2">number</td>
+                                <td class="px-4 py-2">undefined</td>
+                                <td class="px-4 py-2">Duration in seconds for the countdown</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">format</td>
+                                <td class="px-4 py-2">string</td>
+                                <td class="px-4 py-2">'days,hours,minutes,seconds'</td>
+                                <td class="px-4 py-2">Comma-separated list of time units to display</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">autostart</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Whether to start the countdown automatically</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">leading-zeros</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Whether to display leading zeros for values</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">show-zeros</td>
+                                <td class="px-4 py-2">boolean</td>
+                                <td class="px-4 py-2">false</td>
+                                <td class="px-4 py-2">Whether to show zero values for units</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <h3 class="text-xl font-semibold mt-6 mb-3">Countdown Methods</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Method</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">startCountdown()</td>
-                            <td class="px-4 py-2">Starts the countdown</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">pause()</td>
-                            <td class="px-4 py-2">Pauses the countdown</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">resume()</td>
-                            <td class="px-4 py-2">Resumes a paused countdown</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">reset()</td>
-                            <td class="px-4 py-2">Resets the countdown to its initial state</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">startCountdown()</td>
+                                <td class="px-4 py-2">Starts the countdown</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">pause()</td>
+                                <td class="px-4 py-2">Pauses the countdown</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">resume()</td>
+                                <td class="px-4 py-2">Resumes a paused countdown</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">reset()</td>
+                                <td class="px-4 py-2">Resets the countdown to its initial state</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <h3 class="text-xl font-semibold mt-6 mb-3">Countdown Events</h3>
-                <table class="min-w-full border border-gray-300 rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Event</th>
-                            <th class="px-4 py-2 text-left">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">countdown:completed</td>
-                            <td class="px-4 py-2">Fired when the countdown reaches zero</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">countdown:paused</td>
-                            <td class="px-4 py-2">Fired when the countdown is paused</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">countdown:resumed</td>
-                            <td class="px-4 py-2">Fired when the countdown is resumed</td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 font-medium">countdown:reset</td>
-                            <td class="px-4 py-2">Fired when the countdown is reset</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border border-gray-300 rounded">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Event</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">countdown:completed</td>
+                                <td class="px-4 py-2">Fired when the countdown reaches zero</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">countdown:paused</td>
+                                <td class="px-4 py-2">Fired when the countdown is paused</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">countdown:resumed</td>
+                                <td class="px-4 py-2">Fired when the countdown is resumed</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="px-4 py-2 font-medium">countdown:reset</td>
+                                <td class="px-4 py-2">Fired when the countdown is reset</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
+            
+            <!-- Component Builder Section -->
+            <div id="countdown-component-builder"></div>
         </main>
-        
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            <p>DRY2 Web Components Library</p>
-            <p class="mt-2">
-                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-            </p>
-        </footer>
     </div>
     
     <script>
@@ -717,25 +453,137 @@
         const eventLog = document.getElementById('event-log');
         
         document.addEventListener('countdown:completed', (e) => {
-            console.log('Countdown completed', e.detail);
             eventLog.textContent = `Countdown completed at ${new Date().toLocaleTimeString()}`;
         });
         
         document.addEventListener('countdown:paused', (e) => {
-            console.log('Countdown paused', e.detail);
             eventLog.textContent = `Countdown paused at ${new Date().toLocaleTimeString()}`;
         });
         
         document.addEventListener('countdown:resumed', (e) => {
-            console.log('Countdown resumed', e.detail);
             eventLog.textContent = `Countdown resumed at ${new Date().toLocaleTimeString()}`;
         });
         
         document.addEventListener('countdown:reset', (e) => {
-            console.log('Countdown reset', e.detail);
             eventLog.textContent = `Countdown reset at ${new Date().toLocaleTimeString()}`;
+        });
+        
+        // Initialize Component Builder
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComponentBuilder({
+                elementId: 'countdown-component-builder',
+                componentTag: 'dry-countdown',
+                title: 'Component Builder',
+                description: 'Customize countdown properties and see live preview.',
+                
+                properties: {
+                    'countdown-type': {
+                        type: 'select',
+                        label: 'Countdown Type',
+                        options: [
+                            { value: 'duration', label: 'Duration' },
+                            { value: 'target-date', label: 'Target Date' }
+                        ],
+                        default: 'duration'
+                    },
+                    duration: {
+                        type: 'range',
+                        label: 'Duration (seconds)',
+                        min: 1,
+                        max: 86400,
+                        default: 60,
+                        displayFormat: (value) => `${value} seconds`
+                    },
+                    'target-date': {
+                        type: 'text',
+                        label: 'Target Date (ISO)',
+                        default: '2025-12-31T23:59:59'
+                    },
+                    format: {
+                        type: 'select',
+                        label: 'Time Format',
+                        options: [
+                            { value: 'days,hours,minutes,seconds', label: 'All Units' },
+                            { value: 'days,hours', label: 'Days & Hours' },
+                            { value: 'hours,minutes', label: 'Hours & Minutes' },
+                            { value: 'minutes,seconds', label: 'Minutes & Seconds' },
+                            { value: 'seconds', label: 'Seconds Only' }
+                        ],
+                        default: 'days,hours,minutes,seconds'
+                    },
+                    autostart: {
+                        type: 'checkbox',
+                        label: 'Auto Start',
+                        default: true
+                    },
+                    'leading-zeros': {
+                        type: 'checkbox',
+                        label: 'Leading Zeros',
+                        default: true
+                    },
+                    'show-zeros': {
+                        type: 'checkbox',
+                        label: 'Show Zero Values',
+                        default: false
+                    },
+                    'expiry-text': {
+                        type: 'text',
+                        label: 'Expiry Text',
+                        default: "Time's up!"
+                    }
+                },
+                
+                defaults: {
+                    'countdown-type': 'duration',
+                    duration: 60,
+                    'target-date': '2025-12-31T23:59:59',
+                    format: 'days,hours,minutes,seconds',
+                    autostart: true,
+                    'leading-zeros': true,
+                    'show-zeros': false,
+                    'expiry-text': "Time's up!"
+                },
+                
+                contentGenerator: function(values) {
+                    // For countdown, we don't need content
+                    return '';
+                },
+                
+                codeGenerator: function(values, config) {
+                    const attributes = Object.entries(values)
+                        .filter(([key, value]) => {
+                            // Skip countdown-type as it's just for the builder
+                            if (key === 'countdown-type') return false;
+                            
+                            // Only include target-date or duration based on type
+                            if (key === 'target-date' && values['countdown-type'] === 'duration') return false;
+                            if (key === 'duration' && values['countdown-type'] === 'target-date') return false;
+                            
+                            const propConfig = config.properties[key];
+                            return value !== propConfig.default && value !== false && value !== '';
+                        })
+                        .map(([key, value]) => `${key}="${value}"`)
+                        .join(' ');
+                    
+                    return `<dry-countdown${attributes ? ' ' + attributes : ''}></dry-countdown>`;
+                },
+                
+                previewWrapper: function(componentHTML) {
+                    return `
+                    <div class="flex flex-col items-center component-builder-preview">
+                        ${componentHTML}
+                        <div class="mt-4 flex gap-2">
+                            <button class="px-3 py-1 bg-blue-500 text-white rounded" onclick="this.closest('.component-builder-preview').querySelector('dry-countdown').pause()">Pause</button>
+                            <button class="px-3 py-1 bg-blue-500 text-white rounded" onclick="this.closest('.component-builder-preview').querySelector('dry-countdown').resume()">Resume</button>
+                            <button class="px-3 py-1 bg-blue-500 text-white rounded" onclick="this.closest('.component-builder-preview').querySelector('dry-countdown').reset()">Reset</button>
+                        </div>
+                    </div>`;
+                }
+            });
         });
     </script>
 </div>
+
+<div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>

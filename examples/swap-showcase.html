@@ -3,166 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>swap Component Showcase - DRY2</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Swap Component Showcase - DRY2</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Component Scripts -->
-    <script src="../src/dry2/dry2.js"></script>
-    <script src="../src/dry2/swap.js"></script>
-    
-    <style>
-        .demo-section {
-            margin-bottom: 2rem;
-        }
-        
-        .demo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-        }
-        
-        .demo-container {
-            padding: 1.5rem;
-            border-radius: 0.375rem;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-        
-        .code-block {
-            position: relative;
-            margin-top: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-            border-bottom: 1px solid #475569;
-        }
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .copy-button {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 0.375rem;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .copy-button.copied {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-        }
-        .code-content {
-            padding: 1.25rem;
-            overflow-x: auto;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-        .code-content pre {
-            margin: 0;
-            white-space: pre;
-        }
-        .code-content code {
-            color: inherit;
-            font-size: inherit;
-            font-family: inherit;
-        }
-    </style>
-    <script src="../src/dry2/breadcrumbs.js"></script>
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(button, codeContent) {
-            const code = codeContent.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = button.innerHTML;
-                button.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg> Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            });
-        }
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 
-        // Initialize copy buttons when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const codeBlock = button.closest('.code-block');
-                    const codeContent = codeBlock.querySelector('.code-content code, .code-content pre');
-                    copyToClipboard(button, codeContent);
-                });
-            });
-        });
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="../src/dry2/base.js"></script>
+    <script src="../src/dry2/swap.js"></script>
+    <script src="../src/dry2/breadcrumbs.js"></script>
+    <script src="../src/dry2/code.js"></script>
+    <script src="../src/dry2/component-builder.js"></script>
+    
+    <!-- Common CSS for showcase pages -->
+    <link rel="stylesheet" href="static/css/base.css">
+
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Include Navigation -->
-    <script>
-        fetch('nav.inc.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation').innerHTML = data;
-            });
-    </script>
-    <div id="navigation"></div>
+    <div id="navigation" hx-get="nav.inc.html" hx-trigger="load"></div>
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="max-w-6xl mx-auto px-4 xl:px-0 py-4">
             <dry-breadcrumbs>
                 <breadcrumb-item href="../index.html">Home</breadcrumb-item>
                 <breadcrumb-item href="./index.html">Examples</breadcrumb-item>
@@ -171,18 +34,15 @@
         </div>
     </div>
 
-<div class="p-8">
-    <div class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-lg">
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Swap Component</h1>
-            <p class="text-lg text-gray-600">A component that can swap between two Font Awesome icons or SVG content based on state.</p>
-        </header>
+    <div class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Swap Component</h1>
+        <p class="text-gray-600 mb-8">A component that can swap between two Font Awesome icons or SVG content based on state.</p>
         
-        <main>
-            <!-- Basic Usage Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Basic Usage</h2>
-                <p class="demo-description">The Swap component toggles between two states when clicked.</p>
+        <!-- Basic Usage Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Basic Usage</h2>
+            <p class="text-gray-600 mb-4">The Swap component toggles between two states when clicked.</p>
                 
                 <div class="demo-container flex flex-wrap items-center gap-8">
                     <div class="flex flex-col items-center">
@@ -218,16 +78,16 @@
                     </div>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                            <i class="fas fa-copy"></i>
-                            Copy
-                        </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;swap-component
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">HTML</span>
+                    <button class="copy-button">
+                        <i class="fas fa-copy"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>&lt;swap-component
     icon-on='&lt;i class="fas fa-minus"&gt;&lt;/i&gt;'
     icon-off='&lt;i class="fas fa-plus"&gt;&lt;/i&gt;'&gt;
 &lt;/swap-component&gt;
@@ -236,14 +96,14 @@
     icon-on='&lt;i class="fas fa-heart" style="color: red;"&gt;&lt;/i&gt;'
     icon-off='&lt;i class="far fa-heart"&gt;&lt;/i&gt;'&gt;
 &lt;/swap-component&gt;</pre>
-                    </div>
                 </div>
+            </div>
             </section>
             
-            <!-- Sizes Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">Sizes</h2>
-                <p class="demo-description">The Swap component can be displayed in different sizes.</p>
+        <!-- Sizes Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sizes</h2>
+            <p class="text-gray-600 mb-4">The Swap component can be displayed in different sizes.</p>
                 
                 <div class="demo-container flex items-center gap-8">
                     <div class="flex flex-col items-center">
@@ -271,16 +131,16 @@
                     </div>
                 </div>
                 
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-language">HTML</span>
-                        <button class="copy-button">
-                            <i class="fas fa-copy"></i>
-                            Copy
-                        </button>
-                    </div>
-                    <div class="code-content">
-                        <pre>&lt;swap-component size="small"
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">HTML</span>
+                    <button class="copy-button">
+                        <i class="fas fa-copy"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>&lt;swap-component size="small"
     icon-on='&lt;i class="fas fa-check"&gt;&lt;/i&gt;'
     icon-off='&lt;i class="fas fa-times"&gt;&lt;/i&gt;'&gt;
 &lt;/swap-component&gt;
@@ -289,14 +149,14 @@
     icon-on='&lt;i class="fas fa-check"&gt;&lt;/i&gt;'
     icon-off='&lt;i class="fas fa-times"&gt;&lt;/i&gt;'&gt;
 &lt;/swap-component&gt;</pre>
-                    </div>
                 </div>
+            </div>
             </section>
             
-            <!-- States Section -->
-            <section class="demo-section">
-                <h2 class="demo-title">States</h2>
-                <p class="demo-description">The Swap component can be initialized in active state or disabled.</p>
+        <!-- States Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">States</h2>
+            <p class="text-gray-600 mb-4">The Swap component can be initialized in active state or disabled.</p>
                 
                 <div class="demo-container flex flex-wrap gap-8">
                     <div class="flex flex-col items-center">
@@ -489,9 +349,12 @@
                 </script>
             </section>
             
-            <!-- API Reference -->
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                    <!-- Component Builder Section -->
+        <div id="swap-component-builder"></div>
+
+        <!-- API Reference -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">API Reference</h2>
                 
                 <h3 class="text-xl font-semibold mt-6 mb-3">Properties</h3>
                 <table class="min-w-full border border-gray-300 rounded">
@@ -585,15 +448,109 @@
                     </tbody>
                 </table>
             </section>
-        </main>
-        
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            <p>DRY2 Web Components Library</p>
-            <p class="mt-2">
-                <a href="index.html" class="text-blue-500 hover:underline">Back to Component Index</a>
-            </p>
-        </footer>
+        </div>
     </div>
-</div>
+    
+    <script>
+        // Copy button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Component Builder
+            new ComponentBuilder({
+                elementId: 'swap-component-builder',
+                componentTag: 'swap-component',
+                title: 'Swap Component Builder',
+                description: 'Try changing the swap properties dynamically and see the results in real-time.',
+                
+                properties: {
+                    'icon-on': {
+                        type: 'text',
+                        label: 'Icon On (HTML)',
+                        default: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>'
+                    },
+                    'icon-off': {
+                        type: 'text',
+                        label: 'Icon Off (HTML)',
+                        default: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>'
+                    },
+                    active: {
+                        type: 'checkbox',
+                        label: 'Active',
+                        default: false
+                    },
+                    disabled: {
+                        type: 'checkbox',
+                        label: 'Disabled',
+                        default: false
+                    },
+                    size: {
+                        type: 'select',
+                        label: 'Size',
+                        options: [
+                            { value: 'small', label: 'Small' },
+                            { value: 'medium', label: 'Medium' },
+                            { value: 'large', label: 'Large' }
+                        ],
+                        default: 'medium'
+                    }
+                },
+                
+                defaults: {
+                    'icon-on': '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>',
+                    'icon-off': '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>',
+                    active: false,
+                    disabled: false,
+                    size: 'medium'
+                },
+                
+                contentGenerator: function(values) {
+                    return '';
+                }
+            });
+
+            const copyButtons = document.querySelectorAll('.copy-button');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const codeContent = this.closest('.code-block').querySelector('.code-content pre').textContent;
+                    
+                    try {
+                        await navigator.clipboard.writeText(codeContent);
+                        
+                        // Show success feedback
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                        
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = codeContent;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        
+                        // Show success feedback
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.classList.remove('copied');
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <div id="footer" hx-get="footer.inc.html" hx-trigger="load"></div>
 </body>
 </html>
